@@ -1,0 +1,61 @@
+{
+  "id": "del-004",
+  "rfc": "RFC-AITP-0006",
+  "status": "core",
+  "required_for_v0_1": true,
+  "required_for_core": false,
+  "feature": null,
+  "$comment": "Structural-rejection fixture — see schemas/conformance/README.md 'Structural-rejection fixtures'. The chain-step, chain-hash, and outer-signature placeholders (__ANY_*__, __VALID_GRANT_PROOF_SIG__) are intentional and never resolved: a v0.1 implementation MUST reject the non-empty `chain` field at the early structural check, before any per-hop signature work. This fixture is NOT dynamic. FROZEN in the v0.1 wire shape: this fixture's input deliberately keeps the v0.1 embedded-signature token (delegator/grant_proof/chain-of-objects) and the retired v0.1 placeholders so v0.1 runners keep a pinned vector. It is NOT migrated to aitp/0.3; the v0.2 structural-rejection equivalent (compact-JWS token with a `chain` claim) is del-007-multihop-rejected-v02.",
+  "description": "A delegation token whose `chain` field is non-empty MUST be rejected by a v0.1 implementation with DELEGATION_MULTIHOP_NOT_SUPPORTED, regardless of any other validity property of the token. RFC-AITP-0006 v0.1 forbade multi-hop verification; the chain field is the trigger. The runner MUST reject before performing any per-hop signature work — the multi-hop rejection is a structural/early check, not the result of failed verification. Multi-hop acceptance semantics are reserved for RFC-AITP-0011 (Draft, opt-in) and exercised by the `del-mh-*` fixture set. This fixture is frozen in the v0.1 wire shape and is required only for v0.1 runners; v0.2 runners use del-007-multihop-rejected-v02, the claim-shaped sibling that pins the same DELEGATION_MULTIHOP_NOT_SUPPORTED behavior for the aitp/0.3 compact-JWS token.",
+  "tags": [
+    "security",
+    "delegation",
+    "multi-hop",
+    "v0.1-rejection"
+  ],
+  "input": {
+    "delegation": {
+      "delegator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "delegatee": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "issued_by": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "scope": [
+        "read_data"
+      ],
+      "expires_at": 9999999999,
+      "cnf": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "grant_proof": {
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "subject": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "capabilities": [
+          "read_data"
+        ],
+        "issued_at": 1711900000,
+        "expires_at": 9999999999,
+        "source_tct_jti": "550e8400-e29b-41d4-a716-446655440099",
+        "signature": "__VALID_GRANT_PROOF_SIG__"
+      },
+      "chain": [
+        {
+          "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "subject": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "capabilities": [
+            "read_data"
+          ],
+          "issued_at": 1711900000,
+          "expires_at": 9999999999,
+          "source_tct_jti": "550e8400-e29b-41d4-a716-446655440098",
+          "signature": "__ANY_CHAIN_STEP_SIG__"
+        }
+      ],
+      "chain_hash": "__ANY_CHAIN_HASH__",
+      "signature": "__ANY_DELEGATION_SIG__"
+    },
+    "operation": "verify_delegation_token"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "DELEGATION_MULTIHOP_NOT_SUPPORTED",
+    "rationale": "The `chain` field is non-empty. A v0.1 implementation MUST reject before any signature, scope, or chain-hash verification is performed. The placeholder values for chain-step / chain-hash / outer signatures are deliberate: this fixture asserts the early structural check, not failed cryptographic verification."
+  }
+}

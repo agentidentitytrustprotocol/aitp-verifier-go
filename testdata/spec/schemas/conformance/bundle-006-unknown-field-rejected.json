@@ -1,0 +1,104 @@
+{
+  "id": "bundle-006-unknown-field-rejected",
+  "rfc": "RFC-AITP-0010",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-session-bundle",
+  "$comment": "Negative half of a pair whose positive half already exists as bundle-005-extensions-accepted (RFC-AITP-0001 §7 for the session bundle's INNER `session_bundle` body). `coordinator_note` is placed as a SIBLING of the body's schema-defined fields, not inside `extensions` — the case RFC-AITP-0012 does not reserve, and distinct from bundle-004 (which tests `signature` misplaced OUTSIDE the body entirely, a wrapper-level defect with its own SESSION_BUNDLE_INVALID code). `aitp-session-bundle.schema.json` sets `additionalProperties: false` on the inner `session_bundle` object, so this is a schema-level rejection. Body is otherwise byte-identical to bundle-001/bundle-005's shape, so the unknown field is the only defect under test.",
+  "description": "Session Trust Bundle's inner `session_bundle` body carries one unrecognized member (`coordinator_note`) beside its known, schema-defined fields — not inside `extensions`. RFC-AITP-0001 §7: unknown JSON fields outside `extensions` MUST be rejected — silently ignoring the field would create signature ambiguity, since the bundle signing input is the JCS-canonical inner body excluding only `signature` (RFC-AITP-0010 §3), and a verifier that drops the unrecognized member before recomputing the canonical form would accept bytes a strict peer would reject. Receivers MUST reject with UNKNOWN_FIELD. Counterpart: bundle-005-extensions-accepted, which places a member INSIDE `extensions` and succeeds. `input.coordinator_manifest` (the coordinator's signed Manifest) is carried so every bundle fixture has the same input shape; it is never consulted, because the structural rejection precedes coordinator key resolution (RFC-AITP-0010 §5).",
+  "tags": [
+    "failure",
+    "session-bundle",
+    "unknown-field",
+    "security",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "now": 1711900100,
+    "session_bundle": {
+      "session_bundle": {
+        "version": "aitp/0.3",
+        "session_id": "550e8400-e29b-41d4-a716-446655442010",
+        "coordinator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "issued_at": 1711900000,
+        "expires_at": 1711903600,
+        "participants": [
+          {
+            "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442001",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "iat": 1711900000,
+              "exp": 1711903600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+              }
+            }
+          },
+          {
+            "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442002",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "aud": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "iat": 1711900000,
+              "exp": 1711905600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+              }
+            }
+          }
+        ],
+        "coordinator_note": "primary-region",
+        "signature": "__VALID_A_SIG__"
+      }
+    },
+    "coordinator_manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "display_name": "kat-keypair-001",
+      "identity_hint": {
+        "type": "pinned_key",
+        "subject": "kat-keypair-001",
+        "public_key": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "handshake_endpoint": "https://example.com/aitp/handshake",
+      "accepted_trust_anchors": [],
+      "accepted_identity_types": [
+        "pinned_key"
+      ],
+      "offered_capabilities": [
+        "read_data",
+        "write_data"
+      ],
+      "proof_of_possession": {
+        "challenge": "qAkDX8McwnQS5FTiXSam6Q",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_session_bundle"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_FIELD",
+    "rationale": "`coordinator_note` is not a member `aitp-session-bundle.schema.json` defines for the inner `session_bundle` body and it is not inside `extensions`, so RFC-AITP-0001 §7's MUST-reject applies. The bundle is otherwise identical to bundle-001/bundle-005's valid shape; the unknown sibling field is the only defect under test."
+  }
+}

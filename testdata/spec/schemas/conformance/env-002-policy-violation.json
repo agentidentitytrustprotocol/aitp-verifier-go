@@ -1,0 +1,39 @@
+{
+  "id": "env-002",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Caller invokes a capability not present in the active TCT's `grants` claim. Receivers MUST reject with POLICY_VIOLATION (RFC-AITP-0004 §4). The check is local — no remote lookup is required. The active TCT is a valid v0.2 compact JWS (signature, expiry, audience all pass); only the grant intersection fails.",
+  "tags": [
+    "failure",
+    "policy",
+    "capability"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "active_tct": "__JWS_TCT__",
+    "active_tct_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655442002",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 9999996399,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "requested_capability": "macp.mode.admin.v1",
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "POLICY_VIOLATION"
+  }
+}

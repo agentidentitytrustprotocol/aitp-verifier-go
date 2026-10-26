@@ -1,0 +1,39 @@
+{
+  "id": "vch-001",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Grant-voucher happy path (RFC-AITP-0005 §8). The issuing peer (agentA, kat-keypair-001) minted a voucher alongside the companion TCT for subject agentB (kat-keypair-002). The verifier — the issuer itself, since only the issuer ever verifies a voucher (RFC-AITP-0006 §4 step 3) — parses the compact JWS strictly, enforces header typ `aitp-grant+jwt` exactly, pins `alg` to the sole value derived from the `iss` AID (EdDSA for Ed25519), verifies the signature under its own key over the exact transmitted bytes, and checks the claims: `ver` known, `grants` non-empty, `exp` in the future, `src_jti` linking to the companion TCT's jti. All checks pass.",
+  "tags": [
+    "success",
+    "voucher",
+    "jws"
+  ],
+  "input": {
+    "voucher_token": "__JWS_GRANT_VOUCHER__",
+    "voucher_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "grants": [
+        "macp.mode.task.v1",
+        "read_data"
+      ],
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "src_jti": "550e8400-e29b-41d4-a716-446655445001"
+    },
+    "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_grant_voucher"
+  },
+  "expected": {
+    "outcome": "success",
+    "grants": [
+      "macp.mode.task.v1",
+      "read_data"
+    ],
+    "rationale": "typ, alg pin, signature (issuer's own key, exact transmitted bytes), and claims all verify per RFC-AITP-0005 §8."
+  }
+}

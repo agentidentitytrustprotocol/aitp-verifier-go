@@ -1,0 +1,36 @@
+{
+  "id": "env-001",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Envelope timestamp is older than the receiver's tolerance window. Receivers MUST reject with TIMESTAMP_EXPIRED (RFC-AITP-0001 §5.5). Retryable. The envelope signature is otherwise valid (placeheld with __VALID_ENVELOPE_SIG__ and re-minted by the tooling); only the timestamp trips the check.",
+  "tags": [
+    "security",
+    "envelope",
+    "replay-window"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441001",
+      "timestamp": 1711896400,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "stale": true
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TIMESTAMP_EXPIRED"
+  }
+}

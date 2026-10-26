@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentidentitytrustprotocol.io/schema/v0.3/delegation.json",
+  "title": "DelegationTokenClaims",
+  "description": "AITP v0.3 delegation token — decoded JWS payload claims (RFC-AITP-0006). On the wire a delegation token is an opaque compact JWS string (typ 'aitp-delegation+jwt') signed by the delegator-of-record (iss). It embeds the issuing peer's grant voucher verbatim as the `voucher` claim; no reconstruction is performed anywhere. Single-hop is the core default (no `chain` claim). Multi-hop chains (RFC-AITP-0011, Draft opt-in) are carried in the optional `chain` and `chain_hash` claims.",
+  "type": "object",
+  "$defs": {
+    "CompactJws": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+      "description": "RFC 7515 compact JWS: exactly three non-empty unpadded-base64url segments."
+    },
+    "Aid": {
+      "type": "string",
+      "pattern": "^aid:pubkey:([A-Za-z0-9_-]{43}|ed25519:[A-Za-z0-9_-]{43}|p256:[A-Za-z0-9_-]{44})$"
+    }
+  },
+  "required": [
+    "ver",
+    "iss",
+    "sub",
+    "aud",
+    "scope",
+    "exp",
+    "cnf"
+  ],
+  "properties": {
+    "ver": {
+      "type": "string",
+      "const": "aitp/0.3",
+      "description": "Protocol version private claim. MUST be 'aitp/0.3'."
+    },
+    "iss": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the agent issuing this delegation (B, the delegator-of-record). The outer JWS is signed by this key. MUST equal the embedded voucher's sub."
+    },
+    "sub": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the agent receiving delegation (C). Self-delegation (iss == sub) is rejected."
+    },
+    "aud": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the verifying issuer (A). MUST equal the verifier's own AID; prevents use at other verifiers. Single string, never an array."
+    },
+    "scope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\s]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Capabilities delegated to C. MUST be a subset of the embedded voucher's grants."
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Unix timestamp of expiry. MUST be <= the embedded voucher's exp."
+    },
+    "cnf": {
+      "type": "object",
+      "description": "RFC 7800 confirmation claim for C's key, jkt form only (RFC-AITP-0001 §5.4.4). MUST match the key encoded in sub.",
+      "required": ["jkt"],
+      "properties": {
+        "jkt": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "voucher": {
+      "$ref": "#/$defs/CompactJws",
+      "description": "The issuing peer's grant voucher (typ 'aitp-grant+jwt', RFC-AITP-0005 §8), embedded VERBATIM. REQUIRED on single-hop tokens (no `chain`). On multi-hop tokens (RFC-AITP-0011, Draft) only `chain[0]` carries the voucher — the outer token MUST NOT. Decoded claims validate against aitp-grant-voucher.schema.json. Covered by the outer signature, so it cannot be swapped."
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUID v4. Per-hop revocation handle — REQUIRED on every delegation token that participates in a multi-hop chain (RFC-AITP-0011, Draft); absent on single-hop core tokens (RFC-AITP-0006 defines no jti)."
+    },
+    "chain": {
+      "type": "array",
+      "description": "OPTIONAL multi-hop chain (RFC-AITP-0011, Draft opt-in). Each entry is a prior-hop delegation token as a verbatim compact JWS string, ordered oldest hop first. Core implementations MUST reject any token carrying this claim with DELEGATION_MULTIHOP_NOT_SUPPORTED.",
+      "items": {
+        "$ref": "#/$defs/CompactJws"
+      },
+      "minItems": 1
+    },
+    "chain_hash": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "description": "REQUIRED if `chain` is present (RFC-AITP-0011). base64url(sha256(JCS array of the base64url SHA-256 digests of each chain string)). Bound into the outer signature so a hop cannot be removed or reordered without invalidating it."
+    },
+    "ext": {
+      "type": "object",
+      "description": "Optional extension namespace per RFC-AITP-0001 §5.4.5 and RFC-AITP-0012. Unknown keys inside ext MUST be ignored; unknown claims outside it are rejected by this schema."
+    }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["chain"] },
+      "then": {
+        "required": ["chain_hash", "jti"],
+        "not": { "required": ["voucher"] }
+      },
+      "else": {
+        "required": ["voucher"]
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:agentB_pubkey_AID_v01_placeholder_BBBBBBBBB",
+      "sub": "aid:pubkey:agentC_pubkey_AID_v01_placeholder_CCCCCCCCC",
+      "aud": "aid:pubkey:agentA_pubkey_AID_v01_placeholder_AAAAAAAAA",
+      "scope": [
+        "read_data"
+      ],
+      "exp": 1711903600,
+      "cnf": {
+        "jkt": "jkt_agentC_thumbprint_placeholder_CCCCCCCCCC"
+      },
+      "voucher": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJ2ZXIiOiJhaXRwLzAuMyJ9.dm91Y2hlcl9zaWduYXR1cmVfcGxhY2Vob2xkZXI"
+    }
+  ]
+}

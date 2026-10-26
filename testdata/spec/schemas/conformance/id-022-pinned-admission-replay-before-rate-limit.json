@@ -1,0 +1,153 @@
+{
+  "id": "id-022",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. Steps 1 and 2 carry id-019's envelope and steps 3 and 4 carry id-013 step 2's envelope, both with real proofs that the KAT scripts re-verify; only the envelope signatures are placeholders. Verifier state carries across steps. `presentation_rate_limit` is the verifier's per-source limit on presentations (RFC-AITP-0009 §3.1), and the runner MUST configure it. A rate-limited step expects exactly HTTP 429 and no AITP error code: RFC-AITP-0002 §3.4 makes 429 a MUST within the profile, tightening the SHOULD of RFC-AITP-0009 §3.1 (PLACEHOLDERS.md, Operation key). Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "The §3.4 check order puts the `message_id` deny list before the per-source rate limit (RFC-AITP-0002 §3.4 check order, steps 1 and 2). The limit is one presentation per source. Step 1 admits id-019's presentation from source 198.51.100.7, which records its `message_id` and uses the source's one slot. Step 2 replays the same envelope from the same source, which has no slot left: the deny list answers first with REPLAY_DETECTED. Step 3 sends a fresh `message_id` from that source and is rate-limited (HTTP 429) before any later check. Step 4 sends step 3's envelope from a new source; it passes both gates and fails at the nonce lookup, because step 1 consumed the nonce. A verifier that rate-limits before the deny list returns 429 at step 2.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "replay",
+    "rate-limit",
+    "ordering",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711900250
+      }
+    ],
+    "presentation_rate_limit": {
+      "per_source": 1,
+      "window_seconds": 60
+    },
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "verify_identity_presentation",
+        "source": "198.51.100.7",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440901",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "C7z8HKjjcw0uK9rZaIhxf7V8dW1UJvzal0pJCxrv0y1R7xri3I2kZ7LyxgJY3R96qd0h3FysO_YOOtKLcuPkCw"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 2,
+        "operation": "verify_identity_presentation",
+        "source": "198.51.100.7",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440901",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "C7z8HKjjcw0uK9rZaIhxf7V8dW1UJvzal0pJCxrv0y1R7xri3I2kZ7LyxgJY3R96qd0h3FysO_YOOtKLcuPkCw"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "failure",
+          "error_code": "REPLAY_DETECTED",
+          "rationale": "The `message_id` is in the deny list from step 1, and the source has also used its one slot. Check-order step 1 (deny list) runs before step 2 (rate limit), so the outcome is REPLAY_DETECTED, not HTTP 429. As at the handshake endpoint, the replay does not consume a rate-limit slot."
+        }
+      },
+      {
+        "step": 3,
+        "operation": "verify_identity_presentation",
+        "source": "198.51.100.7",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440902",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "Z7riAPm-zSBn8kHaVn0UcH5rBabYDTSYsXYbFbYQAhmlmeG4-GhsseuZNkRC9k8r7CPRs9J26zvV0EUiA4Q_AA"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "failure",
+          "http_status": 429,
+          "rationale": "A fresh `message_id`, so the deny list passes; the source used its one slot at step 1, so check-order step 2 rejects with HTTP 429 and no AITP error envelope (RFC-AITP-0002 §3.4 requires exactly 429 within the profile, tightening RFC-AITP-0009 §3.1). No later check runs."
+        }
+      },
+      {
+        "step": 4,
+        "operation": "verify_identity_presentation",
+        "source": "198.51.100.8",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440902",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "Z7riAPm-zSBn8kHaVn0UcH5rBabYDTSYsXYbFbYQAhmlmeG4-GhsseuZNkRC9k8r7CPRs9J26zvV0EUiA4Q_AA"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "failure",
+          "error_code": "IDENTITY_FAILED",
+          "rationale": "A new source has a free slot and step 3 never recorded this `message_id`, so steps 1 to 8 pass; the nonce was consumed at step 1, so step 9 fails. This shows step 3 was refused by the per-source limit, not by a later check."
+        }
+      }
+    ]
+  }
+}

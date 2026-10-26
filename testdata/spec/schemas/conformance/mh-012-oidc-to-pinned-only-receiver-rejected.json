@@ -1,0 +1,78 @@
+{
+  "id": "mh-012",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "`__VALID_JWT__` is minted as for id-009: `iss` https://auth.openai.com, `aud` equal to `self_aid`, `nonce` equal to the payload `pop_nonce`, and `cnf.jkt` the RFC 7638 thumbprint of the sender's AID key (RFC-AITP-0002 §2.2). The issuer's key is the runner-minted OIDC issuer key (PLACEHOLDERS.md), and the issuer is in `self_trust_anchors`, so the step 8 trust-anchor check would pass and only the identity-type check fails.",
+  "description": "The receiver's own `accepted_identity_types` is `[\"pinned_key\"]` and the initiator presents a valid `oidc` identity from an issuer the receiver trusts. Steps 1 to 7 of RFC-AITP-0004 §5.1 pass. Step 8 MUST reject with INCOMPATIBLE_IDENTITY_TYPE: an OIDC identity is not accepted merely because its issuer is in `trust_anchors`.",
+  "tags": [
+    "mutual-handshake",
+    "policy",
+    "identity-type",
+    "oidc"
+  ],
+  "input": {
+    "step": "received MUTUAL_HELLO from peer",
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "self_accepted_identity_types": [
+      "pinned_key"
+    ],
+    "self_trust_anchors": [
+      "https://auth.openai.com"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "660e8400-e29b-41d4-a716-446655440112",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "identity": {
+          "type": "oidc",
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "proof": "__VALID_JWT__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.openai.com"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "oidc",
+            "issuer": "https://auth.openai.com",
+            "subject": "agent-A"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "bWgtMDEyLW9pZGMtcGluMQ"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "INCOMPATIBLE_IDENTITY_TYPE",
+    "rationale": "`oidc` is not in the receiver's `[\"pinned_key\"]`. The trust-anchor overlap check is the second check of step 8 and is not what fails: the issuer is in `self_trust_anchors`. A verifier that treats a trusted issuer as enough, or that checks only non-OIDC types against the list, fails this fixture."
+  }
+}

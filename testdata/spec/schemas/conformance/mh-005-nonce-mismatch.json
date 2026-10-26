@@ -1,0 +1,72 @@
+{
+  "id": "mh-005",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "MUTUAL_HELLO_ACK carries a pop_nonce_echo that does not match the pop_nonce the initiator sent in MUTUAL_HELLO. The initiator MUST reject the handshake with NONCE_MISMATCH — without echo binding, an attacker could inject a fabricated ACK referencing different nonces.",
+  "tags": [
+    "security",
+    "mutual-handshake",
+    "nonce-binding"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "step": "initiator received MUTUAL_HELLO_ACK",
+    "sent_pop_nonce": "fRVe56NIsF6e0msvD0ORaQ",
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello_ack",
+      "message_id": "660e8400-e29b-41d4-a716-446655440104",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "identity": {
+          "type": "oidc",
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-B",
+          "proof": "__VALID_JWT__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.openai.com",
+            "https://auth.anthropic.com"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "u08dThsYE5R_BiD1ekXggA",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711900000,
+          "expires_at": 1711986400,
+          "identity_hint": {
+            "type": "oidc",
+            "issuer": "https://auth.openai.com",
+            "subject": "agent-B"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "Vl4YHtl6OQcOdQiSlkaHhg",
+        "pop_nonce_echo": "xatQKgEJw3UX1Wu0PkqHOA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "NONCE_MISMATCH"
+  }
+}

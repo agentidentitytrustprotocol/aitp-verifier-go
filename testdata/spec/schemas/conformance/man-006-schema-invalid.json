@@ -1,0 +1,49 @@
+{
+  "id": "man-006",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins `MANIFEST_INVALID` (issue #39). The Manifest previously had no code meaning \"this object's shape is wrong\": the envelope has `INVALID_ENVELOPE` and the session bundle has `SESSION_BUNDLE_INVALID`, but the closest Manifest code was `MANIFEST_SIGNATURE_INVALID` — which reports a signature failure for an object whose signature was never reached. Distinct from man-004: that fixture's defect is an *extra* member (`UNKNOWN_FIELD`, the more specific code), this one's is a *missing* REQUIRED member. Otherwise identical to man-004's body, so the absent `handshake_endpoint` is the only defect under test.",
+  "description": "A Manifest missing the REQUIRED `handshake_endpoint` member. RFC-AITP-0003 §5 step 2 runs structural validation before the cryptographic steps: a Manifest that does not match `aitp-manifest.schema.json` is rejected before any proof-of-possession or signature work is spent on it. Receivers MUST reject with MANIFEST_INVALID and MUST NOT report this as MANIFEST_SIGNATURE_INVALID — an operator debugging a misleading signature code goes looking at keys and signing while the real defect is the object's shape.",
+  "tags": [
+    "failure",
+    "manifest",
+    "schema",
+    "structural"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "MANIFEST_INVALID",
+    "rationale": "`handshake_endpoint` is REQUIRED by `aitp-manifest.schema.json` and absent. The Manifest is otherwise well-formed and unexpired, so the missing member is the only defect. Structural rejection of a Manifest maps to MANIFEST_INVALID per the registry's structural-rejection table."
+  }
+}

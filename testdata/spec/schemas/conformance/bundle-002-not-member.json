@@ -1,0 +1,102 @@
+{
+  "id": "bundle-002",
+  "rfc": "RFC-AITP-0010",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-session-bundle",
+  "$comment": "Participant TCT claims-sibling convention as in bundle-001 (tct_claims next to each __JWS_TCT__; minter strips the companions before signing the bundle with __VALID_A_SIG__).",
+  "description": "Session Trust Bundle membership check (RFC-AITP-0010 §5 step 8, aitp/0.3 shape). The bundle is identical to bundle-001 — coordinator signature, both embedded TCT compact JWS strings, expiry window, and version checks all pass. The defect is that the receiving participant (kat-keypair-004 / agentD, AID iojj3XQJ...) is NOT in `participants[*].aid`. The verifier MUST reject with BUNDLE_NOT_MEMBER. (A bundle proves coordinator-attested membership; a non-member receiver has no claim on the session.) Coordinator key source: `input.coordinator_manifest` carries the coordinator's (kat-keypair-001) signed Manifest; the bundle signature and the embedded TCTs verify under the key it designates (RFC-AITP-0010 §5 step 5).",
+  "tags": [
+    "security",
+    "session-bundle",
+    "membership",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+    "now": 1711900100,
+    "session_bundle": {
+      "session_bundle": {
+        "version": "aitp/0.3",
+        "session_id": "550e8400-e29b-41d4-a716-446655442010",
+        "coordinator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "issued_at": 1711900000,
+        "expires_at": 1711903600,
+        "participants": [
+          {
+            "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442001",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "iat": 1711900000,
+              "exp": 1711903600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+              }
+            }
+          },
+          {
+            "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442002",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "aud": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "iat": 1711900000,
+              "exp": 1711905600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+              }
+            }
+          }
+        ],
+        "signature": "__VALID_A_SIG__"
+      }
+    },
+    "coordinator_manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "display_name": "kat-keypair-001",
+      "identity_hint": {
+        "type": "pinned_key",
+        "subject": "kat-keypair-001",
+        "public_key": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "handshake_endpoint": "https://example.com/aitp/handshake",
+      "accepted_trust_anchors": [],
+      "accepted_identity_types": [
+        "pinned_key"
+      ],
+      "offered_capabilities": [
+        "read_data",
+        "write_data"
+      ],
+      "proof_of_possession": {
+        "challenge": "qAkDX8McwnQS5FTiXSam6Q",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_session_bundle"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "BUNDLE_NOT_MEMBER",
+    "rationale": "Receiver's AID (iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w, kat-keypair-004) is not in participants[*].aid (only B = kat-keypair-002 and C = kat-keypair-003 are listed)."
+  }
+}

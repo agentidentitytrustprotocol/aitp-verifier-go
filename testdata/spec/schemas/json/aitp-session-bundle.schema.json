@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentidentitytrustprotocol.io/schema/v0.3/session-bundle.json",
+  "title": "SessionTrustBundle",
+  "description": "AITP v0.3 Session Trust Bundle (RFC-AITP-0010 §3). A coordinator-attested membership artifact for multi-agent sessions: redistributes N bilateral coordinator↔participant Mutual Handshakes to all participants without an O(N^2) full mesh. The bundle itself is JCS-profile signed; participant TCTs are embedded as opaque compact JWS strings. On the wire the signed body is carried inside a `{\"session_bundle\": \u2026}` transport wrapper; the `signature` member lives inside that body, not beside the wrapper.",
+  "type": "object",
+  "required": [
+    "session_bundle"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "session_bundle": {
+      "type": "object",
+      "required": [
+        "version",
+        "session_id",
+        "coordinator",
+        "issued_at",
+        "expires_at",
+        "participants",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "const": "aitp/0.3",
+          "description": "MUST be `aitp/0.3` for this RFC."
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "description": "UUID v4 unique to this session. Used as a replay-binding scope."
+        },
+        "coordinator": {
+          "type": "string",
+          "pattern": "^aid:pubkey:([A-Za-z0-9_-]{43}|ed25519:[A-Za-z0-9_-]{43}|p256:[A-Za-z0-9_-]{44})$",
+          "description": "The coordinator's AID. MUST match the `iss` claim of every embedded TCT."
+        },
+        "issued_at": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Unix timestamp when this bundle was signed."
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Unix timestamp after which the bundle MUST NOT be used. MUST equal `min` of the embedded TCTs' `exp` claims (RFC-AITP-0010 §6)."
+        },
+        "participants": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Array of participant entries. Each pairs a participant AID with the peer-issued TCT the coordinator issued during the bilateral handshake that fed into this bundle.",
+          "items": {
+            "type": "object",
+            "required": [
+              "aid",
+              "tct"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "aid": {
+                "type": "string",
+                "pattern": "^aid:pubkey:([A-Za-z0-9_-]{43}|ed25519:[A-Za-z0-9_-]{43}|p256:[A-Za-z0-9_-]{44})$",
+                "description": "Participant's AID. MUST equal the embedded TCT's `aud` claim."
+              },
+              "tct": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+                "description": "Verbatim coordinator-issued TCT as a compact JWS string (typ 'aitp-tct+jwt', RFC-AITP-0005), with `aud` = participant's AID. Decoded claims validate against `aitp-tct.schema.json`. The string is covered verbatim by the bundle's JCS signature."
+              }
+            }
+          }
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012. Unknown keys inside `extensions` MUST be ignored; unknown fields outside it are rejected."
+        },
+        "signature": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^((ed25519|p256)\\.)?[A-Za-z0-9_-]{86}$",
+          "description": "Coordinator's unpadded base64url signature, optionally algorithm-tagged per RFC-AITP-0001 \u00a75.4.3, over the JCS-canonical bytes of this `session_bundle` body with the `signature` member itself excluded: `sig_input = sha256(canonical_json(session_bundle_without_signature))`. The `{\"session_bundle\": \u2026}` wrapper is transport routing metadata and is never part of the signing bytes. The signature is a member of the signed body, not a sibling of the wrapper, because the bundle is redistributable \u2014 coordinator-signed once and forwarded, cached and relayed to every participant over any transport that preserves the canonical JSON (RFC-AITP-0010 \u00a74.3) \u2014 so it must carry its own proof across any hop that strips the wrapper. This is deliberately NOT the sibling convention used by the revocation snapshot, which is polled point-to-point from the issuing peer's `ListRevoked` endpoint and never relayed."
+        }
+      }
+    }
+  }
+}

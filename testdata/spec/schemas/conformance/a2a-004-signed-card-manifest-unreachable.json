@@ -1,0 +1,99 @@
+{
+  "id": "a2a-004",
+  "rfc": "RFC-AITP-0014",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-a2a-agent-card",
+  "$comment": "The Agent Card is an A2A 1.0.0 AgentCard (JSON names as in the A2A specification, https://a2a-protocol.org/latest/specification/). `input.agent_card` is the Card as fetched; `input.selected_interface_url` is the AgentInterface the client intends to call; `input.manifest` is the Manifest fetched from the Card's `params.manifestUrl` (inner body; placeholders resolve as for man-*), or `input.manifest_fetch` records a fetch outcome. The runner MUST NOT fetch anything. `card_signature_valid: true` stipulates that the A2A card-signature check passes; the `signatures[0]` value is illustrative (protected header {\"alg\":\"ES256\",\"kid\":\"card-signing-key-1\",\"typ\":\"JOSE\"}) and is not verified by the runner. No Manifest is supplied, so this fixture has no schema artifact.",
+  "description": "The Agent Card carries an A2A card signature (A2A section 8.4) that the client is stipulated to accept, but the Manifest at `params.manifestUrl` cannot be retrieved (network error). RFC-AITP-0014 §4.4: a Card signature MUST NOT stand in for the Manifest binding. The fetch failure maps to MANIFEST_NOT_FOUND (RFC-AITP-0003 §4.1).",
+  "tags": [
+    "failure",
+    "a2a",
+    "agent-card",
+    "card-signature"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "agent_card": {
+      "name": "Research Agent B",
+      "description": "Summarizes papers.",
+      "supportedInterfaces": [
+        {
+          "url": "https://b.agents.example.com/a2a/v1",
+          "protocolBinding": "HTTP+JSON",
+          "protocolVersion": "1.0"
+        }
+      ],
+      "version": "1.4.0",
+      "capabilities": {
+        "streaming": true,
+        "extensions": [
+          {
+            "uri": "https://agentidentitytrustprotocol.io/ext/a2a/v1",
+            "description": "AITP peer trust. Verify the Manifest at manifestUrl; send the TCT in x-aitp-tct.",
+            "required": true,
+            "params": {
+              "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "manifestUrl": "https://b.agents.example.com/.well-known/aitp-manifest",
+              "securityScheme": "aitp"
+            }
+          }
+        ]
+      },
+      "securitySchemes": {
+        "aitp": {
+          "apiKeySecurityScheme": {
+            "description": "AITP Trust Context Token, RFC-AITP-0014 (https://agentidentitytrustprotocol.io/ext/a2a/v1).",
+            "location": "header",
+            "name": "x-aitp-tct"
+          }
+        }
+      },
+      "securityRequirements": [
+        {
+          "schemes": {
+            "aitp": {
+              "list": []
+            }
+          }
+        }
+      ],
+      "defaultInputModes": [
+        "text/plain"
+      ],
+      "defaultOutputModes": [
+        "text/plain"
+      ],
+      "skills": [
+        {
+          "id": "summarize",
+          "name": "Summarize",
+          "description": "Summarize a paper.",
+          "tags": [
+            "research"
+          ]
+        }
+      ],
+      "signatures": [
+        {
+          "protected": "eyJhbGciOiJFUzI1NiIsImtpZCI6ImNhcmQtc2lnbmluZy1rZXktMSIsInR5cCI6IkpPU0UifQ",
+          "signature": "c3RpcHVsYXRlZC12YWxpZC1jYXJkLXNpZ25hdHVyZQ"
+        }
+      ]
+    },
+    "card_signature_valid": true,
+    "selected_interface_url": "https://b.agents.example.com/a2a/v1",
+    "manifest_fetch": {
+      "url": "https://b.agents.example.com/.well-known/aitp-manifest",
+      "status": "network_error"
+    },
+    "operation": "verify_a2a_agent_card_binding"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "MANIFEST_NOT_FOUND",
+    "rationale": "Step 3 of RFC-AITP-0014 §4.2 cannot complete: the Manifest could not be retrieved, which RFC-AITP-0003 §4.1 maps to MANIFEST_NOT_FOUND (retryable). The accepted Card signature does not substitute for the Manifest (§4.4): A2A does not say whose key signs a Card."
+  }
+}

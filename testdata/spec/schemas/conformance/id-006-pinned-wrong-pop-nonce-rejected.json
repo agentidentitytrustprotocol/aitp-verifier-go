@@ -1,0 +1,73 @@
+{
+  "id": "id-006",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "A pinned-key proof signed with a different `pop_nonce` than the envelope advertises MUST be rejected with IDENTITY_FAILED. The pop_nonce is one of the five proof-input fields (RFC-AITP-0002 §3.1); a verifier reconstructing the input with the envelope's payload.pop_nonce will not produce the same digest the signer used. (alpha.5 P1.)",
+  "tags": [
+    "security",
+    "identity",
+    "pinned_key"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440601",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "__PINNED_PROOF_OVER_WRONG_NONCE__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-a",
+            "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The sender (workerA, kat-keypair-003) IS in `trust_store`, so §3.2 steps 1–3 pass and the failure is reached only at step 5. `__PINNED_PROOF_OVER_WRONG_NONCE__` is a real §3.1 Ed25519 proof by workerA's pinned key over a `pop_nonce` other than this envelope's `AAAAAAAAAAAAAAAAAAAAAA`; reconstructing `proof_input` with the envelope's nonce yields a different digest, so verification fails."
+  }
+}

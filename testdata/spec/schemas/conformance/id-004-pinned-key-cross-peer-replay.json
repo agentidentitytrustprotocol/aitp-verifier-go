@@ -1,0 +1,86 @@
+{
+  "id": "id-004",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Attacker captures a valid pinned-key identity proof from a previous handshake and replays it inside a fresh MUTUAL_HELLO addressed to a different receiver. The replayed envelope is well-formed and the signature still verifies under the original signer's public key, but the pinned-key proof input (RFC-AITP-0002 §3.1) binds the original sender, receiver, message_id, timestamp, and pop_nonce. The receiving peer reconstructs the proof input using its own AID as receiver and the new envelope's message_id, timestamp, and pop_nonce, and the signature MUST fail to verify. Receiver MUST reject with IDENTITY_FAILED.",
+  "tags": [
+    "security",
+    "identity",
+    "pinned_key",
+    "replay",
+    "mutual-handshake"
+  ],
+  "input": {
+    "step": "received MUTUAL_HELLO from peer",
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "captured_proof_context": {
+      "_comment": "These are the field values that were signed when the original (valid) proof was produced, in a handshake to a DIFFERENT receiver (not self_aid).",
+      "original_sender_aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "original_receiver_aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "original_message_id": "770e8400-e29b-41d4-a716-446655440401",
+      "original_timestamp": 1711899900,
+      "original_pop_nonce": "xwCb5ctck4W8hev_1sxkEw"
+    },
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440402",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "__CAPTURED_PROOF_FROM_ORIGINAL_HANDSHAKE__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.openai.com"
+          ],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-a",
+            "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AxwAx0m1v63X7ZsDG-3Npg"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The captured proof's input bound (original_sender, original_receiver, original_message_id, original_timestamp, original_pop_nonce). When the receiver reconstructs the proof input using (workerA, victim_self_aid, new_message_id, __NOW__, fresh_pop_nonce), every field except sender differs, so the signature cannot validate under workerA's pinned public key. The pre-v0.1 two-field proof (message_id|timestamp) would have been replay-vulnerable here; the v0.1 five-field proof input forecloses cross-peer replay."
+  }
+}

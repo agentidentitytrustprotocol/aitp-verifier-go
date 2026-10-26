@@ -1,0 +1,45 @@
+{
+  "id": "env-008",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Derived from env-007: the same envelope and the same committed signature (kat-envelope-002-ed25519, signed by kat-keypair-001), with one change made after signing: the vendor key `extensions.com.example.debug_trace` is renamed to `extensions.com.example.audit_trace`, value unchanged. The result is schema-valid, fresh and carries only unknown `extensions` keys, so nothing before the signature check rejects it. scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py assert that the signature verifies over env-007's envelope and does not verify over this one. Reusing env-007's message_id is safe: each fixture runs against fresh verifier state.",
+  "description": "Envelope whose `extensions` member was changed after signing. RFC-AITP-0001 §5.4: the envelope signing input is the domain-tagged JCS form of the whole envelope minus `signature`, so `extensions` is covered and a relabelled extension key breaks the signature. Under the `aitp/0.3` pipe-composed input (before issue #87) this envelope verified. Expected: INVALID_SIGNATURE.",
+  "tags": [
+    "failure",
+    "envelope",
+    "extensions",
+    "signature",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441007",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "extensions": {
+        "com.example.audit_trace": {
+          "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+      },
+      "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "INVALID_SIGNATURE",
+    "rationale": "`version` is known and the member set is valid, so the RFC-AITP-0001 §5.4 check order reaches the signature. The signature was made over env-007's `extensions`; with one extension key renamed, sig_input_v2 differs and the signature does not verify."
+  }
+}

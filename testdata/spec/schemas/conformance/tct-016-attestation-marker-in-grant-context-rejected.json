@@ -1,0 +1,43 @@
+{
+  "id": "tct-016",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative fixture for RFC-AITP-0005 §5.3 (proposal #72 Item 5). The token is a standard mint (`__JWS_TCT__`) signed by kat-keypair-002, the `iss`; `aud` equals `expected_audience`. `aitp.attestation` satisfies the schema's no-whitespace grant pattern, so the claims are schema-valid and the map entry is `expect: valid`: the rejection is a verifier rule, not a schema one.",
+  "description": "A TCT carrying the `aitp.attestation` marker grant MUST be rejected in a grant context with TCT_SIGNATURE_INVALID, even when `iss != sub` (RFC-AITP-0005 §5.3). agentB issues the token to agentA with the sole grant `aitp.attestation`. An issuer MUST NOT mint that marker with `iss != sub`, and a verifier in a grant context MUST reject any TCT that contains it. A verifier that treats the marker as an ordinary (if unknown) capability string and accepts the token fails this fixture.",
+  "tags": [
+    "failure",
+    "tct",
+    "attestation",
+    "grant-context",
+    "security"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440116",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "aitp.attestation"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §5.3: `aitp.attestation` confers no capability, and a verifier in a grant context MUST reject any TCT containing it with TCT_SIGNATURE_INVALID. The `iss != sub` mint is itself forbidden, so the token is structurally defective rather than merely ungranted."
+  }
+}

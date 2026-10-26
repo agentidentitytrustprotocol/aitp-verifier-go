@@ -1,0 +1,43 @@
+{
+  "id": "tct-015",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative fixture for RFC-AITP-0005 §5.3 (proposal #72 Item 5). The token is a standard mint (`__JWS_TCT__`) signed by kat-keypair-001, which is also `sub` and `aud`, so `aud` equals `expected_audience` and the signature verifies. The claims are schema-valid (the schema cannot express `iss != sub`), so the map entry is `expect: valid`.",
+  "description": "A self-issued TCT (`iss == sub`) presented in a grant context MUST be rejected with TCT_SIGNATURE_INVALID (RFC-AITP-0005 §5.3, §7.2 step 5). agentA signs a TCT naming itself as issuer, subject and audience, carrying an ordinary capability grant. Its signature verifies and every other claim is well formed. `verify_tct` evaluates the token as a capability grant, and no agent can grant capabilities to itself. A verifier that checks only the signature and `aud` accepts it.",
+  "tags": [
+    "failure",
+    "tct",
+    "self-issued",
+    "grant-context",
+    "security"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440115",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §5.3: in a grant context, a TCT with `iss` equal to `sub` MUST be rejected with TCT_SIGNATURE_INVALID, the structural-rejection code (registries/error-codes.md). It is not AUDIENCE_MISMATCH: `aud` matches `expected_audience`. RFC-AITP-0006 §4 step 8 and RFC-AITP-0011 §3 give the same rule for delegation, so the signature-family code is consistent across both grant paths."
+  }
+}

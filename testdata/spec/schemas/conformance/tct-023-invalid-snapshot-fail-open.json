@@ -1,0 +1,61 @@
+{
+  "id": "tct-023",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins RFC-AITP-0008 §1.5's discarded-snapshot rule for the token decision (aitp-rs#271). Nothing is minted, and a runner MUST NOT re-mint either value. `tct_token` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json, and `tct_token_claims` is its `decoded_claims`. The snapshot body is the committed known answer known-answer/signed-examples/revocation/kat-keypair-001-snapshot.json, signed by the TCT's own issuer (kat-keypair-001). Its `signature` is that example's committed signature with the least-significant bit of the last raw signature byte flipped: the `__TAMPERED_SIGNATURE__` recipe of PLACEHOLDERS.md, applied to the committed value. The TCT's `jti` is not in `entries`. scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the token is that signed example and verifies, that the body is the committed one, and that the signature is the committed one with that bit flipped and does not verify. tct-022 and tct-023 differ only in `issuer_revocation_list.fail_mode` (the policy key tct-004 already uses). The reference clock `__NOW__` = 1711900000 applies, and at it the TCT and the snapshot are both fresh.",
+  "description": "Same input as `tct-022`, except that `issuer_revocation_list.fail_mode` is `fail_open`. The snapshot's signature does not validate, so RFC-AITP-0008 §1.5 discards it and treats it as absent. Under `fail_open` the token MUST be accepted, and the verifier logs the degraded state (RFC-AITP-0008 §1.5, §3.1). An invalid snapshot is handled exactly as an unreachable endpoint is, not as a reason to reject outright.",
+  "tags": [
+    "success",
+    "tct",
+    "revocation",
+    "fail-open",
+    "known-answer"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "issuer_revocation_list": {
+      "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "fail_mode": "fail_open",
+      "snapshot": {
+        "revocation_list": {
+          "version": "aitp/0.3",
+          "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "published_at": 1711900000,
+          "expires_at": 1711903600,
+          "entries": [
+            {
+              "jti": "550e8400-e29b-41d4-a716-446655440099",
+              "revoked_at": 1711900060,
+              "reason": "key_compromised"
+            }
+          ]
+        },
+        "signature": "wWcNpzrG_gT0B21GXeMFXDq9nU4dvGPXmUsoVE1Z7W7ttcaQ0nOf5WDbQWAeGx6FM_sZ0J1wlHoIXtHUR9IACA"
+      }
+    },
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "The snapshot is discarded as in tct-022 and is absent. Under fail_open, absence allows the request without narrowing grants, and the verifier logs the condition (RFC-AITP-0008 §3.1). The log is not observable at the wire level, so the fixture pins only the success outcome."
+  }
+}

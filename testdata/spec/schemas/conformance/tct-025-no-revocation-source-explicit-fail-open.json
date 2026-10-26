@@ -1,0 +1,46 @@
+{
+  "id": "tct-025",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins the RFC-AITP-0008 §1.4 / §3.1 rule that a verifier with no revocation source for a token's issuer applies `revocation_policy.mode`, and that the mode's schema default is `fail_closed` (RFC-AITP-0008 §3.1; `aitp-trust-anchors.schema.json`). Nothing is minted, and a runner MUST NOT re-mint either value. `tct_token` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json, as in tct-022, and `tct_token_claims` is its `decoded_claims`. `issuer_revocation_list.available: false` states that the verifier has no snapshot source for the issuer, as for an issuer Manifest without `rfc-aitp-0008.revocation_list_uri` or an unreachable endpoint (schemas/conformance/README.md, \"Revocation inputs\"). It is not an empty list. scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the token is that signed example and verifies, that `issuer` is its `iss`, and that the input carries no `snapshot`. tct-024 and tct-025 differ only in `issuer_revocation_list.fail_mode`. The reference clock `__NOW__` = 1711900000 applies, and at it the TCT is fresh.",
+  "description": "Same input as `tct-024`, except that `issuer_revocation_list.fail_mode` is `fail_open`. The verifier has no revocation source for the issuer, so revocation status is unknown. Under `fail_open` the token MUST be accepted, and the verifier logs the degraded state (RFC-AITP-0008 §3.1).",
+  "tags": [
+    "success",
+    "tct",
+    "revocation",
+    "fail-open",
+    "known-answer"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "issuer_revocation_list": {
+      "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "available": false,
+      "fail_mode": "fail_open"
+    },
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "As in tct-024, no snapshot is available for the issuer. The deployment opted into `fail_open`, under which an unavailable source allows the request without narrowing grants, and the verifier logs the condition (RFC-AITP-0008 §3.1). The log is not observable at the wire level, so the fixture pins only the success outcome. A verifier that rejects here does not honour an explicit `fail_open`."
+  }
+}

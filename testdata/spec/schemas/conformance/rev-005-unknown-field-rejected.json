@@ -1,0 +1,47 @@
+{
+  "id": "rev-005",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative half of the rev-005/rev-006 pair pinning RFC-AITP-0001 §7 for the revocation snapshot's INNER `revocation_list` body — the artifact whose `signature` is a SIBLING of the body rather than a member of it (PLACEHOLDERS.md's `__VALID_A_SIG__` resolution table; RFC-AITP-0008 §1.5). `list_owner` is placed inside `revocation_list`, beside its schema-defined fields, not inside `revocation_list.extensions` — the case RFC-AITP-0012 does not reserve. `aitp-revocation-list.schema.json` sets `additionalProperties: false` on the inner `revocation_list` object, so this is a schema-level rejection. Otherwise byte-identical to rev-003's fresh, non-revoked shape, so the unknown field is the only defect under test.",
+  "description": "Revocation snapshot's inner `revocation_list` body carries one unrecognized member (`list_owner`) beside its known, schema-defined fields — not inside `extensions`. RFC-AITP-0001 §7: unknown JSON fields outside `extensions` MUST be rejected, for the same cross-implementation signature-ambiguity reason as every other JCS-profile artifact — the inner body (not the wrapper) is what the issuing peer's signature covers (RFC-AITP-0008 §1.5), so a verifier that silently drops the unrecognized field before recomputing the canonical form would accept bytes a strict peer would reject. Receivers MUST reject with UNKNOWN_FIELD. Counterpart: rev-006, which places an unrecognized key INSIDE `extensions` and MUST succeed.",
+  "tags": [
+    "failure",
+    "revocation",
+    "unknown-field",
+    "security"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711899900
+          }
+        ],
+        "list_owner": "team-trust"
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_FIELD",
+    "rationale": "`list_owner` is not a member `aitp-revocation-list.schema.json` defines for `revocation_list` and it is not inside `extensions`, so RFC-AITP-0001 §7's MUST-reject applies. The snapshot is otherwise fresh and well-formed (mirroring rev-003); the unknown sibling field is the only defect under test."
+  }
+}

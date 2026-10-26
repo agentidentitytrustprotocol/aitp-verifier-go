@@ -1,0 +1,39 @@
+{
+  "id": "rev-009",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Closes issue #61: RFC-AITP-0008 §3.1 defines three policy modes (fail_closed, fail_open, soft_fail); before this fixture only fail_closed (rev-001) and soft_fail (rev-002) had a pinned vector, so an implementation could alias fail_open to fail_closed (hard rejection) or treat it as unrecognized and still pass the pack cleanly. Same input as rev-001/rev-002 in every respect but `policy.fail_mode`, so the trio pins all three §3.1 modes against one stale-snapshot shape with exactly one field differing. The snapshot signature placeholder is __VALID_A_SIG__ (issuing peer agentA / kat-keypair-001), signed over the JCS canonical INNER `revocation_list` body, the signature a sibling of the body per RFC-AITP-0008 §1.5. §3.1 distinguishes fail_open (\"allow, log a warning\") from soft_fail (\"allow with restricted grants\") only in what the caller is permitted to do next; the wire-level outcome pinned here — success, un-narrowed grants — is identical for both, which this fixture's rationale calls out explicitly since the pack otherwise leaves that distinction unobservable.",
+  "description": "Same shape as `rev-001`/`rev-002`, but the verifier's policy is `fail_open`: a stale or unreachable snapshot MUST NOT cause hard rejection, and (unlike `soft_fail`) grants MUST NOT be narrowed to a safe subset — the caller gets the request through unmodified. Implementations MAY log a warning. This fixture protects callers that have explicitly opted into availability-first, non-sensitive operation, per §3.1's guidance that fail_open is for read-only, non-sensitive use and MUST NOT be the default for high-value operations. (RFC-AITP-0008 §3.1.)",
+  "tags": [
+    "success",
+    "revocation",
+    "policy",
+    "fail-open"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_open",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711990000,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711800000,
+        "expires_at": 1712076400,
+        "entries": []
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "fail_open returns `revoked = false` for the queried JTI without narrowing grants, unlike soft_fail. Implementations MAY log a warning flagging the staleness (190000 s vs. policy max of 3600 s), but MUST NOT reject and MUST NOT restrict the request."
+  }
+}

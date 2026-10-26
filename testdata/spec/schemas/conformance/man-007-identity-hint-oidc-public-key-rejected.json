@@ -1,0 +1,53 @@
+{
+  "id": "man-007",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins the oidc-side half of `$defs/IdentityHint`'s if/then/else in `aitp-manifest.schema.json` (issue #59): `type: \"oidc\"` REQUIRES `issuer` and FORBIDS `public_key`. The `pinned_key`-requires-`public_key` half and the hint-level `type`/`subject` requirement are already exercised incidentally by every success fixture's `identity_hint`; only the oidc-forbids-`public_key` branch had no vector anywhere in the pack — id-008 pins the same rule at the handshake's identity DESCRIPTOR (RFC-AITP-0002 §1, a different object, exchanged in MUTUAL_HELLO with a live JWT proof), not the Manifest's static identity_hint. Otherwise byte-identical to man-001's non-expired, well-formed Manifest body, so the added `public_key` is the only defect under test.",
+  "description": "Manifest `identity_hint` has `type: \"oidc\"` and also carries `public_key`. RFC-AITP-0003 §3.1 requires the oidc branch of `identity_hint` to omit `public_key`: the agent's public key is already encoded in the Manifest's own `aid`, so a second copy in the hint creates an ambiguity over which key is authoritative — the same rationale RFC-AITP-0002 §1 states for the handshake's identity descriptor. `aitp-manifest.schema.json`'s `$defs/IdentityHint` enforces this structurally (`then.not.required: [public_key]` under the oidc branch). Receivers MUST reject with MANIFEST_INVALID.",
+  "tags": [
+    "failure",
+    "manifest",
+    "identity",
+    "oidc",
+    "schema",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "MANIFEST_INVALID",
+    "rationale": "`public_key` is forbidden on the `oidc` branch of `identity_hint` (RFC-AITP-0003 §3.1; `aitp-manifest.schema.json`'s `$defs/IdentityHint` encodes this as `then.not.required: [public_key]`). The Manifest is otherwise well-formed and unexpired, so the forbidden member is the only defect. This is a structural (schema) rejection of the Manifest body, which the registry maps to MANIFEST_INVALID."
+  }
+}

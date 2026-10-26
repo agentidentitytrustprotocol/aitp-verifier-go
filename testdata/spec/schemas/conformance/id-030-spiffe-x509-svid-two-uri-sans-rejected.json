@@ -1,0 +1,88 @@
+{
+  "id": "id-030",
+  "rfc": "RFC-AITP-0002",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-spiffe-identity",
+  "description": "An X509-SVID leaf issued by the `prod.example.com` test CA with two URI SANs: `identity.subject` first, then `spiffe://prod.example.com/ns/payments/sa/other`. The chain is valid and `proof` is a valid leaf-key signature over this envelope's §6.4.1 input. X509-SVID §2 and RFC-AITP-0002 §6.4 step 2: exactly one URI SAN. The verifier is agentA (`self_aid`, kat-keypair-001), configured to accept `spiffe`, with the `spiffe_bundles` store in `input.trust_anchors_config`: one bundle, for `prod.example.com`, holding the run-time test JWT-SVID authority and X.509 CA (PLACEHOLDERS.md). The sender is agentB (kat-keypair-002). Draft fixture for the Proposed `spiffe` identity type (RFC-AITP-0002 §6): a default runner SKIPs it.",
+  "tags": [
+    "identity",
+    "spiffe",
+    "x509-svid",
+    "san",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_anchors_config": {
+      "spiffe_bundles": [
+        {
+          "trust_domain": "prod.example.com",
+          "bundle": {
+            "spiffe_sequence": 1,
+            "keys": [
+              "__TEST_SPIFFE_JWT_AUTHORITY_JWK__",
+              "__TEST_SPIFFE_X509_CA_JWK__"
+            ]
+          }
+        }
+      ]
+    },
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655443001",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "identity": {
+          "type": "spiffe",
+          "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b",
+          "svid_type": "x509-svid",
+          "x5c": [
+            "__X509_SVID_LEAF_TWO_URI_SANS__"
+          ],
+          "proof": "__VALID_X509_SVID_PROOF__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "spiffe"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "spiffe",
+            "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "YWl0cC1zcGlmZmUteDVjMg"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The leaf carries more than one URI SAN, so it is rejected even though one of them matches `identity.subject`."
+  }
+}

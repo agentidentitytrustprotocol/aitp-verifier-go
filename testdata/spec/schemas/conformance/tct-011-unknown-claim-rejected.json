@@ -1,0 +1,42 @@
+{
+  "id": "tct-011",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative half of the tct-011/tct-012 pair pinning RFC-AITP-0001 §7 (and RFC-AITP-0012 §1.1's restatement for the `ext` claim) on the TCT's JWS claims object. `device_id` is an ordinary-looking unknown claim placed as a SIBLING of the schema-defined claims, not inside `ext` — the case RFC-AITP-0012 does not reserve. `aitp-tct.schema.json` sets `additionalProperties: false` on the decoded-claims object, so this is a schema-level rejection. Claims are otherwise identical in shape to tct-003's unaffected-by-expiry claims (exp far in the future) so the unknown claim is the only defect under test.",
+  "description": "TCT decoded claims carry one unrecognized private claim (`device_id`) beside the schema-defined claims — not inside `ext`. RFC-AITP-0001 §5.4.5/§7 and RFC-AITP-0005 §2: unknown claims outside `ext` MUST be rejected, for the same cross-implementation signature-ambiguity reason as JCS-profile artifacts — the claims object is the JWS payload segment, and a verifier that silently drops an unrecognized claim before comparison would accept a payload a strict peer would reject as tampered. Receivers MUST reject with UNKNOWN_FIELD. Counterpart: tct-012, which places an unrecognized key INSIDE `ext` and MUST succeed.",
+  "tags": [
+    "failure",
+    "tct",
+    "unknown-field",
+    "security"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655443011",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      },
+      "device_id": "phone-77"
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_FIELD",
+    "rationale": "`device_id` is not a claim `aitp-tct.schema.json` defines and it is not inside `ext`, so RFC-AITP-0001 §7's MUST-reject applies to the JWS claims object exactly as it does to a JCS-profile body. The TCT is otherwise well-formed, unexpired, and correctly audienced; the unknown sibling claim is the only defect under test."
+  }
+}

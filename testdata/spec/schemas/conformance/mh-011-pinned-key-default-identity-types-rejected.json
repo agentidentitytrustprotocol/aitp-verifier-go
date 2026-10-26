@@ -1,0 +1,77 @@
+{
+  "id": "mh-011",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The envelope is id-017's, byte for byte (see mh-010). The sender's own Manifest lists `accepted_identity_types: [\"pinned_key\"]`. That is the sender's policy for its peers and is not consulted here: RFC-AITP-0004 §5.1 step 8 checks the payload `identity.type` against the receiver's own list, which the fixture states as `input.self_accepted_identity_types` (absent: the default `[\"oidc\"]`).",
+  "description": "The receiver states no `accepted_identity_types`, so the default `[\"oidc\"]` applies (RFC-AITP-0003 §3.2), and the initiator presents a valid `pinned_key` identity. Same envelope and trust store as mh-010. Step 8 of RFC-AITP-0004 §5.1 MUST reject with INCOMPATIBLE_IDENTITY_TYPE. A verifier that reads an absent list as \"accept every type\" fails this fixture.",
+  "tags": [
+    "mutual-handshake",
+    "policy",
+    "identity-type",
+    "pinned_key",
+    "default-semantics"
+  ],
+  "input": {
+    "step": "received MUTUAL_HELLO from peer",
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440701",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-a",
+            "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "INCOMPATIBLE_IDENTITY_TYPE",
+    "rationale": "`input.self_accepted_identity_types` is absent, so the runner MUST run the receiver with no accepted-types configuration and MUST NOT add `pinned_key` because the payload uses it. The default `[\"oidc\"]` does not contain `pinned_key`."
+  }
+}

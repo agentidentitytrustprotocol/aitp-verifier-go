@@ -1,0 +1,75 @@
+{
+  "id": "id-011",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "The id-010 descriptor with the `p256.` tag stripped from `proof`. RFC-AITP-0002 §3.1 requires a `p256` sender to emit the tagged form, and RFC-AITP-0001 §5.4.3 reads an untagged signature as `ed25519`, so the tag does not match the sender AID's algorithm. The P-256 key is in `trust_store` and the raw 64 bytes are a valid P-256 signature over this `proof_input`, so the algorithm mismatch is the only reason to fail. Receiver MUST reject with IDENTITY_FAILED.",
+  "tags": [
+    "security",
+    "identity",
+    "pinned_key",
+    "p256",
+    "algorithm-tag"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440702",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-p256",
+          "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "proof": "X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-p256",
+            "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "Steps 1–3 of RFC-AITP-0002 §3.2 pass. At step 5 the untagged proof is read as `ed25519` (RFC-AITP-0001 §5.4.3), which does not match the `p256` sender AID (§5.4.3 rule 3). A verifier that infers the algorithm from the key, or tries P-256 on an untagged value, would accept it; that is the defect this fixture catches."
+  }
+}

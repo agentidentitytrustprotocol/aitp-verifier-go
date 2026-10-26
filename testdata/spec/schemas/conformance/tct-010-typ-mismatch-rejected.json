@@ -1,0 +1,38 @@
+{
+  "id": "tct-010",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The claims sibling here is voucher-shaped (aitp-grant-voucher.schema.json: ver/iss/sub/grants/iat/exp/src_jti) because the minted token IS a grant voucher — a fully valid one, signed by the issuer's key with typ 'aitp-grant+jwt'. Only its presentation as a TCT is wrong.",
+  "description": "Token-type confusion rejection. A cryptographically valid grant voucher (compact JWS, header typ `aitp-grant+jwt`, RFC-AITP-0005 §8.1) is presented where a TCT is expected. The verifier MUST enforce header `typ` == `aitp-tct+jwt` exactly and reject with TOKEN_TYP_MISMATCH (RFC-AITP-0005 §7.2 step 2) before the alg pin, signature, or claims checks. Without the typ check, a voucher — signed by the same issuer key as its companion TCT — could be replayed as a trust context.",
+  "tags": [
+    "security",
+    "tct",
+    "jws",
+    "typ-confusion",
+    "voucher"
+  ],
+  "input": {
+    "tct_token": "__JWS_GRANT_VOUCHER__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "src_jti": "550e8400-e29b-41d4-a716-446655440010"
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TOKEN_TYP_MISMATCH",
+    "rationale": "Header typ is `aitp-grant+jwt`, not `aitp-tct+jwt`. The signature is valid under the issuer's key; the rejection is purely the §7.2 step 2 typ enforcement."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "id": "tct-008",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "TCT compact JWS whose protected header carries `alg: none` (with a syntactically well-formed 86-char third segment, so the failure is the alg pin and not segment syntax) MUST be rejected with TOKEN_ALG_MISMATCH (RFC-AITP-0005 §7.2 step 3; RFC-AITP-0001 §5.4.5). The sole acceptable `alg` is derived from the issuer's AID — `EdDSA` for the Ed25519 `iss` here — and any other header value, including `none` in any capitalization, MUST be rejected before signature verification.",
+  "tags": [
+    "security",
+    "tct",
+    "jws",
+    "alg-none"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT_ALG_NONE__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655448008",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TOKEN_ALG_MISMATCH",
+    "rationale": "Header is {\"alg\":\"none\",\"typ\":\"aitp-tct+jwt\"}. The `typ` check (step 2) passes; the `alg` pin (step 3) rejects `none` before any signature or claims processing."
+  }
+}

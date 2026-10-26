@@ -1,0 +1,57 @@
+{
+  "id": "id-021",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. The `proof` is a real Ed25519 signature by workerA (kat-keypair-003) over the 193-byte §3.1 proof_input with receiver = self_aid (kat-keypair-001), message_id …921 and pop_nonce bytes 21..30; both KAT scripts re-sign it. Only the envelope signature is a placeholder. The verifier's outstanding-nonce store holds the nonce, but under `verifier_aid` kat-keypair-002, another AID the same deployment operates. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "A nonce issued with a different AID as the challenge's `verifier_aid` MUST be rejected with IDENTITY_FAILED (RFC-AITP-0002 §3.4 nonce rules, check-order step 9). The deployment operates two verifier AIDs over one nonce store. workerA obtained the challenge from the verifier at kat-keypair-002 and presents it to the verifier at `self_aid` (kat-keypair-001), with a proof bound to `self_aid`. The proof therefore verifies, and the nonce is outstanding and unexpired, but its challenge named another `verifier_aid`. A verifier that looks the nonce up without checking the AID it was issued under admits this subject.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "nonce",
+    "audience",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "ISIjJCUmJygpKissLS4vMA",
+        "verifier_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "expires_at": 1711900250
+      }
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "identity_presentation",
+      "message_id": "770e8400-e29b-41d4-a716-446655440921",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "b_1XXx7q03R-d2zdJIxY-BIm9zbX5532WmjlBVpFST4q0W-EXNKm0bUBumVGmvF7wQB15m-YLtDULfGu2DxMBg"
+        },
+        "pop_nonce": "ISIjJCUmJygpKissLS4vMA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_identity_presentation"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "RFC-AITP-0002 §3.4 accepts a nonce only if its challenge's `verifier_aid` is the verifier's own AID. Here it is kat-keypair-002, not `self_aid`, so the lookup at step 9 fails. The proof verifying at step 8 does not help: the proof binds the presenter to `self_aid`, not the nonce to this verifier."
+  }
+}

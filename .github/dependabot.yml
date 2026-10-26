@@ -1,0 +1,7 @@
+# Actions only: the module has no dependencies (go list -m all is one line).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

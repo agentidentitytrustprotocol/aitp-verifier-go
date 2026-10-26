@@ -1,0 +1,76 @@
+{
+  "id": "mh-009",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Manifest declares `identity_hint.type = oidc` but the handshake payload presents a `pinned_key` identity proof (or vice versa). Receiver MUST reject with IDENTITY_FAILED. Without this gate, an attacker could downgrade an OIDC-only peer to pinned-key verification and bypass the OIDC trust-anchor checks (type confusion). (RFC-AITP-0002 §3 / RFC-AITP-0004 §5.1; alpha.5 P4.)",
+  "tags": [
+    "security",
+    "identity",
+    "type-confusion",
+    "mutual-handshake"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440901",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "OTmcGn4c_ZTBTkj4sWdrtTOmqMyOFed3coXLoyWjaQRTDtjPF0vci6khgAaMCArtXKV_CBtv08pByrI3_u7MDg"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.example.com"
+          ],
+          "accepted_identity_types": [
+            "oidc"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "oidc",
+            "issuer": "https://auth.example.com",
+            "subject": "internal-worker-a"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "Manifest's `identity_hint.type` is `oidc`; payload's `identity.type` is `pinned_key`. The receiver compares the two and aborts before invoking either verification path."
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "id": "tct-026",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Static fixture, modelled on tct-007's three-step sequence. `tct_token` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json (`iss` = kat-keypair-001, `sub` = `aud` = kat-keypair-002), as in tct-022, and `tct_token_claims` is its `decoded_claims`. A runner MUST NOT re-mint it. `self_aid` is the token's `iss`: the verifier is the issuer, receiving its own TCT back (RFC-AITP-0005 §10.5). The reference clock `__NOW__` = 1711900000 applies, and at it the TCT is fresh. The input carries no `expected_audience`: under §10.5 the verifier takes the expected audience only from the authenticated presenter AID, never from the token. `issuer_policy.pop_posture: enforce-for-all` is the deployment posture that requires downstream PoP for every grant (RFC-AITP-0005 §6). `pop_required_grants` lists every grant in the token, so a runner that configures PoP only through the per-grant surface of §6.2 sets the same posture. Only the envelope signature is a placeholder, minted with the sender key (kat-keypair-002). scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the token is the signed example and verifies, that `self_aid` is its `iss`, and that the input carries no `expected_audience`.",
+  "description": "A genuine TCT is presented back to its issuer to invoke a capability, with no `pop_response` (RFC-AITP-0005 §10.5, §6.2). The verifier is the token's `iss`, the token's `aud` = `sub` names the presenter, and the deployment requires PoP for every grant. Under §10.5 the issuer establishes the presenter's AID only from downstream PoP or a channel binding to the `sub` key, and this fixture has no channel binding. The verifier MUST issue a `pop_challenge` and, when no `pop_response` arrives, MUST reject the invocation with POP_RESPONSE_INVALID. A verifier that authorizes the invocation on the token alone, for example by checking `aud` against `sub` in the token, accepts a bearer token and fails this fixture.",
+  "tags": [
+    "security",
+    "tct",
+    "pop",
+    "issuer-side",
+    "conformance",
+    "enforcement",
+    "known-answer"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "issuer_policy": {
+      "pop_posture": "enforce-for-all",
+      "pop_required_grants": [
+        "macp.mode.task.v1"
+      ]
+    },
+    "pop_instrumented": true,
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "authorize_capability_invocation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "capability_invocation",
+          "message_id": "33333333-3333-4333-8333-333333330026",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+          },
+          "payload": {
+            "tct_jti": "550e8400-e29b-41d4-a716-446655440000",
+            "capability": "macp.mode.task.v1"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success",
+          "rationale": "The issuer accepts the invocation request for processing. It has not authorized it: under the enforce-for-all posture it MUST first challenge the presenter."
+        }
+      },
+      {
+        "step": 2,
+        "operation": "expect_pop_challenge_issued",
+        "expected": {
+          "outcome": "success",
+          "side_effects": {
+            "pop_challenge_issued": true
+          },
+          "rationale": "The issuer MUST issue a `pop_challenge` for the token's `jti`: PoP is the only source of the presenter's AID in this fixture (RFC-AITP-0005 §10.5 item 3)."
+        }
+      },
+      {
+        "step": 3,
+        "operation": "withhold_pop_response",
+        "expected": {
+          "outcome": "failure",
+          "error_code": "POP_RESPONSE_INVALID",
+          "side_effects": {
+            "capability_authorized": false
+          },
+          "rationale": "No `pop_response` arrives, so the issuer has no authenticated presenter AID to compare with `sub` and `aud`. It MUST reject with POP_RESPONSE_INVALID and MUST NOT authorize the capability (RFC-AITP-0005 §10.5 items 3 and 4)."
+        }
+      }
+    ]
+  }
+}

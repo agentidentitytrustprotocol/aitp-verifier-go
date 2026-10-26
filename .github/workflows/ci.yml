@@ -1,0 +1,93 @@
+# Job names are fixed: the website fetch script and branch protection
+# (plan GO4.3) read them from this workflow.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  STATICCHECK_VERSION: v0.8.2
+  GOVULNCHECK_VERSION: v1.9.0
+
+jobs:
+  spec-pin:
+    name: spec pin + generated files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+      - name: testdata/spec matches SPEC_VERSION
+        run: scripts/sync-spec.sh --check
+      - name: errors.go matches the pinned registry
+        run: |
+          go generate ./...
+          git diff --exit-code -- errors.go
+      - name: zero dependencies
+        run: |
+          go list -m all
+          test "$(go list -m all | wc -l)" -eq 1
+
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+      - name: gofmt
+        run: |
+          out="$(gofmt -l .)"
+          if [ -n "$out" ]; then echo "$out"; exit 1; fi
+      - name: go vet
+        run: go vet ./...
+      - name: staticcheck
+        run: go run "honnef.co/go/tools/cmd/staticcheck@${STATICCHECK_VERSION}" ./...
+      - name: govulncheck
+        run: go run "golang.org/x/vuln/cmd/govulncheck@${GOVULNCHECK_VERSION}" ./...
+
+  test:
+    name: tests (go ${{ matrix.go }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ["1.26", "1.27"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "${{ matrix.go }}.x"
+      - name: go test
+        run: go test -race -count=1 ./...
+      - name: coverage gate (internal/ >= 85%)
+        run: |
+          go test -count=1 -coverpkg=./internal/... -coverprofile=cover.out ./internal/...
+          total="$(go tool cover -func=cover.out | awk '/^total:/ {sub("%","",$3); print $3}')"
+          echo "internal/ coverage: ${total}%"
+          awk -v t="$total" 'BEGIN { exit !(t >= 85) }'
+
+  fuzz:
+    name: fuzz (60s each)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+      - name: strictjson
+        run: go test -run='^$' -fuzz=FuzzParse -fuzztime=60s ./internal/strictjson
+      - name: jcs
+        run: go test -run='^$' -fuzz=FuzzTransform -fuzztime=60s ./internal/jcs

@@ -1,0 +1,51 @@
+{
+  "id": "tct-020",
+  "rfc": "RFC-AITP-0005",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-self-attestation",
+  "$comment": "Positive fixture for RFC-AITP-0005 §5.3 (\"Verification is not a grant context\"). `tct_token` is the committed known answer kat-tct-002 (known-answer/signed-examples/tct/kat-keypair-001-self-attestation.json), not a placeholder, and `tct_token_claims` is its `decoded_claims`; scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the fixture carries exactly that token and verify it. The same token presented to `verify_tct` fails with TCT_SIGNATURE_INVALID (tct-015's rule). Extension-gated: consuming self-attestations is a relying-party role that RFC-AITP-0001 §10 does not require, so this fixture is `status: extension` under `feature: aitp-self-attestation`. The default runner MUST SKIP it; an implementation that claims the role MUST pass it (RFC-AITP-0001 §10 item 9). `verify_attestation` is not a grant context (RFC-AITP-0005 §5.3, \"Verification\"; PLACEHOLDERS.md, Operation key).",
+  "description": "A self-attestation verifies as an attestation outside a grant context (RFC-AITP-0005 §5.3, \"Verification\"). A third-party relying party (kat-keypair-002) checks kat-tct-002 as archival evidence. `iss == sub == aud` is the issuer's own AID, not the relying party's, and the 100-year `exp` is far past any Manifest bound. The relying party runs §7.2 steps 1 to 4 and 6, checks the attestation shape, finds its expected `io.agentidentitytrustprotocol.kat` statement, establishes from `trust_store` that the issuer key was trusted, and waives the Manifest cap explicitly. A verifier that applies the grant-context rules here (the §5.2 audience rule, or the iss == sub rejection) fails this fixture.",
+  "tags": [
+    "success",
+    "tct",
+    "attestation",
+    "relying-party",
+    "known-answer"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjQ4Njc2NjAwMDAsImV4dCI6eyJpby5hZ2VudGlkZW50aXR5dHJ1c3Rwcm90b2NvbC5rYXQiOnsic3RhdGVtZW50Ijoia2F0LXRjdC0wMDItc2VsZi1hdHRlc3RhdGlvbiBhcmNoaXZhbCBhdHRlc3RhdGlvbiJ9fSwiZ3JhbnRzIjpbImFpdHAuYXR0ZXN0YXRpb24iXSwiaWF0IjoxNzExOTAwMDAwLCJpc3MiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJqdGkiOiIzMjdiMzdhYi05ODE3LTRlODctOGNiZS1kZWM1MTA5NDk3ZjUiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.vfC9qoCsxg-cVyWJWlxPogvGwVpje-nTlNyxt-4Z1nc8772PGNUlq6orqHZj2sZOWXo8npbb3Bt8GBsigi8kAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "327b37ab-9817-4e87-8cbe-dec5109497f5",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 4867660000,
+      "grants": [
+        "aitp.attestation"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      },
+      "ext": {
+        "io.agentidentitytrustprotocol.kat": {
+          "statement": "kat-tct-002-self-attestation archival attestation"
+        }
+      }
+    },
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "expected_ext_key": "io.agentidentitytrustprotocol.kat",
+    "trust_store": [
+      "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+    ],
+    "waive_manifest_cap": true,
+    "operation": "verify_attestation"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Verifying an attestation is not a grant context, so `aud` need not equal the relying party's AID and `iss == sub` is the expected shape, not a defect. The signature verifies under the key in `iss`, the shape checks pass, the statement key is present, and the issuer key is in the relying party's records (RFC-AITP-0005 §7.3 exception)."
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "id": "id-025",
+  "rfc": "RFC-AITP-0002",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-spiffe-identity",
+  "description": "A valid X509-SVID. `x5c[0]` is a leaf issued by the `prod.example.com` test CA, with one URI SAN equal to `identity.subject`, `cA` false, key usage `digitalSignature` only, and kat-keypair-003's Ed25519 public key. `proof` is the literal signature of `kat-spiffe-x509-proof-001` by that leaf key over the §6.4.1 input of this envelope, so the leaf key differs from the sender's AID key, as in a stock SPIRE deployment. The verifier is agentA (`self_aid`, kat-keypair-001), configured to accept `spiffe`, with the `spiffe_bundles` store in `input.trust_anchors_config`: one bundle, for `prod.example.com`, holding the run-time test JWT-SVID authority and X.509 CA (PLACEHOLDERS.md). The sender is agentB (kat-keypair-002). Draft fixture for the Proposed `spiffe` identity type (RFC-AITP-0002 §6): a default runner SKIPs it.",
+  "tags": [
+    "identity",
+    "spiffe",
+    "success",
+    "x509-svid",
+    "known-answer"
+  ],
+  "$comment": "The proof is the committed kat-spiffe-x509-proof-001 signature. A runner MUST NOT re-mint it; the minted `__X509_SVID_LEAF__` MUST carry kat-keypair-003's public key.",
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_anchors_config": {
+      "spiffe_bundles": [
+        {
+          "trust_domain": "prod.example.com",
+          "bundle": {
+            "spiffe_sequence": 1,
+            "keys": [
+              "__TEST_SPIFFE_JWT_AUTHORITY_JWK__",
+              "__TEST_SPIFFE_X509_CA_JWK__"
+            ]
+          }
+        }
+      ]
+    },
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655442501",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "identity": {
+          "type": "spiffe",
+          "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b",
+          "svid_type": "x509-svid",
+          "x5c": [
+            "__X509_SVID_LEAF__"
+          ],
+          "proof": "BdM006_snXEoyA6wNA9YnKxjwjBxOJGVMzJs2PdK_3i_NAZSeLgsdsDRRWPLLp1IsmzSyBqPqFWDhUgfWH6yAA"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "spiffe"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "spiffe",
+            "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "YWl0cC1zcGlmZmUteDUwOQ"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "The chain validates against the `prod.example.com` X.509 CA, the leaf passes every §6.4 check, and `proof` verifies under the leaf key over the 194-byte §6.4.1 input pinned by `kat-spiffe-x509-proof-001`. The envelope signature by agentB's AID key covers `x5c` and `proof`."
+  }
+}

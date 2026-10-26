@@ -1,0 +1,129 @@
+{
+  "id": "del-mh-001",
+  "rfc": "RFC-AITP-0011",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-multihop-delegation",
+  "$comment": "Chain claims-sibling convention: because `chain` is an array of compact JWS strings, the X/X_claims sibling rule extends as a PARALLEL ARRAY — `chain` is the array of __JWS_DELEGATION__ placeholders and the sibling `chain_claims` is an equal-length array whose i-th object holds the decoded claims to mint for chain[i] (each entry may carry its own nested voucher/voucher_claims pair, resolved innermost-first). `chain_hash` uses __COMPUTED_CHAIN_HASH__: the minter MUST compute the RFC-AITP-0011 §5 digest-array commitment from the minted chain strings, since the value cannot be pinned before minting. The minter strips chain_claims (and every *_claims companion) before serializing any payload.",
+  "description": "Multi-hop delegation happy path (3 hops, A→B→C→D, aitp/0.3 compact-JWS shape; reuses the kat-multihop-chain-001 vector as re-specified for aitp/0.3). The root hop (A→B) appears only through the grant voucher embedded in chain[0]: voucher iss=A, sub=B, grants [read_data, write_data], src_jti = B's source TCT jti. chain[0] is B's delegation JWS to C (iss=B, sub=C, aud=A, scope [read_data], fresh jti, voucher embedded verbatim). The outer token is C's delegation JWS to D (iss=C, sub=D, aud=A, scope [read_data], fresh jti, chain=[chain[0]], chain_hash, NO voucher — exactly one root of authority, RFC-AITP-0011 §1.1). A verifies the hop limit (1+2=3 <= 3), the chain_hash digest-array commitment, every hop's JWS under the key its issuer's Manifest designates (`input.issuer_manifests`: B's and C's), the voucher under A's own key, continuity (outer.iss = chain[0].sub), per-hop jti presence/uniqueness, expiry monotonicity (1711903600 <= 1711904000 <= voucher 1711905000), and transitive scope subsetting (read_data ⊆ read_data ⊆ [read_data, write_data]). All checks pass; A peer-issues a fresh TCT for D. (RFC-AITP-0011 §2-§5.) NOTE: opt-in — core implementations MUST reject any token carrying a `chain` claim with DELEGATION_MULTIHOP_NOT_SUPPORTED (see del-007). This fixture supplies no revocation snapshot, so it does not test revocation: its expected outcome assumes \"not revoked\" (see the conformance README, \"Revocation inputs\").",
+  "tags": [
+    "success",
+    "delegation",
+    "multi-hop",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "delegation_token": "__JWS_DELEGATION__",
+    "delegation_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "sub": "aid:pubkey:iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "scope": [
+        "read_data"
+      ],
+      "exp": 1711903600,
+      "cnf": {
+        "jkt": "UDDReOZl1ipXAfp9wYsm13sDBMK5og--QWdBjzuf6o4"
+      },
+      "jti": "550e8400-e29b-41d4-a716-446655443003",
+      "chain": [
+        "__JWS_DELEGATION__"
+      ],
+      "chain_claims": [
+        {
+          "ver": "aitp/0.3",
+          "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "scope": [
+            "read_data"
+          ],
+          "exp": 1711904000,
+          "cnf": {
+            "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+          },
+          "jti": "550e8400-e29b-41d4-a716-446655443002",
+          "voucher": "__JWS_GRANT_VOUCHER__",
+          "voucher_claims": {
+            "ver": "aitp/0.3",
+            "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+            "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "grants": [
+              "read_data",
+              "write_data"
+            ],
+            "iat": 1711900000,
+            "exp": 1711905000,
+            "src_jti": "550e8400-e29b-41d4-a716-446655443001"
+          }
+        }
+      ],
+      "chain_hash": "__COMPUTED_CHAIN_HASH__"
+    },
+    "issuer_manifests": [
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-002",
+          "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      },
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+        "display_name": "kat-keypair-003",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-003",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "CLo46_NjGTpZN8TbcqfGnQ",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      }
+    ],
+    "operation": "verify_delegation_token"
+  },
+  "expected": {
+    "outcome": "success",
+    "grants": [
+      "read_data"
+    ],
+    "rationale": "Every hop's JWS verifies under the key resolved from its issuer's Manifest in `input.issuer_manifests` (chain[0] under B's, outer under C's; RFC-AITP-0011 §3 step 1); the voucher inside chain[0] verifies under A's own key with voucher.sub = chain[0].iss; continuity holds (outer.iss = chain[0].sub = C); per-hop jti present and unique; expiry monotonically non-increasing rooted in voucher.exp; transitive scope check passes (read_data ⊆ read_data ⊆ [read_data, write_data]); chain_hash recomputes from the digest array of the chain strings (RFC-AITP-0011 §5)."
+  }
+}

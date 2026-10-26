@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentidentitytrustprotocol.io/schema/v0.3/trust-anchors.json",
+  "title": "TrustAnchorsConfig",
+  "description": "AITP v0.3 trust anchor and pinned key configuration.",
+  "type": "object",
+  "properties": {
+    "trust_anchors": {
+      "type": "array",
+      "description": "Trusted OIDC issuers and their public keys.",
+      "items": {
+        "type": "object",
+        "required": [
+          "issuer",
+          "keys"
+        ],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "uri"
+          },
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 43,
+              "pattern": "^[A-Za-z0-9_-]{43,44}$"
+            },
+            "minItems": 1,
+            "description": "base64url-encoded public keys."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pinned_keys": {
+      "type": "array",
+      "description": "Pre-configured agent keys (for pinned_key identity type).",
+      "items": {
+        "type": "object",
+        "required": [
+          "subject",
+          "public_key"
+        ],
+        "properties": {
+          "subject": {
+            "type": "string",
+            "minLength": 1
+          },
+          "algorithm": {
+            "type": "string",
+            "enum": [
+              "ed25519",
+              "p256"
+            ],
+            "description": "OPTIONAL key algorithm. Entries are keyed by (algorithm, public_key) (RFC-AITP-0002 §3.2 step 3). When absent it is inferred from the key length; when present it MUST match it: 43 chars for ed25519, 44 chars (SEC1 compressed point) for p256."
+          },
+          "public_key": {
+            "type": "string",
+            "minLength": 43,
+            "pattern": "^[A-Za-z0-9_-]{43,44}$",
+            "description": "base64url public key in the RFC-AITP-0001 §5.3 AID-identifier form: 43 chars for Ed25519, 44 chars for P-256."
+          },
+          "allowed_capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "algorithm"
+              ],
+              "properties": {
+                "algorithm": {
+                  "const": "ed25519"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "public_key": {
+                  "minLength": 43,
+                  "maxLength": 43
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "required": [
+                "algorithm"
+              ],
+              "properties": {
+                "algorithm": {
+                  "const": "p256"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "public_key": {
+                  "minLength": 44,
+                  "maxLength": 44
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "spiffe_bundles": {
+      "type": "array",
+      "description": "SPIFFE trust bundles, one per trust domain, for the spiffe identity type (RFC-AITP-0002 §6.2). Each entry pairs a trust domain name with that domain's SPIFFE bundle (an RFC 7517 JWK Set, SPIFFE Trust Domain and Bundle §4). Trust domain names MUST be unique across entries.",
+      "items": {
+        "type": "object",
+        "required": [
+          "trust_domain",
+          "bundle"
+        ],
+        "properties": {
+          "trust_domain": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 255,
+            "pattern": "^[a-z0-9._-]+$",
+            "description": "SPIFFE trust domain name (SPIFFE-ID §2.1): lowercase letters, digits, dots, dashes and underscores."
+          },
+          "bundle": {
+            "type": "object",
+            "required": [
+              "keys"
+            ],
+            "properties": {
+              "keys": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "kty"
+                  ]
+                },
+                "description": "JWKs. Entries with `use` = `x509-svid` carry one CA certificate in `x5c`; entries with `use` = `jwt-svid` carry a `kid`. Entries with a missing or unknown `use` or `kty` are ignored (SPIFFE Trust Domain and Bundle §4.2). An empty or effectively empty set makes every SVID from the trust domain invalid."
+              },
+              "spiffe_sequence": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "spiffe_refresh_hint": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "description": "SPIFFE bundle (JWK Set). Members other than those named here MAY be present and are ignored."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "key_resolution": {
+      "type": "object",
+      "properties": {
+        "offline_mode": {
+          "type": "boolean",
+          "default": false
+        },
+        "cache_ttl_secs": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3600
+        },
+        "fail_mode": {
+          "type": "string",
+          "enum": [
+            "fail_closed",
+            "fail_open",
+            "soft_fail"
+          ],
+          "default": "fail_closed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "revocation_policy": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "fail_closed",
+            "fail_open",
+            "soft_fail"
+          ],
+          "default": "fail_closed"
+        },
+        "max_staleness_secs": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 300
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "trust_anchors": [
+        {
+          "issuer": "https://auth.openai.com",
+          "keys": [
+            "agentA_pubkey_AID_v01_placeholder_AAAAAAAAA",
+            "agentB_pubkey_AID_v01_placeholder_BBBBBBBBB"
+          ]
+        },
+        {
+          "issuer": "https://auth.anthropic.com",
+          "keys": [
+            "agentC_pubkey_AID_v01_placeholder_CCCCCCCCC"
+          ]
+        }
+      ],
+      "pinned_keys": [
+        {
+          "subject": "internal-worker-1",
+          "public_key": "worker_pubkey_AID_v01_placeholder_wwwwwwwww",
+          "allowed_capabilities": [
+            "macp.mode.task.v1"
+          ]
+        }
+      ],
+      "key_resolution": {
+        "offline_mode": false,
+        "cache_ttl_secs": 3600,
+        "fail_mode": "fail_closed"
+      },
+      "revocation_policy": {
+        "mode": "fail_closed",
+        "max_staleness_secs": 300
+      }
+    },
+    {
+      "spiffe_bundles": [
+        {
+          "trust_domain": "prod.example.com",
+          "bundle": {
+            "spiffe_sequence": 7,
+            "keys": [
+              {
+                "kty": "EC",
+                "use": "jwt-svid",
+                "kid": "spiffe-jwt-1",
+                "crv": "P-256",
+                "x": "f83OJ3D2xF1Bg8vub9tLe1gHMzV76e8Tus9uPHvRVEU",
+                "y": "x_FEzRu9m36HLN_tue659LNpXW6pCyStikYjKIWI5a0"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

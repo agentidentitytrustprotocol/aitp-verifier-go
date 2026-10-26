@@ -1,0 +1,57 @@
+{
+  "id": "tct-004",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The v0.1 fixture supplied a bare {issuer, revoked_jtis, fail_mode} list; v0.2 restates it as a signed revocation snapshot (RFC-AITP-0008 §1.5) so the same input shape feeds both the rev-* snapshot path and this TCT-level lookup. The snapshot signature placeholder is __VALID_B_SIG__ (the issuing peer here is agentB / kat-keypair-002, per the PLACEHOLDERS.md AID role table). Its signing input is the JCS canonical form of the INNER `revocation_list` body; the `{\"revocation_list\": ..., \"signature\": ...}` envelope is the wire shape and is never signed (RFC-AITP-0008 §1.5, RFC-AITP-0001 §5.4.1).",
+  "description": "TCT compact JWS is valid and not expired, but its `jti` appears in the issuing peer's revocation list. Receivers MUST reject with TCT_REVOKED (RFC-AITP-0008; RFC-AITP-0005 §7.2 step 6 — revocation lookup runs only after all signature checks). Per the per-issuing-peer model, only the originating issuer's deny list applies.",
+  "tags": [
+    "security",
+    "tct",
+    "revocation"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655444004",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "issuer_revocation_list": {
+      "issuer": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "fail_mode": "fail_closed",
+      "snapshot": {
+        "revocation_list": {
+          "version": "aitp/0.3",
+          "issuer": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "published_at": 1711900000,
+          "expires_at": 1711903600,
+          "entries": [
+            {
+              "jti": "550e8400-e29b-41d4-a716-446655444004",
+              "revoked_at": 1711899900
+            }
+          ]
+        },
+        "signature": "__VALID_B_SIG__"
+      }
+    },
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_REVOKED"
+  }
+}

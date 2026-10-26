@@ -1,0 +1,123 @@
+{
+  "id": "id-016",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "dynamic": true,
+  "dynamic_fields": [
+    "timestamp",
+    "pop_nonce",
+    "proof",
+    "signature"
+  ],
+  "$comment": "Dynamic fixture: see schemas/conformance/README.md 'Dynamic fixtures'. The verifier chooses each nonce at run time, so `__ISSUED_NONCE_1__` / `__ISSUED_NONCE_2__` are captured from steps 1 and 2, and `__VALID_PINNED_PROOF__` and `__VALID_ENVELOPE_SIG__` are minted over them (PLACEHOLDERS.md). Each issuing step names a distinct `source`, so per-source rate limiting (RFC-AITP-0009 §3.1) never triggers and the refusal at step 3 can only come from the global bound. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "The verifier's bound on outstanding nonces MUST be enforced by refusal, never by eviction (RFC-AITP-0002 §3.4). With `max_outstanding_nonces` 2, two challenges issued to two sources succeed, and a third from a new source MUST be refused with CHALLENGE_REFUSED. Both earlier nonces MUST still be outstanding: presenting each succeeds (steps 4 and 5). Once they are consumed, the same third source retries and succeeds (step 6), because CHALLENGE_REFUSED is retryable. A verifier that evicts the oldest nonce to make room fails step 3 or step 4.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "nonce",
+    "dos",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "max_outstanding_nonces": 2,
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "issue_presentation_challenge",
+        "source": "198.51.100.1",
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 2,
+        "operation": "issue_presentation_challenge",
+        "source": "198.51.100.2",
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 3,
+        "operation": "issue_presentation_challenge",
+        "source": "198.51.100.3",
+        "expected": {
+          "outcome": "failure",
+          "error_code": "CHALLENGE_REFUSED",
+          "rationale": "Two nonces are outstanding and the bound is 2. The verifier MUST refuse and MUST NOT evict an unexpired nonce to make room (RFC-AITP-0002 §3.4)."
+        }
+      },
+      {
+        "step": 4,
+        "operation": "verify_identity_presentation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440904",
+          "timestamp": "__NOW__",
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "__VALID_PINNED_PROOF__"
+            },
+            "pop_nonce": "__ISSUED_NONCE_1__"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success",
+          "rationale": "Nonce 1 survived the refused challenge at step 3."
+        }
+      },
+      {
+        "step": 5,
+        "operation": "verify_identity_presentation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440905",
+          "timestamp": "__NOW__",
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "__VALID_PINNED_PROOF__"
+            },
+            "pop_nonce": "__ISSUED_NONCE_2__"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 6,
+        "operation": "issue_presentation_challenge",
+        "source": "198.51.100.3",
+        "expected": {
+          "outcome": "success",
+          "rationale": "Steps 4 and 5 consumed both nonces, so the store is below its bound and the retry succeeds: CHALLENGE_REFUSED is retryable (registries/error-codes.md)."
+        }
+      }
+    ]
+  }
+}

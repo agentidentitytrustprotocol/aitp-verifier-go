@@ -1,0 +1,53 @@
+{
+  "id": "tct-021",
+  "rfc": "RFC-AITP-0005",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-self-attestation",
+  "$comment": "Negative fixture for RFC-AITP-0005 §5.3 (\"Lifetime\") and the §7.3 exception. `tct_token` is the committed known answer kat-tct-002 (known-answer/signed-examples/tct/kat-keypair-001-self-attestation.json), not a placeholder, and `tct_token_claims` is its `decoded_claims`, exactly as in tct-020; scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the fixture carries exactly that token and verify it, so no new signature is minted. The only input that differs from tct-020 is `trust_store`, the relying party's own record of issuer keys trusted at `iat` (PLACEHOLDERS.md, Operation key): it lists kat-keypair-003 and not the issuer, kat-keypair-001. Extension-gated: consuming self-attestations is a relying-party role that RFC-AITP-0001 §10 does not require, so this fixture is `status: extension` under `feature: aitp-self-attestation`. The default runner MUST SKIP it; an implementation that claims \"AITP v0.2 self-attestation\" conformance (RFC-AITP-0005 §5.3) MUST pass it (RFC-AITP-0001 §10 item 9). `verify_attestation` is not a grant context (RFC-AITP-0005 §5.3, \"Verification\"; PLACEHOLDERS.md, Operation key).",
+  "description": "A relying party MUST reject a self-attestation whose issuer key its own records do not show as trusted at `iat`, with TCT_SIGNATURE_INVALID (RFC-AITP-0005 §5.3, \"Lifetime\"; §7.3 exception). The token is kat-tct-002, which tct-020 accepts: the signature verifies under the key in `iss`, the attestation shape is valid, the expected `io.agentidentitytrustprotocol.kat` statement is present, and the relying party waives the Manifest cap explicitly. But the relying party's `trust_store` holds only kat-keypair-003, so it cannot establish that kat-keypair-001 was trusted at `iat`. A relying party that treats a valid signature by the key in `iss`, or a far-future `exp`, as evidence of trust fails this fixture.",
+  "tags": [
+    "failure",
+    "tct",
+    "attestation",
+    "relying-party",
+    "trust-at-iat",
+    "known-answer"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjQ4Njc2NjAwMDAsImV4dCI6eyJpby5hZ2VudGlkZW50aXR5dHJ1c3Rwcm90b2NvbC5rYXQiOnsic3RhdGVtZW50Ijoia2F0LXRjdC0wMDItc2VsZi1hdHRlc3RhdGlvbiBhcmNoaXZhbCBhdHRlc3RhdGlvbiJ9fSwiZ3JhbnRzIjpbImFpdHAuYXR0ZXN0YXRpb24iXSwiaWF0IjoxNzExOTAwMDAwLCJpc3MiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJqdGkiOiIzMjdiMzdhYi05ODE3LTRlODctOGNiZS1kZWM1MTA5NDk3ZjUiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.vfC9qoCsxg-cVyWJWlxPogvGwVpje-nTlNyxt-4Z1nc8772PGNUlq6orqHZj2sZOWXo8npbb3Bt8GBsigi8kAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "327b37ab-9817-4e87-8cbe-dec5109497f5",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 4867660000,
+      "grants": [
+        "aitp.attestation"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      },
+      "ext": {
+        "io.agentidentitytrustprotocol.kat": {
+          "statement": "kat-tct-002-self-attestation archival attestation"
+        }
+      }
+    },
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "expected_ext_key": "io.agentidentitytrustprotocol.kat",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "waive_manifest_cap": true,
+    "operation": "verify_attestation"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §5.3: with no issuer Manifest, the relying party MUST establish from its own records that the issuer key was trusted at `iat`, and rejects the attestation with TCT_SIGNATURE_INVALID when it cannot. Its records hold only kat-keypair-003. Every other attestation check passes, as tct-020 shows for the same token, so the missing trust record is the only defect."
+  }
+}

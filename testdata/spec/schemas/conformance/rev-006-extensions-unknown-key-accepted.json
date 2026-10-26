@@ -1,0 +1,49 @@
+{
+  "id": "rev-006",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Positive half of the rev-005/rev-006 pair. `extensions.com.example.debug_trace` is a vendor-namespaced key (registries/extension-keys.md naming rules; RFC-AITP-0012 §1) that is NOT in the extension-key registry — deliberately unrecognized. `revocation_list.extensions` is schema-permitted (`aitp-revocation-list.schema.json` properties.extensions) and covered by the issuing peer's signature over the inner body like any other member (RFC-AITP-0008 §1.5), so it is schema-permitted rather than exempt from signing.",
+  "description": "Revocation snapshot's inner `revocation_list` body carries an unrecognized, vendor-namespaced key (`extensions.com.example.debug_trace`) INSIDE the OPTIONAL `extensions` member. RFC-AITP-0001 §7 and RFC-AITP-0012 §5: unknown keys inside `extensions` MUST be ignored and MUST NOT drive a trust decision, but `extensions` itself remains a schema-permitted, ordinary part of the signed body. The receiver accepts: the snapshot is fresh (mirroring rev-003), the signature verifies under the issuing peer's key over the body INCLUDING `extensions`, and the queried JTI is not in `entries`. Counterpart: rev-005, where the same kind of unrecognized field placed OUTSIDE `extensions` is rejected with UNKNOWN_FIELD.",
+  "tags": [
+    "success",
+    "revocation",
+    "extensions"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711899900
+          }
+        ],
+        "extensions": {
+          "com.example.debug_trace": {
+            "generator": "revocation-svc-3"
+          }
+        }
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Snapshot is fresh (100s old vs. policy max 3600s); signature verifies under the issuing peer's key over the body INCLUDING `extensions`; queried JTI is not in `entries`. The unrecognized `extensions.com.example.debug_trace` key is ignored for trust-decision purposes per RFC-AITP-0001 §7 and RFC-AITP-0012 §5, but remains part of the signed bytes and MUST NOT be treated as an unpermitted field."
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "mh-008",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The payload `tct` is a __JWS_TCT__ compact-JWS placeholder with a `tct_claims` sibling (minting input; stripped by the minter). The TCT and envelope are valid — the defect is isolated to the pop_signature, minted per the __INVALID_POP_SIG_OVER_WRONG_NONCE__ recipe (signed over a different pop_nonce than the receiver expects).",
+  "description": "MUTUAL_COMMIT carries a pop_signature that does not validate against the sender's AID public key when verified over sha256(receiver_pop_nonce). The receiver MUST reject with POP_VERIFICATION_FAILED — without a valid PoP the sender has not proven possession of the live private key.",
+  "tags": [
+    "security",
+    "mutual-handshake",
+    "pop"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "step": "target received MUTUAL_COMMIT",
+    "self_pop_nonce_sent_in_hello_ack": "awVp2Fly6Is8p899W-ALmw",
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_commit",
+      "message_id": "660e8400-e29b-41d4-a716-446655440109",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "tct": "__JWS_TCT__",
+        "tct_claims": {
+          "ver": "aitp/0.3",
+          "jti": "660e8400-e29b-41d4-a716-446655440110",
+          "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "iat": 1711900200,
+          "exp": 1711903800,
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "cnf": {
+            "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+          }
+        },
+        "pop_signature": "__INVALID_POP_SIG_OVER_WRONG_NONCE__",
+        "pop_nonce_echo": "awVp2Fly6Is8p899W-ALmw"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "POP_VERIFICATION_FAILED"
+  }
+}
