@@ -1,5 +1,12 @@
-# Job names are fixed: the website fetch script and branch protection
-# (plan GO4.3) read them from this workflow.
+# Job and matrix names are the strings main's branch protection requires
+# (spec pin, both test jobs, build aitp-rs tools, conformance, mint ->
+# verify), and the website fetch script reads the `conformance-report`
+# artifact by name. Renaming a job leaves every PR waiting on a check that
+# never reports.
+#
+# Every job runs against the spec commit in SPEC_VERSION and the aitp-rs
+# commit in AITP_RS_COMMIT, so neither upstream can turn this repo red
+# without a bump PR here.
 name: ci
 
 on:
@@ -91,3 +98,141 @@ jobs:
         run: go test -run='^$' -fuzz=FuzzParse -fuzztime=60s ./internal/strictjson
       - name: jcs
         run: go test -run='^$' -fuzz=FuzzTransform -fuzztime=60s ./internal/jcs
+
+  # aitp-rs publishes neither its conformance runner nor its minter as a
+  # binary, so both are built once from the commit AITP_RS_COMMIT pins and
+  # handed to the two jobs below.
+  aitp-rs:
+    name: build aitp-rs tools
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: aitp-verifier-go
+          persist-credentials: false
+      - name: Read the pinned aitp-rs commit
+        id: rs
+        run: echo "sha=$(tr -d '[:space:]' < aitp-verifier-go/AITP_RS_COMMIT)" >> "$GITHUB_OUTPUT"
+      - name: Check out aitp-rs at the pinned commit
+        uses: actions/checkout@v7
+        with:
+          repository: agentidentitytrustprotocol/aitp-rs
+          path: aitp-rs
+          ref: ${{ steps.rs.outputs.sha }}
+          persist-credentials: false
+      - uses: Swatinem/rust-cache@f0d9c3887740aee45f6153b24b3a6b815192ec16 # v2
+        with:
+          workspaces: aitp-rs
+      - name: Build aitp-conformance and xcheck-mint
+        working-directory: aitp-rs
+        run: |
+          cargo build --locked --release -p aitp-conformance --bin aitp-conformance
+          cargo build --locked --release -p mint-signed-examples --bin xcheck-mint
+      - uses: actions/upload-artifact@v7
+        with:
+          name: aitp-rs-tools
+          path: |
+            aitp-rs/target/release/aitp-conformance
+            aitp-rs/target/release/xcheck-mint
+          if-no-files-found: error
+          retention-days: 1
+
+  # The adapter under aitp-rs's runner, against the pinned spec fixtures.
+  # The gate is the runner's own result: every gate passed and no core
+  # fixture failed or skipped. The report must also satisfy the spec's
+  # schema and its report checker.
+  conformance:
+    name: conformance (aitp-conformance)
+    needs: aitp-rs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: aitp-verifier-go
+          persist-credentials: false
+      - name: Read the pinned spec commit
+        id: spec
+        run: echo "sha=$(tr -d '[:space:]' < aitp-verifier-go/SPEC_VERSION)" >> "$GITHUB_OUTPUT"
+      - name: Check out the AITP spec at the pinned commit
+        uses: actions/checkout@v7
+        with:
+          repository: agentidentitytrustprotocol/agentidentitytrustprotocol
+          path: agentidentitytrustprotocol
+          ref: ${{ steps.spec.outputs.sha }}
+          fetch-depth: 0 # the report's spec.version is the newest tag at the pin
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: aitp-rs-tools
+          path: tools
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+          cache-dependency-path: aitp-verifier-go/go.mod
+      - name: Build the adapter
+        working-directory: aitp-verifier-go
+        run: go build -o "$RUNNER_TEMP/aitp-verifier-adapter" ./cmd/aitp-verifier-adapter
+      - name: Run the adapter under aitp-conformance
+        env:
+          SPEC_SHA: ${{ steps.spec.outputs.sha }}
+        run: |
+          chmod +x tools/aitp-conformance
+          tools/aitp-conformance run \
+            --target "$RUNNER_TEMP/aitp-verifier-adapter" \
+            --fixtures-dir agentidentitytrustprotocol/schemas/conformance \
+            --profile core \
+            --spec-commit "$SPEC_SHA" \
+            --report "$RUNNER_TEMP/conformance.json"
+      - name: Every gate passed, with no core fixture failed or skipped
+        run: |
+          jq -c '.totals.core' "$RUNNER_TEMP/conformance.json"
+          jq -e '([.gates[] | select(.passed | not)] | length == 0) and .totals.core.fail == 0 and .totals.core.skip == 0 and .totals.core.pass > 0' \
+            "$RUNNER_TEMP/conformance.json"
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: The report validates against the schema and passes the spec's report checker
+        run: |
+          python -m pip install --quiet "jsonschema[format]>=4.23"
+          python - "$RUNNER_TEMP/conformance.json" <<'PY'
+          import json, sys
+          from jsonschema import Draft202012Validator
+          schema = json.load(open("agentidentitytrustprotocol/schemas/json/aitp-conformance-report.schema.json"))
+          report = json.load(open(sys.argv[1]))
+          errors = list(Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER).iter_errors(report))
+          for e in errors:
+              print(f"{e.json_path}: {e.message}")
+          sys.exit(1 if errors else 0)
+          PY
+          python agentidentitytrustprotocol/scripts/check-conformance-report.py "$RUNNER_TEMP/conformance.json" \
+            --fixtures-dir agentidentitytrustprotocol/schemas/conformance
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: conformance-report
+          path: ${{ runner.temp }}/conformance.json
+          if-no-files-found: ignore
+
+  # Fresh artifacts minted by aitp-rs this run, verified here byte for
+  # byte, negatives included. Nothing is re-signed on this side.
+  mint-verify:
+    name: mint (aitp-rs) -> verify
+    needs: aitp-rs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: aitp-rs-tools
+          path: ${{ runner.temp }}/tools
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+      - name: Mint with aitp-rs and verify
+        run: |
+          chmod +x "$RUNNER_TEMP/tools/xcheck-mint"
+          "$RUNNER_TEMP/tools/xcheck-mint" > "$RUNNER_TEMP/minted.json"
+          go run ./cmd/xcheck-verify < "$RUNNER_TEMP/minted.json"

@@ -1,0 +1,8 @@
+name: auto-merge
+on: pull_request
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  call:
+    uses: agentidentitytrustprotocol/aitp-ci/.github/workflows/auto-merge.yml@8d2c1aea7c97ddc14ad0e8e2e30457228838572e # v1
