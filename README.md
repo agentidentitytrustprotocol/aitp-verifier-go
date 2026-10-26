@@ -2,19 +2,29 @@
 
 A Go verifier for the [Agent Identity & Trust Protocol (AITP)](https://github.com/agentidentitytrustprotocol/agentidentitytrustprotocol), written from the RFCs alone. It depends on nothing outside the Go standard library and checks itself against the spec's known-answer vectors and conformance fixtures.
 
-> **Status: pre-release.** The primitives are in (`internal/`); the verifiers and the conformance adapter follow. Nothing is tagged yet.
+> **Status: v0.1.0.** It passes every core conformance fixture, and verifies aitp-rs-minted artifacts in CI. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
-Not yet released. The module path will be `github.com/agentidentitytrustprotocol/aitp-verifier-go`.
+```sh
+go get github.com/agentidentitytrustprotocol/aitp-verifier-go@v0.1.0
+go install github.com/agentidentitytrustprotocol/aitp-verifier-go/cmd/aitp-verifier-adapter@v0.1.0
+```
 
 ## Verifiers
 
-To come.
+Package `verify` (`github.com/agentidentitytrustprotocol/aitp-verifier-go/verify`) covers envelopes, Manifests, handshake messages, identity descriptors (OIDC and pinned key), TCTs (grant context and issuer side), revocation snapshots and policy, grant vouchers, delegation tokens, PoP challenges and responses, and the replay cache. Every failure is a `*verify.Error` carrying its registry code (`verify.CodeOf`). Time is a parameter, and revocation lists are fetched only through a transport the caller supplies.
 
 ## Conformance adapter
 
-To come: `cmd/aitp-verifier-adapter`, driven by `aitp-conformance`.
+`cmd/aitp-verifier-adapter` is the NDJSON adapter that the spec's `schemas/conformance/ADAPTER.md` describes, for aitp-rs's `aitp-conformance` runner:
+
+```sh
+aitp-conformance run --target "$(go env GOPATH)/bin/aitp-verifier-adapter" \
+  --fixtures-dir <spec>/schemas/conformance --profile core --report conformance.json
+```
+
+Every release has the `conformance.json` from its tag attached.
 
 ## CI
 
@@ -33,6 +43,7 @@ Other workflows:
 - `bump-aitp-rs.yml` runs daily, on dispatch or by hand, and opens a held PR that moves `AITP_RS_COMMIT` to aitp-rs main.
 - `spec-canary.yml` runs conformance daily against spec main and keeps one tracking issue open while it fails.
 - `auto-merge.yml` arms auto-merge for Dependabot patch and minor bumps.
+- `release.yml` runs on a `v*` tag. It checks that the tag equals `version.go`, runs the full CI, and waits for proxy.golang.org and sum.golang.org to serve the version. It then runs the core gate against the adapter that `go install …@<tag>` builds from an empty module cache, and publishes a GitHub release with that `conformance.json` attached. Proxy versions are immutable, so a bad release is fixed forward with a new tag and a `retract` directive.
 
 ## Primitives
 

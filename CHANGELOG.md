@@ -1,0 +1,18 @@
+# Changelog
+
+All notable changes to this module. Versions follow [Semantic Versioning](https://semver.org/). Released versions are immutable on the Go module proxy, so a bad release is fixed with a new version and a `retract` directive, never by moving a tag.
+
+## [0.1.0] - 2026-10-26
+
+The first release. Tested against spec commit `dbe63bf` and aitp-rs `052f27e`.
+
+### Added
+
+- Package `verify`, with verifiers for envelopes, Manifests, handshake messages (`mutual_hello`, `mutual_commit` and their acks), identity descriptors (OIDC and pinned key), TCTs (grant context and the issuer side), revocation snapshots and policy, grant vouchers, delegation tokens, PoP challenges and responses, and a replay cache. Each failure carries its registry error code. Verifiers take an injected transport and caller-supplied time, and never touch the network or the wall clock on their own.
+- The registry error codes, generated from the pinned spec (`errors.go`).
+- Standard-library-only primitives: a strict JSON parser, RFC 8785 JCS, strict base64url, compact JWS, RFC 7638 thumbprints, and Ed25519 and P-256 checks (canonical points, the small-order blocklist, low-S).
+- `cmd/aitp-verifier-adapter`, the conformance adapter. It passes all 95 core fixtures under `aitp-conformance --profile core`, with none skipped.
+- `cmd/xcheck-verify`, which verifies artifacts minted by aitp-rs byte for byte, negatives included.
+- CI covering the spec pin, Go 1.26 and 1.27, lint, fuzzing, conformance and the aitp-rs mint-and-verify check, plus held bump PRs for the spec and aitp-rs pins.
+
+[0.1.0]: https://github.com/agentidentitytrustprotocol/aitp-verifier-go/releases/tag/v0.1.0

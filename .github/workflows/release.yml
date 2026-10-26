@@ -1,0 +1,192 @@
+name: release
+
+# Release a `v*` tag. Go modules have no upload step: the Go module proxy
+# serves a tag once anyone asks for it, and from then on that version is
+# immutable. A bad release is fixed forward with a new tag and a `retract`
+# directive in go.mod, never by moving a tag.
+#
+# 1. The tag must equal `v` + Version in version.go (fails closed).
+# 2. The full CI runs on the tagged commit.
+# 3. proxy.golang.org must serve the version (with backoff, at most 10
+#    minutes) and sum.golang.org must hold its checksum.
+# 4. The adapter, installed with `go install …@<tag>` into an empty module
+#    cache, must pass the core conformance gate; that report is attached.
+# 5. A GitHub release is created with conformance.json attached.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  MODULE: github.com/agentidentitytrustprotocol/aitp-verifier-go
+
+jobs:
+  version:
+    name: tag matches version.go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Tag equals v + Version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(sed -n 's/^const Version = "\(.*\)"$/\1/p' version.go)
+          echo "version.go: $version, tag: $TAG"
+          if [ -z "$version" ] || [ "$TAG" != "v$version" ]; then
+            echo "::error::tag $TAG does not match version.go ($version); expected v$version"
+            exit 1
+          fi
+
+  ci:
+    name: ci
+    needs: version
+    uses: ./.github/workflows/ci.yml
+
+  proxy:
+    name: proxy.golang.org serves the tag
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Module proxy (backoff, 10 minutes at most)
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          url="https://proxy.golang.org/${MODULE}/@v/${TAG}.info"
+          deadline=$(( $(date +%s) + 600 ))
+          delay=5
+          while :; do
+            if body=$(curl -fsS "$url"); then
+              echo "$url -> $body"
+              echo "$body" | jq -e --arg t "$TAG" '.Version == $t' >/dev/null
+              break
+            fi
+            if [ "$(date +%s)" -ge "$deadline" ]; then
+              echo "::error::$url not served after 10 minutes"
+              exit 1
+            fi
+            echo "not served yet; retrying in ${delay}s"
+            sleep "$delay"
+            delay=$(( delay * 2 > 60 ? 60 : delay * 2 ))
+          done
+      - name: Checksum database
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          curl -fsS "https://sum.golang.org/lookup/${MODULE}@${TAG}" | tee "$RUNNER_TEMP/sum.txt"
+          grep -q "^${MODULE} ${TAG} h1:" "$RUNNER_TEMP/sum.txt"
+          grep -q "^${MODULE} ${TAG}/go.mod h1:" "$RUNNER_TEMP/sum.txt"
+
+  # What a user gets: the adapter built from the proxy's copy of the tag,
+  # in an empty module cache, under the same runner and gate as ci.yml.
+  installed:
+    name: go install @tag passes the core gate
+    needs: proxy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: aitp-verifier-go
+          persist-credentials: false
+      - name: Read the pinned spec commit
+        id: spec
+        run: echo "sha=$(tr -d '[:space:]' < aitp-verifier-go/SPEC_VERSION)" >> "$GITHUB_OUTPUT"
+      - name: Check out the AITP spec at the pinned commit
+        uses: actions/checkout@v7
+        with:
+          repository: agentidentitytrustprotocol/agentidentitytrustprotocol
+          path: agentidentitytrustprotocol
+          ref: ${{ steps.spec.outputs.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: aitp-rs-tools
+          path: tools
+      - uses: actions/setup-go@v7
+        with:
+          go-version: "1.27.x"
+          cache: false
+      - name: go install from the proxy into an empty module cache
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          export GOMODCACHE="$RUNNER_TEMP/modcache" GOBIN="$RUNNER_TEMP/bin" GOPROXY=https://proxy.golang.org GOFLAGS=
+          mkdir -p "$GOMODCACHE" "$GOBIN"
+          cd "$RUNNER_TEMP"
+          go install "${MODULE}/cmd/aitp-verifier-adapter@${TAG}"
+          ls -l "$GOBIN"
+          clean=$(mktemp -d) && cd "$clean"
+          go mod init example.test/clean >/dev/null 2>&1
+          go list -m "${MODULE}@${TAG}"
+      - name: Conformance (core) with the installed adapter
+        env:
+          SPEC_SHA: ${{ steps.spec.outputs.sha }}
+        run: |
+          chmod +x tools/aitp-conformance
+          tools/aitp-conformance run \
+            --target "$RUNNER_TEMP/bin/aitp-verifier-adapter" \
+            --fixtures-dir agentidentitytrustprotocol/schemas/conformance \
+            --profile core \
+            --spec-commit "$SPEC_SHA" \
+            --implementation-commit "$GITHUB_SHA" \
+            --report "$RUNNER_TEMP/conformance.json"
+          jq -c '.totals.core' "$RUNNER_TEMP/conformance.json"
+          jq -e '([.gates[] | select(.passed | not)] | length == 0) and .totals.core.fail == 0 and .totals.core.skip == 0 and .totals.core.pass > 0' \
+            "$RUNNER_TEMP/conformance.json"
+          python3 agentidentitytrustprotocol/scripts/check-conformance-report.py "$RUNNER_TEMP/conformance.json" \
+            --fixtures-dir agentidentitytrustprotocol/schemas/conformance
+      - uses: actions/upload-artifact@v7
+        with:
+          name: release-conformance
+          path: ${{ runner.temp }}/conformance.json
+          if-no-files-found: error
+
+  github-release:
+    name: GitHub release
+    needs: installed
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v8
+        with:
+          name: release-conformance
+          path: ${{ runner.temp }}/out
+      - name: Notes from CHANGELOG.md
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          v="${TAG#v}"
+          awk -v v="$v" '
+            $0 ~ "^## \\[?" v "\\]?( |$)" { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          test -s "$RUNNER_TEMP/notes.md" || { echo "::error::CHANGELOG.md has no section for $v"; exit 1; }
+          cat "$RUNNER_TEMP/notes.md"
+      # A re-run of a released tag only checks the asset is there.
+      - name: Create the release with conformance.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$RUNNER_TEMP/out/conformance.json" --clobber
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" \
+              --notes-file "$RUNNER_TEMP/notes.md" "$RUNNER_TEMP/out/conformance.json"
+          fi
+          gh release view "$TAG" --json assets --jq '.assets[].name' | grep -qx conformance.json
