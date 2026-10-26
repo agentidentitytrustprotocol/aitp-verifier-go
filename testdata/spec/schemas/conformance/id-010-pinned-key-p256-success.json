@@ -1,0 +1,74 @@
+{
+  "id": "id-010",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "A pinned-key identity from a P-256 sender (`aid:pubkey:p256:`, kat-keypair-005-p256) MUST verify. `public_key` is the 44-char SEC1-compressed identifier, byte-equal to the AID's key (RFC-AITP-0002 §3.2 step 2); `(p256, public_key)` is in `trust_store` (step 3); and `proof` is the `p256.`-tagged signature of `kat-pinned-key-proof-002-p256`, over the single SHA-256 digest of the §3.1 `proof_input` (RFC-AITP-0001 §5.4.6). A verifier that hard-codes Ed25519, requires a 32-byte key, or hashes the digest a second time fails this fixture.",
+  "tags": [
+    "success",
+    "identity",
+    "pinned_key",
+    "p256",
+    "trust-store"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440702",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-p256",
+          "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "proof": "p256.X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-p256",
+            "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "All five §3.2 steps pass. The proof is `kat-pinned-key-proof-002-p256` byte-for-byte: `proof_input` is 199 bytes with SHA-256 `ab9942f8…dd3f`, and the signature is low-S ECDSA P-256 with `e = sha256(proof_input)`. The same vector pins a double-hash signature that MUST NOT verify."
+  }
+}

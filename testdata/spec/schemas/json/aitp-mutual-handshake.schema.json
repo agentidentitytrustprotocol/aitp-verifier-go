@@ -1,0 +1,414 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentidentitytrustprotocol.io/schema/v0.3/mutual-handshake.json",
+  "title": "MutualHandshakeMessages",
+  "description": "AITP v0.3 Mutual Handshake payload schemas. Four message types: mutual_hello, mutual_hello_ack, mutual_commit, mutual_commit_ack. Commit payloads carry the peer's TCT (and optional grant voucher) as opaque compact JWS strings (RFC-AITP-0001 §5.4.5).",
+  "$defs": {
+    "IdentityDescriptor": {
+      "$comment": "Mirror of schemas/json/aitp-identity.schema.json (RFC-AITP-0002 §1 names that file the canonical identity-descriptor schema). This $defs copy exists so the handshake schema stays self-contained — no schema in this repo resolves a cross-file $ref — and it MUST stay byte-equivalent to the canonical file minus its $schema/$id/title/examples metadata. scripts/check-doc-coherence.sh stage 5 enforces that; edit the canonical file and re-run `make validate` rather than editing this copy.",
+      "description": "AITP v0.3 identity binding. Connects an AID to a verifiable issuer claim.",
+      "type": "object",
+      "required": [
+        "type",
+        "subject",
+        "proof"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "oidc",
+            "pinned_key",
+            "spiffe"
+          ],
+          "description": "Identity mechanism. v0.3 supports: oidc, pinned_key, spiffe (RFC-AITP-0002 §6; registry status Proposed)"
+        },
+        "issuer": {
+          "type": "string",
+          "format": "uri",
+          "description": "Issuer URI. Required for type=oidc; MUST be absent for type=pinned_key and type=spiffe (RFC-AITP-0002 §1, §6.1)."
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Agent subject identifier. For type=spiffe: the SPIFFE ID of the workload, in canonical form (lowercase scheme and trust domain) with a non-root path (RFC-AITP-0002 §6.1)."
+        },
+        "proof": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Verifiable proof. For type=oidc: a compact-serialized JWT (RFC-AITP-0002 §2). For type=pinned_key: a JCS-profile signature per RFC-AITP-0001 §5.4.3, Ed25519 or P-256 (a p256 sender MUST use the `p256.` tag; an untagged value is Ed25519), whose input binds sender AID, receiver AID, message_id, timestamp, and the handshake pop_nonce per RFC-AITP-0002 §3.1; the pop_nonce is sourced from the handshake envelope, not from this descriptor. For type=spiffe: with svid_type=jwt-svid, a compact-serialized JWT-SVID (RFC-AITP-0002 §6.3); with svid_type=x509-svid, a JCS-profile signature by the X509-SVID leaf key over the §6.4.1 input."
+        },
+        "public_key": {
+          "type": "string",
+          "description": "base64url public key in the RFC-AITP-0001 §5.3 AID-identifier form: 43 chars for Ed25519, 44 chars (SEC1 compressed point) for P-256. Required for pinned_key; forbidden for oidc and spiffe.",
+          "pattern": "^[A-Za-z0-9_-]{43,44}$",
+          "minLength": 43
+        },
+        "svid_type": {
+          "type": "string",
+          "enum": [
+            "jwt-svid",
+            "x509-svid"
+          ],
+          "description": "SVID form carried in `proof` (RFC-AITP-0002 §6.1). Required for type=spiffe; forbidden for every other type."
+        },
+        "x5c": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9+/]+={0,2}$"
+          },
+          "description": "X509-SVID certificate chain, leaf first, each entry a standard-base64 (RFC 4648 §4, padded) DER certificate (RFC 7517 §4.7 form). Required for svid_type=x509-svid; forbidden otherwise (RFC-AITP-0002 §6.4)."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012. Unknown keys inside `extensions` MUST be ignored; unknown fields outside it are rejected by this schema."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "oidc"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "issuer"
+            ],
+            "not": {
+              "required": [
+                "public_key"
+              ]
+            },
+            "properties": {
+              "svid_type": false,
+              "x5c": false
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "pinned_key"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "public_key"
+            ],
+            "properties": {
+              "proof": {
+                "type": "string",
+                "pattern": "^((ed25519|p256)\\.)?[A-Za-z0-9_-]{86}$"
+              },
+              "svid_type": false,
+              "x5c": false
+            },
+            "not": {
+              "required": [
+                "issuer"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "const": "spiffe"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "svid_type"
+            ],
+            "properties": {
+              "subject": {
+                "type": "string",
+                "maxLength": 2048,
+                "pattern": "^spiffe://[a-z0-9._-]{1,255}(/([A-Za-z0-9._-]*[A-Za-z0-9_-][A-Za-z0-9._-]*|\\.{3,}))+$"
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "issuer"
+                  ]
+                },
+                {
+                  "required": [
+                    "public_key"
+                  ]
+                }
+              ]
+            },
+            "allOf": [
+              {
+                "if": {
+                  "required": [
+                    "svid_type"
+                  ],
+                  "properties": {
+                    "svid_type": {
+                      "const": "jwt-svid"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "proof": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$"
+                    },
+                    "x5c": false
+                  }
+                }
+              },
+              {
+                "if": {
+                  "required": [
+                    "svid_type"
+                  ],
+                  "properties": {
+                    "svid_type": {
+                      "const": "x509-svid"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "x5c"
+                  ],
+                  "properties": {
+                    "proof": {
+                      "type": "string",
+                      "pattern": "^((ed25519|p256)\\.)?[A-Za-z0-9_-]{86}$"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "CompactJws": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+      "description": "RFC 7515 compact JWS: exactly three non-empty unpadded-base64url segments. Embedded verbatim as an opaque string; the envelope layer never decodes or re-encodes it."
+    },
+    "PopNonce": {
+      "type": "string",
+      "minLength": 22,
+      "description": "Random 128-bit value encoded as base64url (minimum 22 chars).",
+      "pattern": "^[A-Za-z0-9_-]{22}$"
+    },
+    "PopSignature": {
+      "type": "string",
+      "minLength": 1,
+      "description": "base64url(sign(private_key, sha256(peer_pop_nonce))). Proves possession of the private key for this agent's AID. MAY carry a v0.2 algorithm tag prefix (RFC-AITP-0001 §5.4.3).",
+      "pattern": "^((ed25519|p256)\\.)?[A-Za-z0-9_-]{86}$"
+    },
+    "MutualHelloPayload": {
+      "type": "object",
+      "required": [
+        "identity",
+        "manifest",
+        "requested_grants",
+        "pop_nonce"
+      ],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/IdentityDescriptor"
+        },
+        "manifest": {
+          "description": "Initiator's Agent Manifest inline.",
+          "type": "object"
+        },
+        "requested_grants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^\\s]+$"
+          },
+          "uniqueItems": true
+        },
+        "pop_nonce": {
+          "$ref": "#/$defs/PopNonce"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012."
+        }
+      },
+      "additionalProperties": false
+    },
+    "MutualHelloAckPayload": {
+      "type": "object",
+      "required": [
+        "identity",
+        "manifest",
+        "requested_grants",
+        "pop_nonce",
+        "pop_nonce_echo"
+      ],
+      "properties": {
+        "identity": {
+          "$ref": "#/$defs/IdentityDescriptor"
+        },
+        "manifest": {
+          "description": "Target's Agent Manifest inline.",
+          "type": "object"
+        },
+        "requested_grants": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[^\\s]+$"
+          },
+          "uniqueItems": true
+        },
+        "pop_nonce": {
+          "$ref": "#/$defs/PopNonce",
+          "description": "Target's nonce. Initiator must sign this in MUTUAL_COMMIT."
+        },
+        "pop_nonce_echo": {
+          "$ref": "#/$defs/PopNonce",
+          "description": "MUST equal initiator's pop_nonce from MUTUAL_HELLO."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012."
+        }
+      },
+      "additionalProperties": false
+    },
+    "MutualCommitPayload": {
+      "type": "object",
+      "required": [
+        "tct",
+        "pop_signature",
+        "pop_nonce_echo"
+      ],
+      "properties": {
+        "tct": {
+          "$ref": "#/$defs/CompactJws",
+          "description": "TCT the initiator issues for the target — compact JWS, typ 'aitp-tct+jwt' (RFC-AITP-0005). Decoded claims validate against aitp-tct.schema.json."
+        },
+        "grant_voucher": {
+          "$ref": "#/$defs/CompactJws",
+          "description": "OPTIONAL grant voucher minted alongside the TCT — compact JWS, typ 'aitp-grant+jwt' (RFC-AITP-0005 §8). Omitted when issuer policy forbids the subject from delegating. Decoded claims validate against aitp-grant-voucher.schema.json."
+        },
+        "pop_signature": {
+          "$ref": "#/$defs/PopSignature",
+          "description": "base64url(sign(A_key, sha256(B_pop_nonce)))."
+        },
+        "pop_nonce_echo": {
+          "$ref": "#/$defs/PopNonce",
+          "description": "MUST equal target's pop_nonce from MUTUAL_HELLO_ACK."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012."
+        }
+      },
+      "additionalProperties": false
+    },
+    "MutualCommitAckPayload": {
+      "type": "object",
+      "required": [
+        "tct",
+        "pop_signature",
+        "pop_nonce_echo"
+      ],
+      "properties": {
+        "tct": {
+          "$ref": "#/$defs/CompactJws",
+          "description": "TCT the target issues for the initiator — compact JWS, typ 'aitp-tct+jwt' (RFC-AITP-0005)."
+        },
+        "grant_voucher": {
+          "$ref": "#/$defs/CompactJws",
+          "description": "OPTIONAL grant voucher minted alongside the TCT — compact JWS, typ 'aitp-grant+jwt' (RFC-AITP-0005 §8)."
+        },
+        "pop_signature": {
+          "$ref": "#/$defs/PopSignature",
+          "description": "base64url(sign(B_key, sha256(A_pop_nonce)))."
+        },
+        "pop_nonce_echo": {
+          "$ref": "#/$defs/PopNonce",
+          "description": "MUST equal initiator's pop_nonce from MUTUAL_HELLO."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Optional extension namespace per RFC-AITP-0001 §7 and RFC-AITP-0012."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "anyOf": [
+    {
+      "title": "MutualHello (message_type=mutual_hello)",
+      "$ref": "#/$defs/MutualHelloPayload"
+    },
+    {
+      "title": "MutualHelloAck (message_type=mutual_hello_ack)",
+      "$ref": "#/$defs/MutualHelloAckPayload"
+    },
+    {
+      "title": "MutualCommit (message_type=mutual_commit)",
+      "$ref": "#/$defs/MutualCommitPayload"
+    },
+    {
+      "title": "MutualCommitAck (message_type=mutual_commit_ack)",
+      "$ref": "#/$defs/MutualCommitAckPayload"
+    }
+  ],
+  "examples": [
+    {
+      "title": "MutualHello — OIDC",
+      "identity": {
+        "type": "oidc",
+        "issuer": "https://auth.openai.com",
+        "subject": "agent-A",
+        "proof": "eyJhbGciOiJFZERTQSJ9..."
+      },
+      "manifest": {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:agentA_pubkey_AID_v01_placeholder_AAAAAAAAA",
+        "signature": "sig_A_manifest_v01_placeholder_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "requested_grants": [
+        "macp.mode.task.v1",
+        "read_data"
+      ],
+      "pop_nonce": "nonce_A_pop_v01_aaannn"
+    },
+    {
+      "title": "MutualCommit",
+      "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJ2ZXIiOiJhaXRwLzAuMyJ9.tct_jws_signature_placeholder",
+      "grant_voucher": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJ2ZXIiOiJhaXRwLzAuMyJ9.voucher_jws_signature_placeholder",
+      "pop_signature": "sig_A_pop_v01_placeholder_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "pop_nonce_echo": "nonce_B_pop_v01_aaannn"
+    }
+  ]
+}

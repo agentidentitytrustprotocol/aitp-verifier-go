@@ -1,0 +1,45 @@
+{
+  "id": "tct-005",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Tests RFC-AITP-0005 §10.4 (verifier-side Manifest expiry bound). The TCT's `exp` is in the future relative to the reference clock — the only failure is that it exceeds the issuing peer's Manifest expires_at. The verifier MUST reject with TCT_EXPIRES_AFTER_MANIFEST, NOT the generic TCT_EXPIRED (see tct-002 for the literal-expiry case). Folding both cases into one code hides 'TCT outlived its issuer's credential' behind 'TCT past its own deadline.'",
+  "description": "A TCT whose `exp` is after the issuing peer's Manifest `expires_at` MUST be rejected with `TCT_EXPIRES_AFTER_MANIFEST` (RFC-AITP-0005 §10.4; issuer-side constraint is RFC-AITP-0004 §4.3). The TCT itself is not expired (`exp` is in the future), signature/audience/cnf are otherwise valid, and the issuer's Manifest is supplied via `input.issuer_manifest` so the §10.4 conditional check fires. Verifiers that fold this case into the generic `TCT_EXPIRED` lose the ability to distinguish 'TCT outlived its issuer's credential' from 'TCT past its own deadline.'",
+  "tags": [
+    "failure",
+    "tct",
+    "expiry",
+    "manifest-bound"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440101",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": "__NOW_MINUS_3600__",
+      "exp": "__NOW_PLUS_7200__",
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "issuer_manifest": {
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "expires_at": "__NOW_PLUS_3600__"
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_EXPIRES_AFTER_MANIFEST",
+    "rationale": "tct.exp (__NOW_PLUS_7200__) > issuer_manifest.expires_at (__NOW_PLUS_3600__). The §10.4 bound is violated even though the TCT itself is not yet expired. The TCT_EXPIRED code is reserved for the literal-expiry case (tct-002)."
+  }
+}

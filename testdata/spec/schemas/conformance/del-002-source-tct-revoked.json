@@ -1,0 +1,102 @@
+{
+  "id": "del-002",
+  "rfc": "RFC-AITP-0006",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Closes issue #60: RFC-AITP-0006 §4 step 7 (the source-TCT revocation lookup) previously had no vector on the CORE single-hop path — the only fixture that exercised step 7 at all was del-mh-004-revoked-hop, a draft, opt-in RFC-AITP-0011 multi-hop vector. A v0.2 implementation that opts out of multi-hop could pass the entire required pack with step 7 unimplemented on the path every core runner must exercise. Also fills the del-002 id, which the pack has never used. Otherwise byte-identical to del-001-success, so the revoked src_jti is the only defect under test. revocation_snapshots uses the same {issuer_aid, snapshot} record shape del-mh-004 already established; the snapshot's signature placeholder __VALID_A_SIG__ is minted by A over the JCS-canonical bytes of the INNER revocation_list body, never the {\"revocation_list\": ...} wrapper (RFC-AITP-0008 §1.5). Per RFC-AITP-0008 §3.3 this lookup runs after every signature and claims check has passed; an input that is simultaneously scope-exceeding and source-revoked would need to report DELEGATION_SCOPE_EXCEEDED, not this code — this fixture's scope ([read_data] ⊆ [read_data, write_data]) is deliberately within bounds so revocation is the only defect, and that ordering interaction remains otherwise unpinned by the pack.",
+  "description": "Single-hop delegation whose embedded voucher's src_jti is present in the verifier's own (A's) revocation deny list. Structurally identical to del-001-success: the outer delegation JWS verifies under B's Manifest key, the embedded voucher verifies under A's own key, audience, expiry monotonicity, and scope subsetting ([read_data] ⊆ [read_data, write_data]) all pass. But A's signed revocation snapshot lists voucher_claims.src_jti (550e8400-e29b-41d4-a716-446655440101) in entries. RFC-AITP-0006 §4 step 7 requires A to look up voucher.src_jti in its own deny list after all signature checks (RFC-AITP-0008 §3.3); a hit MUST reject the delegation token with DELEGATION_SOURCE_TCT_REVOKED, even though every JWS and claims check on the token itself succeeded. Manifest source: `input.issuer_manifests` carries B's (kat-keypair-002) signed Manifest, and the outer JWS verifies under the key that Manifest designates (RFC-AITP-0006 §4 step 1, RFC-AITP-0007 §1).",
+  "tags": [
+    "failure",
+    "delegation",
+    "single-hop",
+    "revocation",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "delegation_token": "__JWS_DELEGATION__",
+    "delegation_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "scope": [
+        "read_data"
+      ],
+      "exp": 1711903600,
+      "cnf": {
+        "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+      },
+      "voucher": "__JWS_GRANT_VOUCHER__",
+      "voucher_claims": {
+        "ver": "aitp/0.3",
+        "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "grants": [
+          "read_data",
+          "write_data"
+        ],
+        "iat": 1711900000,
+        "exp": 1711903600,
+        "src_jti": "550e8400-e29b-41d4-a716-446655440101"
+      }
+    },
+    "revocation_snapshots": [
+      {
+        "issuer_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "snapshot": {
+          "revocation_list": {
+            "version": "aitp/0.3",
+            "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+            "published_at": 1711900200,
+            "expires_at": 1711904200,
+            "entries": [
+              {
+                "jti": "550e8400-e29b-41d4-a716-446655440101",
+                "revoked_at": 1711900100
+              }
+            ]
+          },
+          "signature": "__VALID_A_SIG__"
+        }
+      }
+    ],
+    "now": 1711900500,
+    "issuer_manifests": [
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-002",
+          "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      }
+    ],
+    "operation": "verify_delegation_token"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "DELEGATION_SOURCE_TCT_REVOKED",
+    "rationale": "voucher_claims.src_jti (550e8400-e29b-41d4-a716-446655440101) is present in the entries of A's own signed revocation snapshot, where A = voucher_claims.iss = self_aid. Per RFC-AITP-0006 §4 step 7, A MUST look up voucher.src_jti in its own deny list after every signature and claims check has passed (RFC-AITP-0008 §3.3); the hit here MUST reject with DELEGATION_SOURCE_TCT_REVOKED even though the token is otherwise byte-identical to del-001-success's passing shape."
+  }
+}

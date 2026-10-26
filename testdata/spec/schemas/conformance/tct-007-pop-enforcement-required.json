@@ -1,0 +1,96 @@
+{
+  "id": "tct-007",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "dynamic": true,
+  "dynamic_fields": [
+    "iat",
+    "exp",
+    "tct_token",
+    "timestamp",
+    "signature"
+  ],
+  "$comment": "Dynamic fixture — see schemas/conformance/README.md 'Dynamic fixtures'. The fields listed in dynamic_fields carry placeholders (__NOW*__, __VALID_*__, __JWS_*__); a conformance runner MUST mint fresh artifacts with the pinned KAT keypairs (PLACEHOLDERS.md) before execution. The pop_challenge nonce is generated live by the verifier during the sequence. The v0.2 `aud` claim equals `sub` per RFC-AITP-0005 §2 (the v0.1 fixture's audience pointed at the consuming peer; that invariant changed with the v0.2 claims model).",
+  "description": "PoP-enforcement conformance (RFC-AITP-0005 §6 + §6.2). The issuing peer's policy marks the grant `macp.mode.task.v1#pop_required` as requiring downstream proof-of-possession. The consuming peer (verifier) is asked to authorize a capability invocation against this grant. A capability invocation MUST NOT be authorized in the absence of a valid `pop_response` over a fresh `pop_challenge` nonce — the policy marker is a MUST per §6, not a SHOULD, and a consumer that silently skips PoP for a marked grant is non-conformant per §6.2. The runner instruments the verifier so it can assert: (a) a `pop_challenge` was issued for the invocation, (b) no valid `pop_response` was returned within the challenge's freshness window, and (c) the verifier rejected the invocation with POP_RESPONSE_INVALID (or POP_CHALLENGE_INVALID if the challenge itself was malformed by the test harness). Verifiers that allow the invocation through despite (a)+(b) — i.e. silently skipping PoP regardless of the issuing peer's policy — MUST fail this fixture.",
+  "tags": [
+    "security",
+    "tct",
+    "pop",
+    "conformance",
+    "enforcement"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440107",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": "__NOW_MINUS_3600__",
+      "exp": "__NOW_PLUS_3600__",
+      "grants": [
+        "macp.mode.task.v1#pop_required"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "issuer_policy": {
+      "pop_required_grants": [
+        "macp.mode.task.v1#pop_required"
+      ]
+    },
+    "pop_instrumented": true,
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "authorize_capability_invocation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "capability_invocation",
+          "message_id": "33333333-3333-4333-8333-333333333333",
+          "timestamp": "__NOW__",
+          "sender": {
+            "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+          },
+          "payload": {
+            "tct_jti": "550e8400-e29b-41d4-a716-446655440107",
+            "capability": "macp.mode.task.v1#pop_required"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success",
+          "rationale": "Verifier accepts the invocation request and SHOULD respond with a `pop_challenge` for the marked grant."
+        }
+      },
+      {
+        "step": 2,
+        "operation": "expect_pop_challenge_issued",
+        "expected": {
+          "outcome": "success",
+          "side_effects": {
+            "pop_challenge_issued": true
+          },
+          "rationale": "Verifier MUST issue a `pop_challenge` because the invoked grant is marked as requiring PoP in `issuer_policy.pop_required_grants`."
+        }
+      },
+      {
+        "step": 3,
+        "operation": "withhold_pop_response",
+        "expected": {
+          "outcome": "failure",
+          "error_code": "POP_RESPONSE_INVALID",
+          "side_effects": {
+            "capability_authorized": false
+          },
+          "rationale": "No valid `pop_response` is returned within the challenge's freshness window. The verifier MUST reject the invocation. A verifier that authorizes the invocation under these conditions is silently skipping PoP for a marked grant and is non-conformant per RFC-AITP-0005 §6.2."
+        }
+      }
+    ]
+  }
+}

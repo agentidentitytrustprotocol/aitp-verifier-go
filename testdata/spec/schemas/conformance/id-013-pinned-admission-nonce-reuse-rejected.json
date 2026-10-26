@@ -1,0 +1,88 @@
+{
+  "id": "id-013",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. Both proofs are real Ed25519 signatures by workerA over the §3.1 tuple: step 1 over message_id …901 (id-019's proof), step 2 over message_id …902. Both KAT scripts re-verify them. Only the envelope signatures are placeholders. Verifier state carries from step 1 to step 2. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "A consumed `pop_nonce` MUST NOT be accepted again, even under a fresh `message_id` (RFC-AITP-0002 §3.4 nonce rules). Step 1 is id-019's presentation, which succeeds and consumes the nonce. Step 2 presents the same nonce under a new `message_id` with its own valid proof and valid envelope signature. It passes the `message_id` deny list and every signature check, and MUST fail the atomic nonce lookup-and-consume (check-order step 9) with IDENTITY_FAILED. A verifier that relies on the `message_id` deny list alone admits step 2.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "nonce",
+    "replay",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711900250
+      }
+    ],
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "verify_identity_presentation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440901",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "C7z8HKjjcw0uK9rZaIhxf7V8dW1UJvzal0pJCxrv0y1R7xri3I2kZ7LyxgJY3R96qd0h3FysO_YOOtKLcuPkCw"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 2,
+        "operation": "verify_identity_presentation",
+        "envelope": {
+          "version": "aitp/0.3",
+          "message_type": "identity_presentation",
+          "message_id": "770e8400-e29b-41d4-a716-446655440902",
+          "timestamp": 1711900000,
+          "sender": {
+            "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "payload": {
+            "identity": {
+              "type": "pinned_key",
+              "subject": "internal-worker-a",
+              "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "proof": "Z7riAPm-zSBn8kHaVn0UcH5rBabYDTSYsXYbFbYQAhmlmeG4-GhsseuZNkRC9k8r7CPRs9J26zvV0EUiA4Q_AA"
+            },
+            "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+          },
+          "signature": "__VALID_ENVELOPE_SIG__"
+        },
+        "expected": {
+          "outcome": "failure",
+          "error_code": "IDENTITY_FAILED",
+          "rationale": "The nonce was consumed by step 1. A consumed nonce is never accepted again, and the fresh `message_id` does not change that (RFC-AITP-0002 §3.4). It is not REPLAY_DETECTED: the `message_id` is new."
+        }
+      }
+    ]
+  }
+}

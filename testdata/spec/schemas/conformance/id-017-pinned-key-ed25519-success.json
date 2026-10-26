@@ -1,0 +1,73 @@
+{
+  "id": "id-017",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "The positive counterpart of id-007: the same Ed25519 pinned-key descriptor and proof (kat-pinned-key-proof-001, signed by workerA / kat-keypair-003), with workerA's AID now in `trust_store`. All five steps of RFC-AITP-0002 §3.2 pass and the identity MUST verify. Before this fixture the conformance pack had no passing pinned-key case, so a verifier that rejected every pinned identity passed every pinned fixture.",
+  "tags": [
+    "success",
+    "identity",
+    "pinned_key",
+    "trust-store"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440701",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-a",
+            "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "The sender is in `trust_store`, `public_key` is byte-equal to the AID key, and the untagged Ed25519 proof verifies over the 193-byte `proof_input` of `kat-pinned-key-proof-001`."
+  }
+}

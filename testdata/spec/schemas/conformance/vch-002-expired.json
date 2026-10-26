@@ -1,0 +1,37 @@
+{
+  "id": "vch-002",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Expired grant voucher. Same shape as vch-001 but the voucher's `exp` is in the past relative to the pinned reference clock. The voucher has no independent lifecycle: it is only ever verified by its issuer during delegation verification, where an expired voucher MUST be rejected at the expiry-monotonicity step (RFC-AITP-0006 §4 step 5: `voucher.exp` MUST be in the future). The signature, typ, and alg checks pass; only the expiry fails.",
+  "tags": [
+    "failure",
+    "voucher",
+    "expiry"
+  ],
+  "input": {
+    "voucher_token": "__JWS_GRANT_VOUCHER__",
+    "voucher_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "grants": [
+        "macp.mode.task.v1",
+        "read_data"
+      ],
+      "iat": 1711800000,
+      "exp": 1711803600,
+      "src_jti": "550e8400-e29b-41d4-a716-446655445002"
+    },
+    "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_grant_voucher"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "DELEGATION_EXPIRED",
+    "$comment": "There is no voucher-specific expiry code in registries/error-codes.md: a voucher is only ever verified in delegation context, where voucher expiry surfaces as DELEGATION_EXPIRED per RFC-AITP-0006 §4 step 5 ('voucher.exp MUST be in the future ... else DELEGATION_EXPIRED'). This fixture pins that mapping for the standalone verify_grant_voucher conformance op.",
+    "rationale": "voucher.exp (1711803600) < reference clock (1711900000). Signature/typ/alg are valid; rejection is the §4 step 5 expiry check."
+  }
+}

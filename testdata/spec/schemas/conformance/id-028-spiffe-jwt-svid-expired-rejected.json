@@ -1,0 +1,84 @@
+{
+  "id": "id-028",
+  "rfc": "RFC-AITP-0002",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-spiffe-identity",
+  "description": "A JWT-SVID whose `exp` is 60 seconds before the reference clock, with `iat` 360 seconds before it. Every other claim and the signature are valid (JWT-SVID §3.3, RFC-AITP-0002 §6.3). The verifier is agentA (`self_aid`, kat-keypair-001), configured to accept `spiffe`, with the `spiffe_bundles` store in `input.trust_anchors_config`: one bundle, for `prod.example.com`, holding the run-time test JWT-SVID authority and X.509 CA (PLACEHOLDERS.md). The sender is agentB (kat-keypair-002). Draft fixture for the Proposed `spiffe` identity type (RFC-AITP-0002 §6): a default runner SKIPs it.",
+  "tags": [
+    "identity",
+    "spiffe",
+    "jwt-svid",
+    "expiry"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_anchors_config": {
+      "spiffe_bundles": [
+        {
+          "trust_domain": "prod.example.com",
+          "bundle": {
+            "spiffe_sequence": 1,
+            "keys": [
+              "__TEST_SPIFFE_JWT_AUTHORITY_JWK__",
+              "__TEST_SPIFFE_X509_CA_JWK__"
+            ]
+          }
+        }
+      ]
+    },
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655442801",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "identity": {
+          "type": "spiffe",
+          "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b",
+          "svid_type": "jwt-svid",
+          "proof": "__JWT_SVID_EXPIRED__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "spiffe"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "spiffe",
+            "subject": "spiffe://prod.example.com/ns/payments/sa/agent-b"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "YWl0cC1zcGlmZmUtand0NA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The JWT-SVID's `exp` is in the past."
+  }
+}

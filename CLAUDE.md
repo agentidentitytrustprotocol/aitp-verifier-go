@@ -29,7 +29,9 @@ another implementation does.
 
 `SPEC_VERSION` holds the spec commit this code is tested against. Test data
 (known-answer vectors, fixtures, schemas, the error-code registry) is
-vendored from that commit under `vendor/spec/`; never edit it by hand.
+copied from that commit into `testdata/spec/` by `scripts/sync-spec.sh`;
+never edit it by hand. (Not `vendor/`: a top-level `vendor/` directory puts
+the go command into vendor mode and breaks `go list -m all`.)
 
 ## Before every commit
 

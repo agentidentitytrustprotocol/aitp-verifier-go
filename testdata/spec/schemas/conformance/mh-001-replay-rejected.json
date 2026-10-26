@@ -1,0 +1,35 @@
+{
+  "id": "mh-001",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Replayed MUTUAL_HELLO (duplicate message_id) MUST be rejected on the second send.",
+  "tags": [
+    "security",
+    "mutual-handshake",
+    "replay"
+  ],
+  "input": {
+    "sequence": [
+      {
+        "step": 1,
+        "operation": "process_handshake_message",
+        "message_id": "550e8400-e29b-41d4-a716-446655440099",
+        "expected": {
+          "outcome": "success"
+        }
+      },
+      {
+        "step": 2,
+        "operation": "process_handshake_message",
+        "message_id": "550e8400-e29b-41d4-a716-446655440099",
+        "expected": {
+          "outcome": "failure",
+          "error_code": "REPLAY_DETECTED"
+        }
+      }
+    ]
+  }
+}

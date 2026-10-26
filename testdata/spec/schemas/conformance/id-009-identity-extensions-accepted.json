@@ -1,0 +1,75 @@
+{
+  "id": "id-009",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "A `mutual_hello` payload whose `identity` descriptor carries an unrecognized key INSIDE `extensions`. RFC-AITP-0001 §7: unknown keys inside the extension namespace MUST be ignored, never rejected — forward compatibility rides exclusively on the namespace. The identity descriptor reserves an `extensions` slot like every other signed object; it is not an exception to that rule. Receivers MUST verify the identity normally and succeed. Counterpart: id-008, which carries a forbidden member OUTSIDE the namespace and MUST fail.",
+  "tags": [
+    "success",
+    "identity",
+    "oidc",
+    "extensions",
+    "forward-compatibility"
+  ],
+  "input": {
+    "step": "received MUTUAL_HELLO from peer",
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440901",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "identity": {
+          "type": "oidc",
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "proof": "__VALID_JWT__",
+          "extensions": {
+            "vendor.example/attestation_tier": "gold"
+          }
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.openai.com"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "oidc",
+            "issuer": "https://auth.openai.com",
+            "subject": "agent-A"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "DLdiOypCLaEk3O1-E8a5TA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "`vendor.example/attestation_tier` sits inside `identity.extensions`, so RFC-AITP-0001 §7's MUST-ignore applies. A verifier that rejects it is over-enforcing §7 — the asymmetry between an unknown member beside the namespace (reject) and an unknown key inside it (ignore) is deliberate."
+  },
+  "$comment": "Accept-side counterpart to id-008, and the fixture that pins the identity descriptor's `extensions` slot as real (issue #40). The handshake schema's mirror of the descriptor had no `extensions` property at all while the canonical schema did, so a descriptor carrying `extensions` validated standalone and failed inside a handshake payload — an implementation could enforce RFC-AITP-0001 §7 by rejecting every unrecognized member and pass every reject fixture while violating §7's MUST-ignore half for this artifact. That half is only observable here."
+}

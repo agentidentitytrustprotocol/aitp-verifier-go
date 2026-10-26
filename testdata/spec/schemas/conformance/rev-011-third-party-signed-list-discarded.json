@@ -1,0 +1,63 @@
+{
+  "id": "rev-011",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins the per-issuer revocation model of RFC-AITP-0008 §1.5 (governance/DECISIONS.md, \"Revocation snapshots are per issuer\"; aitp-control-plane#153). Nothing is minted, and a runner MUST NOT re-mint either value. `tct_token` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json (issuer kat-keypair-001), and `tct_token_claims` is its `decoded_claims`. The snapshot is the committed signed example known-answer/signed-examples/revocation/kat-keypair-005-snapshot.json, unmodified: a fresh, schema-valid list whose signed `issuer` is kat-keypair-005-p256 and whose signature verifies under that key. It stands for a list a third party signs with its own key, such as a central registry. `issuer_revocation_list.issuer` is the TCT's issuer, so the snapshot was obtained for kat-keypair-001 but was not signed by it. The TCT's `jti` is not in `entries`. scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both check that the token is that signed example and verifies, that the snapshot is the committed one and verifies under its own signed `issuer`, that this `issuer` is not the TCT's `iss`, and that the `jti` is not listed. The reference clock `__NOW__` = 1711900000 applies, and at it the TCT and the snapshot are both fresh.",
+  "description": "A valid TCT is checked against a revocation snapshot obtained for its issuer, but the snapshot's signed `issuer` is a different AID, and its signature is valid under that other AID's key. RFC-AITP-0008 §1.5 makes a snapshot valid only for tokens its signer issued: a snapshot whose signed `issuer` is not the issuing peer whose token is being checked MUST be discarded and treated as absent, so `revocation_policy.mode` decides. Under `fail_closed`, receivers MUST reject with TCT_REVOKED (RFC-AITP-0008 §1.5, §3.1). No third party can vouch for another issuer's revocation state in aitp/0.3: a verifier that honoured this list would let whoever holds the third-party key un-revoke or mass-revoke tokens it never issued.",
+  "tags": [
+    "failure",
+    "security",
+    "tct",
+    "revocation",
+    "fail-closed",
+    "known-answer"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "issuer_revocation_list": {
+      "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "fail_mode": "fail_closed",
+      "snapshot": {
+        "revocation_list": {
+          "version": "aitp/0.3",
+          "issuer": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "published_at": 1711900000,
+          "expires_at": 1711903600,
+          "entries": [
+            {
+              "jti": "550e8400-e29b-41d4-a716-446655440099",
+              "revoked_at": 1711900060,
+              "reason": "key_compromised"
+            }
+          ]
+        },
+        "signature": "p256.G6F0v2yvar_yXBxjqbjH77tHufVG_yNxKT2A3e7HETpKDTm2eOXbCc2p65juU0YYpP4eRImlg6UPCcQey6cNeg"
+      }
+    },
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_REVOKED",
+    "rationale": "The snapshot is well-formed, fresh and correctly signed, but by kat-keypair-005-p256, not by the TCT's issuer kat-keypair-001. RFC-AITP-0008 §1.5 discards it, and a discarded snapshot is absent. Under fail_closed, absence means revocation status is unknown, which is treated as revoked: TCT_REVOKED. The `jti` is not in the entries, so a verifier that accepts the list because its signature verifies under its own `issuer`, and then finds the token unlisted, accepts the token and fails this fixture. So does a verifier that drops the mismatched list and reads it as \"not revoked\". Verifying the signature under the TCT issuer's key instead also discards the snapshot (the signature does not verify under that key), and reaches the same TCT_REVOKED."
+  }
+}

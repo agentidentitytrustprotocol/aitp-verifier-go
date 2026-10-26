@@ -1,0 +1,44 @@
+{
+  "id": "env-011",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Strict cutover between revisions (VERSIONING.md, aitp/0.2 -> aitp/0.3). The envelope is env-007's with `version` set to the previous revision `aitp/0.2` and a fresh message_id, signed by kat-keypair-001 over sig_input_v2 = \"aitp-envelope-v2\" || 0x00 || JCS(envelope without `signature`). The signature is committed and valid for these exact bytes (re-signed by scripts/recompute-known-answer-independent.py, verified by scripts/verify-known-answer.mjs), so the only reason to reject is the revision literal. Unlike env-010, whose signature does not cover its altered `version`, nothing here is tampered: an aitp/0.3 receiver has no dual-accept window and rejects a well-signed aitp/0.2 envelope with UNKNOWN_VERSION.",
+  "description": "A correctly signed envelope from the previous revision (`version` = `aitp/0.2`). aitp/0.3 is a strict cutover: a receiver implementing aitp/0.3 does not implement aitp/0.2, and RFC-AITP-0001 §5.4 checks `version` first. Expected: UNKNOWN_VERSION, not success and not INVALID_SIGNATURE.",
+  "tags": [
+    "failure",
+    "envelope",
+    "version",
+    "cutover"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.2",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441011",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "extensions": {
+        "com.example.debug_trace": {
+          "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+      },
+      "signature": "qXNURAet0h9miBTCFOBSjsj01ptplj_702PekH0hTCLRMmGziQvW-7jLMsTfP4ZyF5--0FNgJKMJ-RmFo3aOBg"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_VERSION",
+    "rationale": "`version` is `aitp/0.2`, the frozen previous revision. An aitp/0.3 receiver does not accept it (strict cutover, no dual-accept window) and the RFC-AITP-0001 §5.4 check order rejects an unknown `version` with UNKNOWN_VERSION before the member set or the signature is examined. The signature itself is valid over sig_input_v2 of these bytes."
+  }
+}

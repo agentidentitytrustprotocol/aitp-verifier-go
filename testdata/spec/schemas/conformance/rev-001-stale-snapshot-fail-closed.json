@@ -1,0 +1,40 @@
+{
+  "id": "rev-001",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The snapshot signature placeholder is __VALID_A_SIG__ (issuing peer is agentA / kat-keypair-001 per the PLACEHOLDERS.md AID role table). Its signing input is the JCS canonical form of the INNER `revocation_list` body — the `{\"revocation_list\": ..., \"signature\": ...}` envelope is the wire shape and is never signed (RFC-AITP-0008 §1.5, RFC-AITP-0001 §5.4.1). Note the signature is a sibling of the body, not a member of it, so nothing is stripped before canonicalizing. This is NOT unchanged from rc.3, which signed the wrapped form; v0.2 mandates the inner form.",
+  "description": "A signed revocation snapshot whose `published_at` exceeds the verifier's `max_staleness_secs` policy MUST be treated as no-snapshot. Implementations configured `FailClosed` MUST then reject the underlying TCT with TCT_REVOKED: unknown revocation status is treated as revoked, which is what fail-closed means. The stale snapshot is *absent*, not invalid — REVOCATION_SNAPSHOT_INVALID and REVOCATION_SNAPSHOT_SIGNATURE_INVALID are for a snapshot the peer did obtain and could not trust (RFC-AITP-0008 §3.1). The earlier wording here offered KEY_RESOLUTION_FAILED as an alternative \"depending on the call site\"; that hedge is removed because a fixture naming two acceptable codes pins neither, and `expected.error_code` always asserted exactly one. The snapshot here is otherwise well-formed and signed by the issuer; only its age trips the policy. (RFC-AITP-0008 §1.5; alpha.5 P12.)",
+  "tags": [
+    "failure",
+    "revocation",
+    "policy",
+    "fail-closed"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711990000,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711800000,
+        "expires_at": 1712076400,
+        "entries": []
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_REVOKED",
+    "rationale": "Snapshot is 190000 s old vs. policy max of 3600 s. FailClosed treats stale-as-revoked."
+  }
+}

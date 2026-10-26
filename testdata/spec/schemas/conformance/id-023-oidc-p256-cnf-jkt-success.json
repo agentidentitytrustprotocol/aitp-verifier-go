@@ -1,0 +1,72 @@
+{
+  "id": "id-023",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "An OIDC identity presented by a P-256 sender (`aid:pubkey:p256:`, kat-keypair-005-p256) MUST verify. The JWT's `cnf.jkt` is the RFC 7638 thumbprint of the EC JWK `{\"crv\":\"P-256\",\"kty\":\"EC\",\"x\":…,\"y\":…}` whose `x`/`y` are the coordinates of the decompressed SEC1 point in the AID (RFC-AITP-0002 §2.2.1, RFC-AITP-0001 §5.4.4): `kat-jwk-thumb-005-p256`, `6uuEaX_87uMh4VKEtSDkENgjC0g7Evt6vliSnD7XSDE`. A verifier that builds the OKP Ed25519 JWK for every AID, or puts the 44-char compressed identifier in `x`, computes a different thumbprint and fails this fixture.",
+  "tags": [
+    "success",
+    "identity",
+    "oidc",
+    "p256",
+    "key-binding"
+  ],
+  "input": {
+    "step": "received MUTUAL_HELLO from peer",
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655442301",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      },
+      "payload": {
+        "identity": {
+          "type": "oidc",
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-p256",
+          "proof": "__VALID_JWT__"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "handshake_endpoint": "https://p256.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [
+            "https://auth.openai.com"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "oidc",
+            "issuer": "https://auth.openai.com",
+            "subject": "agent-p256"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "IyMjIyMjIyMjIyMjIyMjIw"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Every RFC-AITP-0002 §2.3 step passes. `__VALID_JWT__` is minted with `aud` = `self_aid`, `nonce` = the payload `pop_nonce`, and `cnf.jkt` = the thumbprint of the sender AID's key in the algorithm form of that AID (PLACEHOLDERS.md). For this P-256 AID the canonical JWK is the 126-byte EC form of `kat-jwk-thumb-005-p256`, members in lexicographic order (`crv`, `kty`, `x`, `y`)."
+  },
+  "$comment": "Issue #68. RFC-AITP-0002 §2.2.1 used to pin the `cnf.jkt` JWK to the Ed25519 OKP form \"exactly\", so an OIDC-bound agent with a P-256 AID had no conformant `cnf.jkt` although P-256 AIDs are mandatory to verify in v0.2. This fixture pins the EC case. The envelope, Manifest and PoP signatures are P-256 (`agentP256` role); the OIDC issuer key is the runner's test issuer, as in every other `__VALID_JWT__` fixture."
+}

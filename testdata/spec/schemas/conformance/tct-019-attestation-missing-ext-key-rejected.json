@@ -1,0 +1,52 @@
+{
+  "id": "tct-019",
+  "rfc": "RFC-AITP-0005",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-self-attestation",
+  "$comment": "Negative fixture for RFC-AITP-0005 §5.3 (\"Statement\"). The token is a standard mint (`__JWS_TCT__`) signed by kat-keypair-001, which is `iss`, `sub` and `aud`. The claims are kat-tct-002's apart from `jti` and `ext`, and they are schema-valid, so the map entry is `expect: valid`. Extension-gated: consuming self-attestations is a relying-party role that RFC-AITP-0001 §10 does not require, so this fixture is `status: extension` under `feature: aitp-self-attestation`. The default runner MUST SKIP it; an implementation that claims the role MUST pass it (RFC-AITP-0001 §10 item 9). `verify_attestation` is not a grant context (RFC-AITP-0005 §5.3, \"Verification\"; PLACEHOLDERS.md, Operation key).",
+  "description": "A relying party MUST reject a self-attestation whose `ext` lacks the key it expects, with TCT_SIGNATURE_INVALID (RFC-AITP-0005 §5.3, \"Statement\"). The relying party (kat-keypair-002) consumes `io.agentidentitytrustprotocol.kat` statements. The attestation is otherwise valid: `iss == sub == aud`, the sole grant is `aitp.attestation`, `cnf.jkt` is the issuer's thumbprint, and the issuer key is in the relying party's records. Its `ext` carries only `com.example.note`, a key the relying party does not consume and so ignores. A relying party that treats \"no unknown-key error\" as success, or ignores a missing statement, fails this fixture.",
+  "tags": [
+    "failure",
+    "tct",
+    "attestation",
+    "ext",
+    "relying-party"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440119",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 4867660000,
+      "grants": [
+        "aitp.attestation"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      },
+      "ext": {
+        "com.example.note": {
+          "statement": "a statement under a key the relying party does not consume"
+        }
+      }
+    },
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "expected_ext_key": "io.agentidentitytrustprotocol.kat",
+    "trust_store": [
+      "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+    ],
+    "waive_manifest_cap": true,
+    "operation": "verify_attestation"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §5.3: the §2 ignore-unknown rule covers `com.example.note`, but it does not satisfy the relying party's expectation, and a relying party MUST reject an attestation whose `ext` lacks the key it expects. Every other attestation check passes, so the missing key is the only defect."
+  }
+}

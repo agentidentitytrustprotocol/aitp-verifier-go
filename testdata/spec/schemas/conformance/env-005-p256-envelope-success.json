@@ -1,0 +1,38 @@
+{
+  "id": "env-005",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The minter resolves __VALID_ENVELOPE_SIG__ to the p256-tagged signature form `p256.<86-char-b64url>` (RFC-AITP-0001 §5.4.3) because the sender AID is a P-256 AID (kat-keypair-005-p256, known-answer/keypairs.json). The resolved value is committed, not minted: known-answer/signed-examples/envelope/kat-keypair-005-envelope.json (kat-envelope-001-p256) carries this exact envelope with its real signature, and scripts/verify-known-answer.mjs asserts that the two envelopes are identical apart from `signature`. A minter SHOULD substitute that committed signature; a re-mint with RFC 6979 deterministic k and low-S reproduces it byte for byte, and any other value is a minter defect. The signature is ECDSA on P-256 over d = sha256(sig_input_v2) with e = d, never hashed again, where sig_input_v2 is \"aitp-envelope-v2\" || 0x00 || JCS(envelope without `signature`) (RFC-AITP-0001 §5.4, §5.4.6), low-S (§5.4.7), raw R||S encoding. A verifier that only implements Ed25519 fails this fixture; dual-algorithm verification is mandatory in v0.2 (RFC-AITP-0001 §5.4.3).",
+  "description": "Envelope verification happy path with a P-256 sender. The sender's AID uses the v0.2 algorithm-tagged form `aid:pubkey:p256:<44-char>` (RFC-AITP-0001 §5.3) and the envelope signature uses the algorithm-tagged wire form `p256.<sig>` (§5.4.3). Timestamp is within the tolerance window relative to the pinned reference clock, the message_id is fresh, and the signature verifies under the sender's P-256 key. Expected: success.",
+  "tags": [
+    "success",
+    "envelope",
+    "p256",
+    "crypto-agility"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441005",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      },
+      "payload": {
+        "hello": true
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Envelope is fresh, structurally valid, and the p256-tagged signature verifies under the P-256 key encoded in the sender AID."
+  }
+}

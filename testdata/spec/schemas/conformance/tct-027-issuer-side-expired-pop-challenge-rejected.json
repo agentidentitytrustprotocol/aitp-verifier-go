@@ -1,0 +1,74 @@
+{
+  "id": "tct-027",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Static fixture. `tct_token` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json (`iss` = kat-keypair-001, `sub` = `aud` = kat-keypair-002), as in tct-022, and `tct_token_claims` is its `decoded_claims`. A runner MUST NOT re-mint it. `self_aid` is the token's `iss`: the verifier is the issuer, receiving its own TCT back (RFC-AITP-0005 §10.5). The reference clock `__NOW__` = 1711900000 applies, and at it the TCT is fresh. The input carries no `expected_audience`: under §10.5 the verifier takes the expected audience only from the authenticated presenter AID, never from the token. `issuer_policy.pop_posture: enforce-for-all` is the deployment posture that requires downstream PoP for every grant (RFC-AITP-0005 §6). `pop_required_grants` lists every grant in the token, so a runner that configures PoP only through the per-grant surface of §6.2 sets the same posture. `outstanding_pop_challenges` is the challenge the issuer issued for this `jti`, as `{tct_jti, nonce, expires_at}`; the nonce is the 16 bytes 0x21..0x30. `pop_signature` is a real Ed25519 signature over sha256(base64url_decode(nonce)) (RFC-AITP-0005 §6.1), committed here; only the envelope signature is a placeholder, minted with the `sender` key. scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both re-verify `pop_signature`, check that the token is the signed example, and check that tct-027, tct-028 and tct-029 differ only in the challenge `expires_at` (tct-027), the sender and `pop_signature` (tct-028) and `message_id`.",
+  "description": "The subject answers the issuer's PoP challenge after it has expired (RFC-AITP-0005 §10.5 item 3, §6.2). The verifier is the token's `iss`, the `pop_response` is sent by the `sub` key and its `pop_signature` is valid, but the challenge's `expires_at` (1711899950) is before the reference clock. A stale challenge MUST be rejected with POP_CHALLENGE_INVALID, so the presenter's AID is not established and the capability is not authorized.",
+  "tags": [
+    "failure",
+    "security",
+    "tct",
+    "pop",
+    "issuer-side",
+    "known-answer"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "issuer_policy": {
+      "pop_posture": "enforce-for-all",
+      "pop_required_grants": [
+        "macp.mode.task.v1"
+      ]
+    },
+    "outstanding_pop_challenges": [
+      {
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000",
+        "nonce": "ISIjJCUmJygpKissLS4vMA",
+        "expires_at": 1711899950
+      }
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "pop_response",
+      "message_id": "22222222-2222-4222-8222-222222220027",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000",
+        "nonce_echo": "ISIjJCUmJygpKissLS4vMA",
+        "pop_signature": "IpxlqOg14Le0aA5yoMh8Iibwcb87i3Tvie1356mFeau1-3TOA2JJDbBlkdvKy91CCOOyVxEkuVeXl5AjOWZLDw"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_tct_as_issuer"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "POP_CHALLENGE_INVALID",
+    "side_effects": {
+      "capability_authorized": false
+    },
+    "rationale": "The challenge expired at 1711899950, before the response's timestamp and the reference clock 1711900000. A response to an expired challenge does not show who holds the `sub` key now. The signature is valid under `sub`, so the only defect is the challenge."
+  }
+}

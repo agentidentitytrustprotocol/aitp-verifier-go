@@ -1,0 +1,56 @@
+{
+  "id": "id-014",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. `pop_nonce` `AQIDBAUGBwgJCgsMDQ4P` is the 15-byte truncation of the outstanding challenge nonce. The proof is minted over the 192-byte proof_input with that nonce; both KAT scripts re-verify it. The sender is in `trust_store` so the only defect is the nonce length. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "A presented `pop_nonce` that does not decode to exactly 16 bytes MUST be rejected with IDENTITY_FAILED before any signature verification (RFC-AITP-0002 §3.4, nonce rules and check-order step 5). The verifier issued a 16-byte nonce; the presenter returns its first 15 bytes. The proof is a real Ed25519 signature over the 192-byte tuple built with that 15-byte nonce, so a verifier that skips the length check and verifies the proof against the presented nonce finds the signature valid.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "nonce",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711900250
+      }
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "identity_presentation",
+      "message_id": "770e8400-e29b-41d4-a716-446655440903",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "BPnTplfMDUaKWbsEnYNHB3Xnl7on0vqYvu0qhs0G3im-oALxBRtR_gb7ij_L8LFKtqGOPLjp9pY_MYyeAwChCA"
+        },
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4P"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_identity_presentation"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "RFC-AITP-0002 §3.4: `pop_nonce` MUST decode to exactly 16 bytes, and any other length is rejected with IDENTITY_FAILED before any signature verification. The 15-byte nonce also matches no issued nonce, but the length check comes first (step 5), so neither the envelope signature nor the proof is evaluated."
+  }
+}

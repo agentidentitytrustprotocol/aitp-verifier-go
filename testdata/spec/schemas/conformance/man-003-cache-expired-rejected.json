@@ -1,0 +1,48 @@
+{
+  "id": "man-003",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Cached Manifest whose `expires_at` predates the verifier's current time MUST NOT be returned by `cached_manifest()` and MUST NOT be used for handshake bootstrap. Implementations that store Manifests in a local cache MUST honor `expires_at` on every read; serving a stale cached entry is treated as MANIFEST_EXPIRED. (RFC-AITP-0003 §4.2; alpha.5 P11.)",
+  "tags": [
+    "failure",
+    "manifest",
+    "expiry",
+    "cache"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711990000,
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711800000,
+      "expires_at": 1711899000,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "MANIFEST_EXPIRED"
+  }
+}

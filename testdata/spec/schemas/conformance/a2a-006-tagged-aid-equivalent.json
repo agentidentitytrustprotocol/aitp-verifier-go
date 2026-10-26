@@ -1,0 +1,126 @@
+{
+  "id": "a2a-006",
+  "rfc": "RFC-AITP-0014",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-a2a-agent-card",
+  "$comment": "The Agent Card is an A2A 1.0.0 AgentCard (JSON names as in the A2A specification, https://a2a-protocol.org/latest/specification/). `input.agent_card` is the Card as fetched; `input.selected_interface_url` is the AgentInterface the client intends to call; `input.manifest` is the Manifest fetched from the Card's `params.manifestUrl` (inner body; placeholders resolve as for man-*), or `input.manifest_fetch` records a fetch outcome. The runner MUST NOT fetch anything.",
+  "description": "The Card's `params.aid` uses the algorithm-tagged form `aid:pubkey:ed25519:<key>` while agent B's Manifest uses the legacy untagged form of the same Ed25519 key. RFC-AITP-0001 §5.3 makes the two forms equal for trust decisions, and RFC-AITP-0014 §4.2 step 4 compares by algorithm and key, so the binding succeeds.",
+  "tags": [
+    "success",
+    "a2a",
+    "agent-card",
+    "aid-equivalence"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "agent_card": {
+      "name": "Research Agent B",
+      "description": "Summarizes papers.",
+      "supportedInterfaces": [
+        {
+          "url": "https://b.agents.example.com/a2a/v1",
+          "protocolBinding": "HTTP+JSON",
+          "protocolVersion": "1.0"
+        }
+      ],
+      "version": "1.4.0",
+      "capabilities": {
+        "streaming": true,
+        "extensions": [
+          {
+            "uri": "https://agentidentitytrustprotocol.io/ext/a2a/v1",
+            "description": "AITP peer trust. Verify the Manifest at manifestUrl; send the TCT in x-aitp-tct.",
+            "required": true,
+            "params": {
+              "aid": "aid:pubkey:ed25519:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "manifestUrl": "https://b.agents.example.com/.well-known/aitp-manifest",
+              "securityScheme": "aitp"
+            }
+          }
+        ]
+      },
+      "securitySchemes": {
+        "aitp": {
+          "apiKeySecurityScheme": {
+            "description": "AITP Trust Context Token, RFC-AITP-0014 (https://agentidentitytrustprotocol.io/ext/a2a/v1).",
+            "location": "header",
+            "name": "x-aitp-tct"
+          }
+        }
+      },
+      "securityRequirements": [
+        {
+          "schemes": {
+            "aitp": {
+              "list": []
+            }
+          }
+        }
+      ],
+      "defaultInputModes": [
+        "text/plain"
+      ],
+      "defaultOutputModes": [
+        "text/plain"
+      ],
+      "skills": [
+        {
+          "id": "summarize",
+          "name": "Summarize",
+          "description": "Summarize a paper.",
+          "tags": [
+            "research"
+          ]
+        }
+      ]
+    },
+    "selected_interface_url": "https://b.agents.example.com/a2a/v1",
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "extensions": {
+        "rfc-aitp-0014.a2a_interfaces": [
+          "https://b.agents.example.com/a2a/v1"
+        ]
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_a2a_agent_card_binding"
+  },
+  "expected": {
+    "outcome": "success",
+    "effective": {
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "accepted_identity_types": [
+        "oidc"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake"
+    },
+    "rationale": "Both AID strings denote kat-keypair-002's Ed25519 key; step 4 compares keys, not strings (RFC-AITP-0001 §5.3). The effective AID is the Manifest's own string."
+  }
+}

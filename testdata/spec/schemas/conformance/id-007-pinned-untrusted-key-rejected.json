@@ -1,0 +1,74 @@
+{
+  "id": "id-007",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "A pinned-key proof whose 32-byte Ed25519 public key is not present in the verifier's local pinned-key trust store MUST be rejected with IDENTITY_FAILED — even when the proof signature is cryptographically valid (RFC-AITP-0002 §3.2 step 3; alpha.5 P3). Without this gate the proof only proves key possession; it does not prove the verifier should *honor* keys it has never seen. The fixture supplies a concrete `trust_store` to make the policy decision deterministic.",
+  "tags": [
+    "security",
+    "identity",
+    "pinned_key",
+    "trust-store"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440701",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-a",
+            "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The signer key (workerA, kat-keypair-003) is NOT in `trust_store`. The verifier MUST reject at step 3 of RFC-AITP-0002 §3.2, before step 5, even though the proof signature would itself verify."
+  }
+}

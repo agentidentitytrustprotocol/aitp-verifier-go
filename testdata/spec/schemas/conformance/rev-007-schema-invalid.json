@@ -1,0 +1,45 @@
+{
+  "id": "rev-007",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins `REVOCATION_SNAPSHOT_INVALID` (issue #39). The registry previously had no revocation-specific code family at all — not for structural failure, not for signature failure — so an implementation verifying `aitp-revocation-list.schema.json` had nothing to return and borrowed `TCT_SIGNATURE_INVALID`, reporting a *snapshot* failure as a *token* failure. Distinct from rev-005: that fixture's defect is an extra member (`UNKNOWN_FIELD`), this one's is a missing REQUIRED member. Otherwise identical to rev-005's body.",
+  "description": "A revocation snapshot whose inner `revocation_list` body is missing the REQUIRED `published_at` member. RFC-AITP-0008 §1.5 runs structural validation before any signature work. Receivers MUST reject with REVOCATION_SNAPSHOT_INVALID. Note what this is NOT: a snapshot that is merely stale or unreachable is *absent*, not invalid, and is handled by `revocation_policy.mode` (§3.1) — under `fail_closed` that surfaces as TCT_REVOKED, which rev-001 pins.",
+  "tags": [
+    "failure",
+    "revocation",
+    "schema",
+    "structural"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711899900
+          }
+        ]
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "REVOCATION_SNAPSHOT_INVALID",
+    "rationale": "`published_at` is REQUIRED by `aitp-revocation-list.schema.json` for the inner `revocation_list` body and absent. The snapshot is otherwise well-formed and fresh, so the missing member is the only defect."
+  }
+}

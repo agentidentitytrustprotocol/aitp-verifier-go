@@ -1,0 +1,51 @@
+{
+  "id": "man-004",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative half of the man-004/man-005 pair pinning RFC-AITP-0001 §7 for the Manifest body. `deployment_region` is an ordinary-looking unknown member placed as a SIBLING of the schema-defined fields, not inside `extensions` — the case RFC-AITP-0012 does not reserve. `aitp-manifest.schema.json`'s inner `manifest` object sets `additionalProperties: false`, so this is a schema-level rejection, matching how man-002 (unknown version) is asserted. Body is otherwise byte-identical to man-003's non-expired shape.",
+  "description": "Manifest body carries one unrecognized member (`deployment_region`) beside its known, schema-defined fields — not inside `extensions`. RFC-AITP-0001 §7 requires unknown JSON fields outside `extensions` to be REJECTED: silently ignoring them would let one implementation hash the field into the JCS-canonical signing input while another drops it first, so the same wire bytes verify under one peer's reconstruction and fail under another's. Receivers MUST reject with UNKNOWN_FIELD. Counterpart: man-005, which places an unrecognized key INSIDE `extensions` and MUST succeed.",
+  "tags": [
+    "failure",
+    "manifest",
+    "unknown-field",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "deployment_region": "us-east-1",
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_FIELD",
+    "rationale": "`deployment_region` is not a member `aitp-manifest.schema.json` defines and it is not inside `extensions`, so RFC-AITP-0001 §7's MUST-reject applies. The Manifest is otherwise well-formed and unexpired; the unknown sibling field is the only defect under test."
+  }
+}

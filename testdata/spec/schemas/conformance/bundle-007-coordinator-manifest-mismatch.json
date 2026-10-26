@@ -1,0 +1,102 @@
+{
+  "id": "bundle-007",
+  "rfc": "RFC-AITP-0010",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-session-bundle",
+  "$comment": "Participant TCT claims-sibling convention: each participants[i].tct is a __JWS_TCT__ compact-JWS placeholder with a `tct_claims` sibling in the SAME participant object carrying the decoded claims to mint. The minter resolves each tct, strips every tct_claims companion, then signs the bundle (__VALID_A_SIG__: coordinator kat-keypair-001 over the JCS-canonical bytes of the INNER session_bundle body, excluding the `signature` member and excluding the `{\"session_bundle\": ...}` transport wrapper (RFC-AITP-0010 §3, RFC-AITP-0001 §5.4.1) — the minted TCT strings are covered verbatim). The __VALID_A_SIG__ placeholder sits INSIDE the session_bundle body (last member), not beside the wrapper: the bundle is redistributable and carries its own proof, so a minting tool must resolve the placeholder at its inner location and write the signature back there. The only difference from bundle-001 is `input.coordinator_manifest`: it is kat-keypair-002's (B's) own valid, signed Manifest instead of the coordinator's. The runner MUST supply it as the verifier's whole coordinator Manifest source and MUST NOT fall back to the key encoded in `session_bundle.coordinator` (README, 'Manifest inputs').",
+  "description": "Session Trust Bundle whose supplied coordinator Manifest designates a different agent (RFC-AITP-0010 §5 step 5, aitp/0.3 shape). The bundle is identical to bundle-001 and validly signed by the coordinator (kat-keypair-001), but `input.coordinator_manifest` is B's (kat-keypair-002) Manifest. That Manifest verifies (RFC-AITP-0003 §5), but its `aid` is not `session_bundle.coordinator`, so the coordinator's key is not resolved from the coordinator's Manifest. RFC-AITP-0007 §1: a peer key resolution failure MUST result in KEY_RESOLUTION_FAILED. A verifier that took B's key would instead fail the bundle signature (step 6); one that took the key from the coordinator AID would wrongly accept. Expected: KEY_RESOLUTION_FAILED, before the bundle signature is checked.",
+  "tags": [
+    "failure",
+    "session-bundle",
+    "key-resolution",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "now": 1711900100,
+    "session_bundle": {
+      "session_bundle": {
+        "version": "aitp/0.3",
+        "session_id": "550e8400-e29b-41d4-a716-446655442010",
+        "coordinator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "issued_at": 1711900000,
+        "expires_at": 1711903600,
+        "participants": [
+          {
+            "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442001",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "iat": 1711900000,
+              "exp": 1711903600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+              }
+            }
+          },
+          {
+            "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442002",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "aud": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "iat": 1711900000,
+              "exp": 1711905600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+              }
+            }
+          }
+        ],
+        "signature": "__VALID_A_SIG__"
+      }
+    },
+    "coordinator_manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "display_name": "kat-keypair-002",
+      "identity_hint": {
+        "type": "pinned_key",
+        "subject": "kat-keypair-002",
+        "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "handshake_endpoint": "https://example.com/aitp/handshake",
+      "accepted_trust_anchors": [],
+      "accepted_identity_types": [
+        "pinned_key"
+      ],
+      "offered_capabilities": [
+        "read_data",
+        "write_data"
+      ],
+      "proof_of_possession": {
+        "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_session_bundle"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "KEY_RESOLUTION_FAILED",
+    "rationale": "`input.coordinator_manifest.aid` (B, kat-keypair-002) is not `session_bundle.coordinator` (A, kat-keypair-001). Step 5 resolves the coordinator's key from the coordinator's own verified Manifest; none is available, so key resolution fails with KEY_RESOLUTION_FAILED (RFC-AITP-0007 §1) and steps 6-8 are never reached."
+  }
+}

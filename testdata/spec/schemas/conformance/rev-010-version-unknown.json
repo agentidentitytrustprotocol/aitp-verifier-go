@@ -1,0 +1,47 @@
+{
+  "id": "rev-010",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Derived from the committed signed snapshot known-answer/signed-examples/revocation/kat-keypair-001-snapshot.json: the same inner `revocation_list` body and the same committed signature (signed by kat-keypair-001), with `version` changed from `aitp/0.3` to `aitp/9.9` after signing. `aitp/9.9` is chosen because no release will assign it (as in env-010 and man-002). The signature verifies over the original body and not over this one (both checked by scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py), so a verifier that checked the signature first would report REVOCATION_SNAPSHOT_SIGNATURE_INVALID. A runner MUST NOT re-mint it. RFC-AITP-0008 §1.5 runs structural validation before any signature work, and the schema's `version` const rejects `aitp/9.9`. The snapshot has no separate version code: VERSIONING.md (Forward / backward compatibility) names REVOCATION_SNAPSHOT_INVALID as the snapshot's unknown-version code, not the envelope's UNKNOWN_VERSION (aitp-rs#265 reported UNKNOWN_VERSION here).",
+  "description": "A revocation snapshot whose inner `revocation_list` body declares a `version` the receiver does not implement, changed after signing. RFC-AITP-0008 §1.5: structural validation comes first, before any signature work, and `version` MUST be `aitp/0.3`. Receivers MUST reject with REVOCATION_SNAPSHOT_INVALID, the revocation snapshot's unknown-version code (VERSIONING.md; registries/error-codes.md, Structural rejection). Expected: REVOCATION_SNAPSHOT_INVALID, not UNKNOWN_VERSION and not REVOCATION_SNAPSHOT_SIGNATURE_INVALID.",
+  "tags": [
+    "failure",
+    "revocation",
+    "version",
+    "check-order"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/9.9",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711900060,
+            "reason": "key_compromised"
+          }
+        ]
+      },
+      "signature": "wWcNpzrG_gT0B21GXeMFXDq9nU4dvGPXmUsoVE1Z7W7ttcaQ0nOf5WDbQWAeGx6FM_sZ0J1wlHoIXtHUR9IACQ"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "REVOCATION_SNAPSHOT_INVALID",
+    "rationale": "`revocation_list.version` is `aitp/9.9`, which `aitp-revocation-list.schema.json`'s `version` const rejects. RFC-AITP-0008 §1.5 runs structural validation before the signature check, so the code is REVOCATION_SNAPSHOT_INVALID even though the signature also fails (it was made over the `aitp/0.3` body). UNKNOWN_VERSION is the code for envelopes and JWS-profile artifacts, not for the snapshot."
+  }
+}

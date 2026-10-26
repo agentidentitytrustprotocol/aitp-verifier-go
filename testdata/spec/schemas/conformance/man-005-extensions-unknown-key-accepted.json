@@ -1,0 +1,53 @@
+{
+  "id": "man-005",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Positive half of the man-004/man-005 pair. `extensions.com.example.debug_trace` is a vendor-namespaced key (registries/extension-keys.md naming rules; RFC-AITP-0012 §1 'SHOULD use reverse-domain notation') that is NOT in the extension-key registry — deliberately unrecognized, as distinct from bundle-005's use of the RFC-AITP-0012 §3-reserved `extensions.tee` container. `extensions` itself is an ordinary member of the signed body (RFC-AITP-0001 §5.4.1): it is covered by the JCS-canonical signing input like any other member, so it is schema-permitted rather than exempt from signing.",
+  "description": "Manifest body carries an unrecognized, vendor-namespaced key (`extensions.com.example.debug_trace`) INSIDE the OPTIONAL `extensions` member. RFC-AITP-0001 §7 and RFC-AITP-0012 §1/§5: unknown keys inside `extensions` MUST be ignored and MUST NOT drive a trust decision, but `extensions` itself remains a schema-permitted, ordinary part of the signed body. The receiver accepts: `extensions` is present and well-formed, and the unrecognized nested key does not affect Manifest verification (version, expiry, PoP, signature all otherwise pass, mirroring man-003's non-expired shape). Counterpart: man-004, where the same kind of unrecognized field placed OUTSIDE `extensions` is rejected with UNKNOWN_FIELD.",
+  "tags": [
+    "success",
+    "manifest",
+    "extensions"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900100,
+    "manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "extensions": {
+        "com.example.debug_trace": {
+          "build_id": "worker-7-2024.03.31"
+        }
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Manifest signature verifies over the JCS-canonical inner body INCLUDING `extensions` (excluded only: `signature` itself); version, PoP, and expiry all pass. The unrecognized `extensions.com.example.debug_trace` key is ignored for trust-decision purposes per RFC-AITP-0001 §7 and RFC-AITP-0012 §1/§5, but remains part of the signed bytes and MUST NOT be treated as an unpermitted field."
+  }
+}

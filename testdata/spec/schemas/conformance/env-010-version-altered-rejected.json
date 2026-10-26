@@ -1,0 +1,44 @@
+{
+  "id": "env-010",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Derived from env-007: the same envelope and the same committed signature (kat-envelope-002-ed25519, signed by kat-keypair-001), with `version` changed from `aitp/0.3` to `aitp/9.9` after signing. `aitp/9.9` is chosen because no release will assign it. The previous revision `aitp/0.2` is covered separately by env-011, whose signature is valid for its own bytes. The signature verifies over the original envelope and not over this one (both checked by scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py), so a verifier that checked the signature first would report INVALID_SIGNATURE; the RFC-AITP-0001 §5.4 check order puts `version` first. The envelope schema's `version` const also rejects the value, so schema validation alone would give the wrong code too. Reusing env-007's message_id is safe: each fixture runs against fresh verifier state.",
+  "description": "Envelope whose `version` was changed after signing to a value the receiver does not implement. RFC-AITP-0001 §5.4 check order: `version` is checked first and an unknown value is rejected with UNKNOWN_VERSION (§7) before the member set or the signature is examined. Expected: UNKNOWN_VERSION, not INVALID_SIGNATURE or UNKNOWN_FIELD.",
+  "tags": [
+    "failure",
+    "envelope",
+    "version",
+    "check-order"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/9.9",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441007",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "extensions": {
+        "com.example.debug_trace": {
+          "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+      },
+      "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_VERSION",
+    "rationale": "`version` is `aitp/9.9`, which the receiver does not implement. The RFC-AITP-0001 §5.4 check order rejects an unknown `version` with UNKNOWN_VERSION before checking the member set (UNKNOWN_FIELD) or the signature (INVALID_SIGNATURE), even though the signature also fails."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "id": "rev-008",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Pins `REVOCATION_SNAPSHOT_SIGNATURE_INVALID` (issue #39), the second half of the revocation code family. Before it existed, a snapshot whose signature failed was reported with `TCT_SIGNATURE_INVALID` — a code about an individual token's JWS, borrowed for the signed list that *names* tokens. The two are not the same failure and an implementation must be able to tell a caller which one happened. Body is byte-identical to rev-003's fresh, well-formed shape; only the signature is tampered, so it is the only defect under test.",
+  "description": "A structurally valid, fresh revocation snapshot whose `signature` does not validate under the issuing peer's key (resolved from that peer's Manifest, RFC-AITP-0003). RFC-AITP-0008 §1.5 requires the snapshot be discarded. Receivers MUST reject with REVOCATION_SNAPSHOT_SIGNATURE_INVALID, not TCT_SIGNATURE_INVALID: the artifact that failed is the snapshot, not any token it lists, and the queried JTI's own revocation status is simply unknown as a result.",
+  "tags": [
+    "failure",
+    "revocation",
+    "signature",
+    "security"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711899900
+          }
+        ]
+      },
+      "signature": "__TAMPERED_SIGNATURE__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "REVOCATION_SNAPSHOT_SIGNATURE_INVALID",
+    "rationale": "The snapshot's signature does not verify under the issuing peer's key. The body is well-formed and fresh, so the signature is the only defect. Because the snapshot cannot be trusted, the peer has no usable revocation data and falls back to `revocation_policy.mode` for the underlying TCT decision — but the code reported for the snapshot itself names the snapshot's own failure."
+  }
+}

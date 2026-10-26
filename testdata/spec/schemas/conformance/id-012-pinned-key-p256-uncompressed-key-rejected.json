@@ -1,0 +1,75 @@
+{
+  "id": "id-012",
+  "rfc": "RFC-AITP-0002",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "The id-010 descriptor with `public_key` replaced by the 65-byte SEC1 uncompressed encoding (`0x04 || X || Y`, 87 chars) of the same P-256 point. RFC-AITP-0002 §3.3 permits only the 44-char compressed form for `p256`, so the descriptor is schema-invalid and is not byte-equal to the key in `sender.agent_id` (§3.2 step 2). The proof is the valid id-010 proof and the AID is in `trust_store`, so the key encoding is the only reason to fail. Receiver MUST reject with IDENTITY_FAILED.",
+  "tags": [
+    "security",
+    "identity",
+    "pinned_key",
+    "p256",
+    "key-encoding"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655440702",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-p256",
+          "public_key": "BAeBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMRY35HpPmUZKD9zkSojsfXA6kYPB0GVS2eLWt2BpSBxXc",
+          "proof": "p256.X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q"
+        },
+        "manifest": {
+          "version": "aitp/0.3",
+          "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+          "accepted_trust_anchors": [],
+          "accepted_identity_types": [
+            "pinned_key"
+          ],
+          "offered_capabilities": [
+            "macp.mode.task.v1"
+          ],
+          "required_peer_capabilities": [],
+          "proof_of_possession": {
+            "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+            "signature": "__VALID_POP_SIG__"
+          },
+          "published_at": 1711899000,
+          "expires_at": 1711985400,
+          "identity_hint": {
+            "type": "pinned_key",
+            "subject": "internal-worker-p256",
+            "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+          },
+          "signature": "__VALID_MANIFEST_SIG__"
+        },
+        "requested_grants": [
+          "macp.mode.task.v1"
+        ],
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The 87-char `public_key` decodes to 65 bytes. It names the same curve point as the sender AID, but it is not the permitted encoding (§3.3) and is not byte-equal to the AID's 33-byte compressed key (§3.2 step 2). A verifier that decompresses both sides and compares points would accept; that is the defect this fixture catches."
+  }
+}

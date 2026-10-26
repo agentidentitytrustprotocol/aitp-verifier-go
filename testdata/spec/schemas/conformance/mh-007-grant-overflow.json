@@ -1,0 +1,60 @@
+{
+  "id": "mh-007",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The payload `tct` is a __JWS_TCT__ compact-JWS placeholder with a `tct_claims` sibling (minting input; stripped by the minter). The TCT is validly signed by its iss key — the defect is purely the grants claim exceeding the issuer's offered_capabilities.",
+  "description": "Peer-issued TCT carries a grants claim that exceeds the issuing peer's offered_capabilities (declared in its Manifest). The receiving peer MUST reject with GRANT_OVERFLOW — a peer cannot grant capabilities it did not publicly offer.",
+  "tags": [
+    "security",
+    "mutual-handshake",
+    "tct",
+    "policy"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "step": "initiator received MUTUAL_COMMIT_ACK",
+    "issuer_offered_capabilities": [
+      "macp.mode.task.v1"
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_commit_ack",
+      "message_id": "660e8400-e29b-41d4-a716-446655440107",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      },
+      "payload": {
+        "tct": "__JWS_TCT__",
+        "tct_claims": {
+          "ver": "aitp/0.3",
+          "jti": "660e8400-e29b-41d4-a716-446655440108",
+          "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "iat": 1711900250,
+          "exp": 1711903850,
+          "grants": [
+            "macp.mode.task.v1",
+            "macp.session.start",
+            "admin.privileged"
+          ],
+          "cnf": {
+            "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+          }
+        },
+        "pop_signature": "__VALID_POP_SIG__",
+        "pop_nonce_echo": "VGlawa8CMmkQw7blLzdJeQ"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "GRANT_OVERFLOW"
+  }
+}

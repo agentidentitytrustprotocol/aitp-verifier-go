@@ -1,0 +1,43 @@
+{
+  "id": "tct-017",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "`tct_token` is a literal committed ES256 JWS, not a placeholder, and a minter MUST NOT re-sign it. It was signed by kat-keypair-005-p256 over `tct_token_claims` (RFC 6979 deterministic k, low-S), and then S was replaced by n - S, where n is the P-256 group order. The low-S twin (the same token with S restored) verifies under the issuer key; scripts/verify-known-answer.mjs derives it and asserts that it verifies, that the committed high-S token passes a lax ECDSA check, and that the §5.4.7 strict check rejects it.",
+  "description": "TCT compact JWS signed ES256 by a P-256 issuer whose signature has a high S value (S > n/2). The header, claims and the ECDSA equation are all valid: a stock JOSE ES256 verifier accepts the token. RFC-AITP-0001 §5.4.7 requires verifiers to reject S > n/2, for compact JWS as for the JCS profile, so receivers MUST reject with TCT_SIGNATURE_INVALID (RFC-AITP-0005 §7.2 step 4).",
+  "tags": [
+    "security",
+    "tct",
+    "signature",
+    "p256",
+    "malleability"
+  ],
+  "input": {
+    "tct_token": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6cDI1NjpBd2VCRHFsMHpxVjNQbU80bF9OLU8tbWdubnBmNmJseHBFMFFaYXdxT3BNUiIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MzAxNyIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.IEn-V6rYE6NP3KXKb_t7xTfMwGSRd6OylXdHHGoYU-GxK_RNlgRfVoZcTcdVEyQB4OEdej8auqvMuV9EuYEY7w",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655443017",
+      "iss": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "Header is {\"alg\":\"ES256\",\"typ\":\"aitp-tct+jwt\"}, which matches the P-256 `iss` AID, so the `typ` and `alg` checks (steps 2-3) pass. The signature satisfies the ECDSA equation but carries S > n/2, which RFC-AITP-0001 §5.4.7 forbids, so step 4 rejects it. A verifier that accepts this token is wrapping an off-the-shelf JOSE library without the §5.4.7 low-S check."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "env-009",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Derived from env-007: the same envelope and the same committed signature (kat-envelope-002-ed25519, signed by kat-keypair-001), with `message_type` changed from `mutual_hello` to `mutual_hello_ack` after signing. The pair is chosen so that nothing earlier in the check order can reject the envelope: both values are in the `aitp-envelope.schema.json` enum, the schema's `payload` is an unconstrained object, and the `verify_envelope` operation does not check the payload against the message type (env-005 and env-007 already carry the payload `{\"hello\": true}` under `mutual_hello`). It is also the substitution an attacker would make: relabelling a handshake request as its acknowledgement. Reusing env-007's message_id is safe: each fixture runs against fresh verifier state.",
+  "description": "Envelope whose `message_type` was changed after signing to another registered type. RFC-AITP-0001 §5.4: the envelope signing input covers `message_type`, so the substitution breaks the signature. Under the `aitp/0.3` pipe-composed input (before issue #87) this envelope verified. Expected: INVALID_SIGNATURE.",
+  "tags": [
+    "failure",
+    "envelope",
+    "message-type",
+    "signature",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello_ack",
+      "message_id": "770e8400-e29b-41d4-a716-446655441007",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "extensions": {
+        "com.example.debug_trace": {
+          "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+      },
+      "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "INVALID_SIGNATURE",
+    "rationale": "`version` is known, `mutual_hello_ack` is a registered message type and the member set is valid, so the RFC-AITP-0001 §5.4 check order reaches the signature. The signature covers `message_type` = `mutual_hello`; over `mutual_hello_ack` it does not verify."
+  }
+}

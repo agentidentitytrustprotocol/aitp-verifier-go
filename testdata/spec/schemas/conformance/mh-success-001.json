@@ -1,0 +1,99 @@
+{
+  "id": "mh-success-001",
+  "rfc": "RFC-AITP-0004",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Each peer's received commit payload follows RFC-AITP-0004 §3.3/§3.4: `tct` is a __JWS_TCT__ compact-JWS placeholder with a `tct_claims` sibling, and `grant_voucher` is a __JWS_GRANT_VOUCHER__ placeholder with a `grant_voucher_claims` sibling (minting inputs; the minter strips *_claims). The pop_nonce_echo placeholders resolve to the same minted value as the corresponding self_pop_nonce __VALID_NONCE__ in the same peer block.",
+  "description": "Happy-path Mutual Handshake (aitp/0.3). Both peers present valid OIDC identity proofs bound to the per-handshake nonces, exchange Manifests with valid signatures and PoP, and emit two valid peer-issued TCTs as compact JWS strings (typ aitp-tct+jwt) with companion grant vouchers (typ aitp-grant+jwt) in the MUTUAL_COMMIT / MUTUAL_COMMIT_ACK payloads. Each peer's requested grants are contained in the other peer's offered_capabilities; each TCT's aud equals the receiving peer's own AID and cnf.jkt is the RFC 7638 thumbprint of the subject's key. Both peers MUST accept and store the inbound TCT (and the voucher string verbatim, for later delegation).",
+  "tags": [
+    "happy-path",
+    "mutual-handshake",
+    "tct-issuance"
+  ],
+  "input": {
+    "step": "commit payloads received by both peers (A received MUTUAL_COMMIT_ACK; B received MUTUAL_COMMIT)",
+    "peer_a": {
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "received_envelope_message_type": "mutual_commit_ack",
+      "self_pop_nonce_sent_in_hello": "__VALID_NONCE__",
+      "received_payload": {
+        "tct": "__JWS_TCT__",
+        "tct_claims": {
+          "ver": "aitp/0.3",
+          "jti": "550e8400-e29b-41d4-a716-446655445001",
+          "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "iat": 1711899000,
+          "exp": 1711902600,
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "cnf": {
+            "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+          }
+        },
+        "grant_voucher": "__JWS_GRANT_VOUCHER__",
+        "grant_voucher_claims": {
+          "ver": "aitp/0.3",
+          "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "iat": 1711899000,
+          "exp": 1711902600,
+          "src_jti": "550e8400-e29b-41d4-a716-446655445001"
+        },
+        "pop_signature": "__VALID_POP_SIG__",
+        "pop_nonce_echo": "__VALID_NONCE_ECHO__"
+      }
+    },
+    "peer_b": {
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "received_envelope_message_type": "mutual_commit",
+      "self_pop_nonce_sent_in_hello_ack": "__VALID_NONCE__",
+      "received_payload": {
+        "tct": "__JWS_TCT__",
+        "tct_claims": {
+          "ver": "aitp/0.3",
+          "jti": "550e8400-e29b-41d4-a716-446655445002",
+          "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "iat": 1711899000,
+          "exp": 1711902600,
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "cnf": {
+            "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+          }
+        },
+        "grant_voucher": "__JWS_GRANT_VOUCHER__",
+        "grant_voucher_claims": {
+          "ver": "aitp/0.3",
+          "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "iat": 1711899000,
+          "exp": 1711902600,
+          "src_jti": "550e8400-e29b-41d4-a716-446655445002"
+        },
+        "pop_signature": "__VALID_POP_SIG__",
+        "pop_nonce_echo": "__VALID_NONCE_ECHO__"
+      }
+    },
+    "operation": "verify_handshake_payload"
+  },
+  "expected": {
+    "outcome": "success",
+    "grants": [
+      "macp.mode.task.v1"
+    ]
+  }
+}

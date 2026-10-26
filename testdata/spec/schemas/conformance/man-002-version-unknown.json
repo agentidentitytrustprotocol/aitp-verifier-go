@@ -1,0 +1,49 @@
+{
+  "id": "man-002",
+  "rfc": "RFC-AITP-0003",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Manifest declares a `version` the receiver does not implement. Receivers MUST reject with MANIFEST_VERSION_UNKNOWN (RFC-AITP-0003) and MUST NOT attempt best-effort parsing of an unknown major version.",
+  "tags": [
+    "failure",
+    "manifest",
+    "compatibility"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "supported_versions": [
+      "aitp/0.3"
+    ],
+    "manifest": {
+      "version": "aitp/9.9",
+      "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+      "accepted_trust_anchors": [
+        "https://auth.example.com"
+      ],
+      "offered_capabilities": [
+        "macp.mode.task.v1"
+      ],
+      "required_peer_capabilities": [],
+      "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711899000,
+      "expires_at": 1711985400,
+      "identity_hint": {
+        "type": "oidc",
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B"
+      },
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_manifest"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "MANIFEST_VERSION_UNKNOWN"
+  }
+}

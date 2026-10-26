@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentidentitytrustprotocol.io/schema/v0.3/tct.json",
+  "title": "TrustContextTokenClaims",
+  "description": "AITP v0.3 Trust Context Token — decoded JWS payload claims (RFC-AITP-0005). On the wire a TCT is an opaque compact JWS string (typ 'aitp-tct+jwt', RFC-AITP-0001 §5.4.5); this schema validates the decoded claims object. The compact-string form is pinned by the $defs/CompactJws pattern, referenced by embedding schemas.",
+  "type": "object",
+  "$defs": {
+    "CompactJws": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+      "description": "RFC 7515 compact JWS: exactly three non-empty unpadded-base64url segments. Strict parsing per RFC-AITP-0001 §5.4.5."
+    },
+    "Aid": {
+      "type": "string",
+      "pattern": "^aid:pubkey:([A-Za-z0-9_-]{43}|ed25519:[A-Za-z0-9_-]{43}|p256:[A-Za-z0-9_-]{44})$",
+      "description": "Agent ID per RFC-AITP-0001 §5.3: legacy Ed25519 form, algorithm-tagged Ed25519 form, or P-256 form."
+    },
+    "Cnf": {
+      "type": "object",
+      "description": "RFC 7800 confirmation claim, jkt form only (RFC-AITP-0001 §5.4.4).",
+      "required": ["jkt"],
+      "properties": {
+        "jkt": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_-]{43}$",
+          "description": "RFC 7638 JWK thumbprint (SHA-256, unpadded base64url) of the bound public key. MUST match the key encoded in the token's sub AID."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "ver",
+    "jti",
+    "iss",
+    "sub",
+    "aud",
+    "iat",
+    "exp",
+    "grants",
+    "cnf"
+  ],
+  "properties": {
+    "ver": {
+      "type": "string",
+      "const": "aitp/0.3",
+      "description": "Protocol version private claim. MUST be 'aitp/0.3'."
+    },
+    "jti": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUID v4 unique token identifier. The revocation handle (RFC-AITP-0008)."
+    },
+    "iss": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the issuing peer."
+    },
+    "sub": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the agent this TCT was issued for (the subject peer)."
+    },
+    "aud": {
+      "$ref": "#/$defs/Aid",
+      "description": "AID of the intended consuming peer. MUST equal sub for peer-issued TCTs. Single string, never an array."
+    },
+    "iat": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Unix timestamp (seconds) of issuance."
+    },
+    "exp": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Unix timestamp (seconds) of expiry. Consumers MUST enforce this, and exp MUST NOT exceed the issuer Manifest's expires_at (RFC-AITP-0005 §10.4). A self-attestation whose issuer publishes no Manifest has no such bound; the relying party waives it explicitly (RFC-AITP-0005 §5.3)."
+    },
+    "grants": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[^\\s]+$",
+        "description": "Capability string. No whitespace."
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "Capability strings granted to the subject. Empty-grants TCTs are forbidden (RFC-AITP-0004 §4.1). A self-attestation (iss == sub == aud) carries exactly the marker grant aitp.attestation, which a verifier in a grant context rejects (RFC-AITP-0005 §5.3). Private claim."
+    },
+    "cnf": {
+      "$ref": "#/$defs/Cnf"
+    },
+    "ext": {
+      "type": "object",
+      "description": "Optional extension namespace per RFC-AITP-0001 §5.4.5 and RFC-AITP-0012. Unknown keys inside ext MUST be ignored; unknown claims outside it are rejected by this schema."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:agentA_pubkey_AID_v01_placeholder_AAAAAAAAA",
+      "sub": "aid:pubkey:agentB_pubkey_AID_v01_placeholder_BBBBBBBBB",
+      "aud": "aid:pubkey:agentB_pubkey_AID_v01_placeholder_BBBBBBBBB",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1",
+        "read_data"
+      ],
+      "cnf": {
+        "jkt": "jkt_agentB_thumbprint_placeholder_BBBBBBBBBB"
+      }
+    }
+  ]
+}

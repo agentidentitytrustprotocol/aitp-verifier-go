@@ -1,0 +1,44 @@
+{
+  "id": "tct-012",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Positive half of the tct-011/tct-012 pair. `ext.com.example.debug_trace` is a vendor-namespaced key (registries/extension-keys.md naming rules; RFC-AITP-0012 §1.1 applies the same reverse-domain guidance to `ext` as to `extensions`) that is NOT in the extension-key registry — deliberately unrecognized. `ext` itself is a schema-defined optional claim (`aitp-tct.schema.json` properties.ext) covered by the JWS signature over the payload segment like any other claim, so it is schema-permitted rather than exempt from signing.",
+  "description": "TCT decoded claims carry an unrecognized, vendor-namespaced key (`ext.com.example.debug_trace`) INSIDE the OPTIONAL `ext` claim. RFC-AITP-0001 §5.4.5/§7 and RFC-AITP-0012 §1.1/§5: unknown keys inside `ext` MUST be ignored and MUST NOT drive a trust decision, but `ext` itself remains a schema-permitted, ordinary part of the signed claims. The receiver accepts: claims are otherwise identical in shape to tct-011's unaffected-by-expiry claims, and the unrecognized nested key does not affect TCT verification (audience, expiry, signature all otherwise pass). Counterpart: tct-011, where the same kind of unrecognized claim placed OUTSIDE `ext` is rejected with UNKNOWN_FIELD.",
+  "tags": [
+    "success",
+    "tct",
+    "ext"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655443012",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      },
+      "ext": {
+        "com.example.debug_trace": {
+          "session": "diag-4471"
+        }
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "TCT signature verifies over the JWS payload segment INCLUDING `ext`; audience matches the verifying peer, and `exp` is far in the future. The unrecognized `ext.com.example.debug_trace` key is ignored for trust-decision purposes per RFC-AITP-0001 §7 and RFC-AITP-0012 §1.1/§5, but remains part of the signed bytes and MUST NOT be treated as an unpermitted claim."
+  }
+}

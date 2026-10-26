@@ -1,0 +1,102 @@
+{
+  "id": "bundle-004-signature-sibling-rejected",
+  "rfc": "RFC-AITP-0010",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-session-bundle",
+  "$comment": "Deliberately schema-invalid: this fixture carries the pre-PR-#30 shape, where `signature` sat as a sibling of the `{\"session_bundle\": …}` transport wrapper instead of as a member of the inner body. RFC-AITP-0010 §3 (and the corresponding erratum) and `aitp-session-bundle.schema.json` both now require `signature` INSIDE the body; the wrapper permits no sibling members (`additionalProperties: false`). Body content otherwise mirrors bundle-001 (same coordinator, participants, TCT claims-sibling convention) so the ONLY defect under test is the placement of `signature`.",
+  "description": "Session Trust Bundle in the old, now-invalid shape: `signature` is a sibling of the `session_bundle` wrapper key rather than a member of the inner body (`{\"session_bundle\": {…no signature…}, \"signature\": \"…\"}`). RFC-AITP-0010 §3 states the signature is a member of the signed body, never a sibling of the wrapper, precisely because the bundle is redistributable and must carry its own proof across any hop that strips the wrapper. A schema (or implementation) that still accepts the sibling shape has regressed to the erratum'd pre-PR-#30 behavior. The verifier MUST reject: the top-level wrapper object permits no member besides `session_bundle`, and the inner body is missing its required `signature` member. `input.coordinator_manifest` (the coordinator's signed Manifest) is carried so every bundle fixture has the same input shape; it is never consulted, because the structural rejection precedes coordinator key resolution (RFC-AITP-0010 §5).",
+  "tags": [
+    "failure",
+    "session-bundle",
+    "schema",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "now": 1711900100,
+    "session_bundle": {
+      "session_bundle": {
+        "version": "aitp/0.3",
+        "session_id": "550e8400-e29b-41d4-a716-446655442010",
+        "coordinator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "issued_at": 1711900000,
+        "expires_at": 1711903600,
+        "participants": [
+          {
+            "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442001",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+              "iat": 1711900000,
+              "exp": 1711903600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+              }
+            }
+          },
+          {
+            "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+            "tct": "__JWS_TCT__",
+            "tct_claims": {
+              "ver": "aitp/0.3",
+              "jti": "550e8400-e29b-41d4-a716-446655442002",
+              "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+              "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "aud": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+              "iat": 1711900000,
+              "exp": 1711905600,
+              "grants": [
+                "macp.mode.task.v1"
+              ],
+              "cnf": {
+                "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+              }
+            }
+          }
+        ]
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "coordinator_manifest": {
+      "version": "aitp/0.3",
+      "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "display_name": "kat-keypair-001",
+      "identity_hint": {
+        "type": "pinned_key",
+        "subject": "kat-keypair-001",
+        "public_key": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "handshake_endpoint": "https://example.com/aitp/handshake",
+      "accepted_trust_anchors": [],
+      "accepted_identity_types": [
+        "pinned_key"
+      ],
+      "offered_capabilities": [
+        "read_data",
+        "write_data"
+      ],
+      "proof_of_possession": {
+        "challenge": "qAkDX8McwnQS5FTiXSam6Q",
+        "signature": "__VALID_POP_SIG__"
+      },
+      "published_at": 1711900000,
+      "expires_at": 1711986400,
+      "signature": "__VALID_MANIFEST_SIG__"
+    },
+    "operation": "verify_session_bundle"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "SESSION_BUNDLE_INVALID",
+    "rationale": "`signature` sits beside the `session_bundle` wrapper instead of inside it: the top-level object's `additionalProperties: false` rejects the sibling `signature` member, and the inner body is missing its now-required `signature` member. RFC-AITP-0010 §3 fixes the signature as a member of the signed body specifically because the bundle is redistributable and must carry its own proof past any hop that strips the transport wrapper (see the erratum in §3 and RFC-AITP-0001 §5.4.1)."
+  }
+}

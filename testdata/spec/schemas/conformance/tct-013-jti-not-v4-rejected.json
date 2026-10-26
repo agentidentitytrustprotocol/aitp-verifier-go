@@ -1,0 +1,43 @@
+{
+  "id": "tct-013",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative fixture for RFC-AITP-0005 §2.2 (proposal #72 Item 6b). The claims are tct-003's otherwise-valid claims (exp far in the future, correct audience) with `jti` replaced by a well-formed lowercase UUID v7: version nibble `7`, variant bits `10`. The token is a standard mint (`__JWS_TCT__`), so its signature verifies; the `jti` layout is the only defect. `aitp-tct.schema.json`'s `jti` pattern requires version nibble `4`, so this is a schema-level rejection, and the map entry is `expect: invalid`.",
+  "description": "TCT `jti` is a lowercase UUID v7 (`…-7a5b-…`), not the UUID v4 layout RFC-AITP-0005 §2.2 requires. The verifier MUST reject it before signature verification (§7.2 step 1) with TCT_SIGNATURE_INVALID, the TCT's structural-rejection code (registries/error-codes.md). A verifier that accepts any UUID version, or that reaches step 4 and finds the signature valid, fails this fixture.",
+  "tags": [
+    "failure",
+    "tct",
+    "jti",
+    "structural",
+    "security"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "01928f3e-8c00-7a5b-9c3d-4e5f60713013",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §2.2: `jti` MUST be in the UUID v4 layout (version nibble `4`, variant bits `10`) and a verifier MUST reject any other form before signature verification. A non-v4 `jti` is a structural defect, and the TCT's structural-rejection code is TCT_SIGNATURE_INVALID (registries/error-codes.md, Structural rejection: compact-JWS artifacts collapse structural failure onto the signature-family code). It is not UNKNOWN_FIELD: `jti` is a registered claim, present, with a value outside its grammar."
+  }
+}

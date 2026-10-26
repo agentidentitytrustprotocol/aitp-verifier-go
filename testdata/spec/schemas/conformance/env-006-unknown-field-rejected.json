@@ -1,0 +1,40 @@
+{
+  "id": "env-006",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative half of the env-006/env-007 pair pinning RFC-AITP-0001 §7 directly at the envelope layer, the artifact the section's own text describes. `trace_id` is placed as a SIBLING of the schema-defined top-level members, not inside `extensions` — the case RFC-AITP-0012 does not reserve. `aitp-envelope.schema.json` sets `additionalProperties: false` at the top level, so this is a schema-level rejection. Otherwise byte-identical to env-005's fresh, valid shape, so the unknown field is the only defect under test.",
+  "description": "Envelope carries one unrecognized top-level member (`trace_id`) beside its known, schema-defined fields — not inside `extensions`. RFC-AITP-0001 §7: unknown JSON fields outside `extensions` MUST be rejected — silently ignoring them would create signature ambiguity across implementations, since the envelope signing input (RFC-AITP-0001 §5.4) is computed over the wire object one peer received and another peer, having dropped the unrecognized field first, would reconstruct different bytes. Receivers MUST reject with UNKNOWN_FIELD. Counterpart: env-007, which places an unrecognized key INSIDE `extensions` and MUST succeed.",
+  "tags": [
+    "failure",
+    "envelope",
+    "unknown-field",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441006",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "trace_id": "770e8400-e29b-41d4-a716-446655449999",
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "UNKNOWN_FIELD",
+    "rationale": "`trace_id` is not a member `aitp-envelope.schema.json` defines and it is not inside `extensions`, so RFC-AITP-0001 §7's MUST-reject applies. The envelope is otherwise fresh, structurally valid, and within the tolerance window; the unknown sibling field is the only defect under test."
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "id": "tct-014",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Negative fixture for RFC-AITP-0005 §2.2 (proposal #72 Item 6b). The claims are tct-003's otherwise-valid claims with `jti` carrying version nibble `4` but variant nibble `c` (bits `110`, the reserved Microsoft variant) instead of `8`-`b` (bits `10`). This is the defect a derived identifier produces when the issuer sets the version nibble and forgets `h[8] = (h[8] & 0x3f) | 0x80`. The token is a standard mint (`__JWS_TCT__`), so its signature verifies. `aitp-tct.schema.json`'s `jti` pattern requires `[89ab]` in that position, so this is a schema-level rejection, and the map entry is `expect: invalid`.",
+  "description": "TCT `jti` has version nibble `4` but wrong variant bits (`…-c716-…`, variant `110` instead of `10`). RFC-AITP-0005 §2.2 requires both the version nibble and the variant bits. The verifier MUST reject before signature verification (§7.2 step 1) with TCT_SIGNATURE_INVALID. A verifier that checks only the version nibble fails this fixture.",
+  "tags": [
+    "failure",
+    "tct",
+    "jti",
+    "structural",
+    "security"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-c716-446655443014",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "rationale": "RFC-AITP-0005 §2.2: the UUID v4 layout fixes both the version nibble (`4`) and the variant bits (`10`, so the first hex digit of the fourth group is `8`, `9`, `a` or `b`). `c` encodes variant `110`. A verifier MUST reject this before signature verification, with the TCT's structural-rejection code TCT_SIGNATURE_INVALID (registries/error-codes.md)."
+  }
+}

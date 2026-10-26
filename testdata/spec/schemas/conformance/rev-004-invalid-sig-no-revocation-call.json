@@ -1,0 +1,47 @@
+{
+  "id": "rev-004",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "A TCT compact JWS whose signature does not validate under the resolved issuer key MUST be rejected with TCT_SIGNATURE_INVALID before any remote revocation lookup is attempted. Verifiers that route revocation lookups (HTTPS fetch of `ListRevoked`, DNS resolution of the issuing peer's endpoint, or cache writes keyed off the token's `iss` / `jti` claims) before signature verification are vulnerable to network-amplification DoS, revocation-cache pollution, and telemetry manipulation against arbitrary AIDs — `iss` and `jti` are attacker-controlled bytes until the TCT signature is verified. This fixture pins the ordering requirement in RFC-AITP-0008 §3.3 (restated in RFC-AITP-0005 §7.2: revocation is step 6, after all signature checks): the conformance harness instruments the revocation source and asserts it was NOT called when the TCT signature is invalid. A purely local, side-effect-free in-memory deny-list check that performs no network I/O and no cache writes derived from issuer-provided input is exempt from this ordering requirement (RFC-AITP-0008 §3.3) and MAY run before signature verification.",
+  "tags": [
+    "security",
+    "tct",
+    "revocation",
+    "ordering",
+    "side-effects"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT_TAMPERED_SIG__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655444004",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711800000,
+      "exp": 9999999999,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "revocation_instrumented": true,
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TCT_SIGNATURE_INVALID",
+    "side_effects": {
+      "revocation_lookup_called": false,
+      "network_fetch_called": false
+    },
+    "rationale": "Signature is invalid; the revocation source MUST NOT be consulted. Asserting the instrumented revocation lookup was not called pins the ordering requirement in RFC-AITP-0008 §3.3 — without this side-effect check, a verifier that runs revocation lookup before signature verification can pass `error_code: TCT_SIGNATURE_INVALID` while still having performed the attacker-triggered network fetch."
+  }
+}

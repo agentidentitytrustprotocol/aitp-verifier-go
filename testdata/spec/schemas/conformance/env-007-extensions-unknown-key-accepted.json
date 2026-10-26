@@ -1,0 +1,42 @@
+{
+  "id": "env-007",
+  "rfc": "RFC-AITP-0001",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Positive half of the env-006/env-007 pair, and the source of env-008, env-009 and env-010. `extensions.com.example.debug_trace` is a vendor-namespaced key (registries/extension-keys.md naming rules; RFC-AITP-0012 §1) that is NOT in the extension-key registry — deliberately unrecognized, as distinct from bundle-005's use of the RFC-AITP-0012 §3-reserved `extensions.tee` container. `extensions` is schema-permitted at the envelope's top level (`aitp-envelope.schema.json` properties.extensions) and covered by the envelope signing input (RFC-AITP-0001 §5.4) like any other member. The signature is committed, not minted: it is kat-envelope-002-ed25519 (known-answer/signed-examples/envelope/kat-keypair-001-envelope.json), signed by kat-keypair-001 over sig_input_v2 = \"aitp-envelope-v2\" || 0x00 || JCS(envelope without `signature`).",
+  "description": "Envelope carries an unrecognized, vendor-namespaced key (`extensions.com.example.debug_trace`) INSIDE the OPTIONAL top-level `extensions` member. RFC-AITP-0001 §7 and RFC-AITP-0012 §5: unknown keys inside `extensions` MUST be ignored and MUST NOT drive a trust decision, but `extensions` itself remains a schema-permitted, ordinary part of the signed envelope. The receiver accepts: the envelope is fresh and structurally valid, and the unrecognized nested key does not affect envelope verification. Counterparts: env-006, where the same kind of unrecognized field placed OUTSIDE `extensions` is rejected with UNKNOWN_FIELD, and env-008, where an `extensions` key is changed after signing and the signature no longer verifies.",
+  "tags": [
+    "success",
+    "envelope",
+    "extensions"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "tolerance_seconds": 300,
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "mutual_hello",
+      "message_id": "770e8400-e29b-41d4-a716-446655441007",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "hello": true
+      },
+      "extensions": {
+        "com.example.debug_trace": {
+          "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+      },
+      "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw"
+    },
+    "operation": "verify_envelope"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Envelope is fresh, structurally valid, and the committed signature verifies over the RFC-AITP-0001 §5.4 envelope signing input, which covers `extensions`. The unrecognized `extensions.com.example.debug_trace` key is ignored for trust-decision purposes per RFC-AITP-0001 §7 and RFC-AITP-0012 §5, but remains part of the signed bytes and MUST NOT be treated as an unpermitted field."
+  }
+}

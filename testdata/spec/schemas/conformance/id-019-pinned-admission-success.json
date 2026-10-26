@@ -1,0 +1,53 @@
+{
+  "id": "id-019",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. The `proof` is minted over the 193-byte §3.1 proof_input (sender workerA, receiver self_aid, message_id …901, timestamp 1711900000, pop_nonce bytes 01..10); scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both re-verify it. Only the envelope signature is a placeholder. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "One-way pinned-key admission succeeds (RFC-AITP-0002 §3.4). workerA (kat-keypair-003) answers the verifier's outstanding challenge with an `identity_presentation` envelope. The payload is exactly `{identity, pop_nonce}`, and the `pinned_key` proof is a real Ed25519 signature over the §3.1 tuple, with `receiver` = the verifier's AID (`self_aid`, kat-keypair-001) and the challenge nonce. All nine steps of the §3.4 check order pass and the verifier MUST admit the subject and consume the nonce.",
+  "tags": [
+    "success",
+    "identity",
+    "pinned_key",
+    "pinned-admission"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA",
+        "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711900250
+      }
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "identity_presentation",
+      "message_id": "770e8400-e29b-41d4-a716-446655440901",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "C7z8HKjjcw0uK9rZaIhxf7V8dW1UJvzal0pJCxrv0y1R7xri3I2kZ7LyxgJY3R96qd0h3FysO_YOOtKLcuPkCw"
+        },
+        "pop_nonce": "AQIDBAUGBwgJCgsMDQ4PEA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_identity_presentation"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "The sender is in `trust_store`, `public_key` equals the AID key, the 16-byte nonce was issued under `self_aid` and is unexpired and unconsumed, and the proof verifies over the 193-byte tuple. The verifier consumes the nonce atomically and admits the subject; no TCT is issued."
+  }
+}

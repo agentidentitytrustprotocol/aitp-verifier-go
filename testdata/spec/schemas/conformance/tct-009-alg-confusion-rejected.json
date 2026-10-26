@@ -1,0 +1,40 @@
+{
+  "id": "tct-009",
+  "rfc": "RFC-AITP-0005",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "description": "Algorithm-confusion rejection. The TCT's protected header declares `alg: ES256` while the issuer's `iss` AID is a legacy Ed25519 AID, whose sole acceptable algorithm is `EdDSA` (RFC-AITP-0001 §5.4.5 AID→alg table; RFC-AITP-0005 §7.2 step 3). Verifiers MUST derive the single acceptable `alg` from the issuer's AID and reject any other header value with TOKEN_ALG_MISMATCH — they MUST NOT let the token self-select its verification algorithm. The signature segment is real bytes under the issuer's Ed25519 key, but it is never checked because the alg pin rejects first.",
+  "tags": [
+    "security",
+    "tct",
+    "jws",
+    "alg-confusion"
+  ],
+  "input": {
+    "tct_token": "__JWS_TCT_WRONG_ALG__",
+    "tct_token_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655449009",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "9ZP03Nu8GrXPAUkbKNxHOKBzxPX83SShgFkRNK-f2lw"
+      }
+    },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "operation": "verify_tct"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "TOKEN_ALG_MISMATCH",
+    "rationale": "Header is {\"alg\":\"ES256\",\"typ\":\"aitp-tct+jwt\"} but the issuer AID is Ed25519, pinning `alg` to EdDSA. Rejection happens at §7.2 step 3, before signature verification."
+  }
+}

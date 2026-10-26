@@ -1,0 +1,44 @@
+{
+  "id": "rev-003",
+  "rfc": "RFC-AITP-0008",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "The snapshot signature placeholder is __VALID_A_SIG__ (issuing peer is agentA / kat-keypair-001 per the PLACEHOLDERS.md AID role table). Its signing input is the JCS canonical form of the INNER `revocation_list` body \u2014 the `{\"revocation_list\": ..., \"signature\": ...}` envelope is the wire shape and is never signed (RFC-AITP-0008 \u00a71.5, RFC-AITP-0001 \u00a75.4.1). Note the signature is a sibling of the body, not a member of it, so nothing is stripped before canonicalizing. This is NOT unchanged from rc.3, which signed the wrapped form; v0.2 mandates the inner form. The `jti` entry references a revoked TCT's jti claim; jti values are unchanged between v0.1 and v0.2 (still the revocation handle).",
+  "description": "Revocation snapshot happy path. A signed snapshot from the issuing peer (kat-keypair-001) is fresh (published_at within `max_staleness_secs`), its signature validates under the issuing peer's Manifest key, and a queried JTI is NOT in `entries`. Verifier returns 'not revoked' and the surrounding TCT verification continues. (RFC-AITP-0008 §1.5.) Counterpart to rev-001 (stale snapshot, fail-closed) and rev-002 (stale snapshot, soft-fail).",
+  "tags": [
+    "success",
+    "revocation",
+    "snapshot"
+  ],
+  "input": {
+    "policy": {
+      "fail_mode": "fail_closed",
+      "max_staleness_secs": 3600
+    },
+    "now": 1711900100,
+    "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+    "snapshot": {
+      "revocation_list": {
+        "version": "aitp/0.3",
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "expires_at": 1711903600,
+        "entries": [
+          {
+            "jti": "550e8400-e29b-41d4-a716-446655440099",
+            "revoked_at": 1711899900
+          }
+        ]
+      },
+      "signature": "__VALID_A_SIG__"
+    },
+    "operation": "verify_revocation_snapshot"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Snapshot is fresh (100s old vs. policy max 3600s); signature verifies under the issuing peer's key; queried JTI is not in `entries`."
+  }
+}

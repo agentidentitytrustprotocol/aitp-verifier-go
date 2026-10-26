@@ -1,0 +1,128 @@
+{
+  "id": "del-mh-003",
+  "rfc": "RFC-AITP-0011",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-multihop-delegation",
+  "$comment": "Chain claims-sibling convention as in del-mh-001. The chain_hash here is a literal wrong value (43 'A' chars), NOT a placeholder: the minter signs the outer token over these claims as-is, so the outer JWS signature is VALID over the wrong chain_hash — the recomputation check (RFC-AITP-0011 §5) is the isolated failure.",
+  "description": "Multi-hop chain_hash truncation defense (aitp/0.3 shape). The chain is identical to del-mh-001 — every hop's JWS and the voucher inside chain[0] verify, continuity, expiry, and scope all pass — but the outer token's `chain_hash` claim does not match the recomputed digest-array commitment base64url(sha256(JCS([d_0]))) where d_0 = base64url(sha256(ASCII(chain[0])))). The verifier MUST recompute chain_hash from the received chain array and reject on mismatch with DELEGATION_CHAIN_HASH_MISMATCH (RFC-AITP-0011 §5). This models a final delegator committing to a different chain than it carries (equivalent in effect to truncation or substitution). Note: unlike the v0.1-era vector, the outer signature is VALID here — the wrong chain_hash is bound under C's signature at mint time — so the recomputation step, not signature verification, is what fails. The reference recomputation is pinned at kat-multihop-truncation-001 (re-specified for aitp/0.3 digest-array form). Manifest source: `input.issuer_manifests` carries the signed Manifests of both hop issuers, B (kat-keypair-002, chain[0].iss) and C (kat-keypair-003, outer iss); each hop's JWS verifies under the key its issuer's Manifest designates (RFC-AITP-0011 §3 step 1). The voucher needs no Manifest: A verifies it under its own key.",
+  "tags": [
+    "security",
+    "delegation",
+    "multi-hop",
+    "chain-hash",
+    "post-v0.1"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "delegation_token": "__JWS_DELEGATION__",
+    "delegation_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "sub": "aid:pubkey:iojj3XQJ8ZX9UtstPLpdcspnCb8dlBIb83SIAbQPb1w",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "scope": [
+        "read_data"
+      ],
+      "exp": 1711903600,
+      "cnf": {
+        "jkt": "UDDReOZl1ipXAfp9wYsm13sDBMK5og--QWdBjzuf6o4"
+      },
+      "jti": "550e8400-e29b-41d4-a716-446655443003",
+      "chain": [
+        "__JWS_DELEGATION__"
+      ],
+      "chain_claims": [
+        {
+          "ver": "aitp/0.3",
+          "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "scope": [
+            "read_data"
+          ],
+          "exp": 1711904000,
+          "cnf": {
+            "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+          },
+          "jti": "550e8400-e29b-41d4-a716-446655443002",
+          "voucher": "__JWS_GRANT_VOUCHER__",
+          "voucher_claims": {
+            "ver": "aitp/0.3",
+            "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+            "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+            "grants": [
+              "read_data",
+              "write_data"
+            ],
+            "iat": 1711900000,
+            "exp": 1711905000,
+            "src_jti": "550e8400-e29b-41d4-a716-446655443001"
+          }
+        }
+      ],
+      "chain_hash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "issuer_manifests": [
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-002",
+          "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      },
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+        "display_name": "kat-keypair-003",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-003",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "CLo46_NjGTpZN8TbcqfGnQ",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      }
+    ],
+    "operation": "verify_delegation_token"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "DELEGATION_CHAIN_HASH_MISMATCH",
+    "rationale": "The chain_hash claim is all-'A's, which cannot equal the digest-array commitment recomputed from the carried chain (RFC-AITP-0011 §5 step 2). The outer signature is valid over the claims as minted, so the failure isolates the recomputation check; rejection also covers the equivalent truncation case, since dropping or substituting a hop changes the recomputed value the same way."
+  }
+}

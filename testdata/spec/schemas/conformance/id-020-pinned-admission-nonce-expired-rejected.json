@@ -1,0 +1,58 @@
+{
+  "id": "id-020",
+  "rfc": "RFC-AITP-0002",
+  "status": "extension",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "aitp-pinned-admission",
+  "$comment": "Static fixture. The `proof` is a real Ed25519 signature by workerA (kat-keypair-003) over the 193-byte §3.1 proof_input (receiver self_aid, message_id …920, timestamp 1711900000, pop_nonce bytes 11..20); scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both re-sign it. Only the envelope signature is a placeholder. `now` is the reference clock (PLACEHOLDERS.md), so the presentation is inside the RFC-AITP-0001 §5.5 window and only the nonce has expired. Extension-gated: the pinned-admission profile of RFC-AITP-0002 §3.4 is OPTIONAL, so this fixture is `status: extension` under `feature: aitp-pinned-admission`. The default runner MUST SKIP it. A runner testing an implementation that claims \"AITP v0.2 pinned-admission\" conformance executes it, and that implementation MUST pass it (RFC-AITP-0001 §10 item 9).",
+  "description": "An expired `pop_nonce` MUST be rejected with IDENTITY_FAILED (RFC-AITP-0002 §3.4 nonce rules, check-order step 9). The verifier issued the challenge under its own AID with `expires_at` 1711899990; the presentation arrives at `now` 1711900000, ten seconds later. Its timestamp is fresh, the sender is trusted, and the envelope signature and the proof are valid, so every check before the nonce lookup passes. A verifier that keeps a nonce valid until it is consumed, ignoring its expiry, admits this subject.",
+  "tags": [
+    "failure",
+    "identity",
+    "pinned_key",
+    "pinned-admission",
+    "nonce",
+    "expiry",
+    "security"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900000,
+    "trust_store": [
+      "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+    ],
+    "outstanding_challenges": [
+      {
+        "pop_nonce": "ERITFBUWFxgZGhscHR4fIA",
+        "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "expires_at": 1711899990
+      }
+    ],
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "identity_presentation",
+      "message_id": "770e8400-e29b-41d4-a716-446655440920",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      },
+      "payload": {
+        "identity": {
+          "type": "pinned_key",
+          "subject": "internal-worker-a",
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "proof": "THXJ3_3yCYe_inon8b0t-Og6u6pN1Xu2y7vJYM0FwVIVM4w7Fy131xe5MNtIKRO_R_o416635uGZi0zn3N5SAg"
+        },
+        "pop_nonce": "ERITFBUWFxgZGhscHR4fIA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_identity_presentation"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "IDENTITY_FAILED",
+    "rationale": "The nonce expired at 1711899990, before `now`. RFC-AITP-0002 §3.4 accepts a nonce only if it has not expired; the atomic lookup-and-consume (step 9) fails and the nonce is not admitted. It is not TIMESTAMP_EXPIRED: the envelope timestamp equals `now`."
+  }
+}

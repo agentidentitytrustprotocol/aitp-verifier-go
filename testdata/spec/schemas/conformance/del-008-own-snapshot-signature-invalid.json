@@ -1,0 +1,102 @@
+{
+  "id": "del-008",
+  "rfc": "RFC-AITP-0006",
+  "status": "core",
+  "required_for_v0_1": false,
+  "required_for_core": true,
+  "feature": null,
+  "$comment": "Derived from del-002: the same token, Manifests and clock, with A's own revocation snapshot changed in two ways. Its `signature` is `__TAMPERED_SIGNATURE__`: minted by A (kat-keypair-001) over the JCS-canonical INNER `revocation_list` body, then the least-significant bit of the last raw signature byte is flipped (PLACEHOLDERS.md, as in rev-008). Its `entries` no longer list `voucher.src_jti`, only an unrelated jti. The conformance inputs carry A's deny list as a signed snapshot; RFC-AITP-0006 §4 step 7 treats that list as A's local state, so a snapshot of it that fails verification is reported with its own code whatever `revocation_policy.mode` is, never treated as absent. del fixtures carry no policy key, and none is introduced: under the schema default `fail_closed`, a verifier that wrongly treated the snapshot as absent would report DELEGATION_SOURCE_TCT_REVOKED instead, so the fixture still separates the two.",
+  "description": "Single-hop delegation where A's own deny list, supplied as a signed snapshot, fails signature verification (RFC-AITP-0006 §4 step 7). A's deny list is local state, not a fetched snapshot, so RFC-AITP-0008 §1.5's discarded-snapshot rule does not apply: the delegation token MUST be rejected with the snapshot's own code, REVOCATION_SNAPSHOT_SIGNATURE_INVALID, whatever the mode. Treating a corrupted local list as absent would let fail_open accept against it.",
+  "tags": [
+    "failure",
+    "security",
+    "delegation",
+    "revocation",
+    "signature"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "delegation_token": "__JWS_DELEGATION__",
+    "delegation_token_claims": {
+      "ver": "aitp/0.3",
+      "iss": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "sub": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+      "aud": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "scope": [
+        "read_data"
+      ],
+      "exp": 1711903600,
+      "cnf": {
+        "jkt": "LlsmkXmHJuXWkRZLv_FKl_mprfIV5aYVnXqCgsebsdU"
+      },
+      "voucher": "__JWS_GRANT_VOUCHER__",
+      "voucher_claims": {
+        "ver": "aitp/0.3",
+        "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "grants": [
+          "read_data",
+          "write_data"
+        ],
+        "iat": 1711900000,
+        "exp": 1711903600,
+        "src_jti": "550e8400-e29b-41d4-a716-446655440101"
+      }
+    },
+    "revocation_snapshots": [
+      {
+        "issuer_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "snapshot": {
+          "revocation_list": {
+            "version": "aitp/0.3",
+            "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+            "published_at": 1711900200,
+            "expires_at": 1711904200,
+            "entries": [
+              {
+                "jti": "550e8400-e29b-41d4-a716-446655440199",
+                "revoked_at": 1711900100
+              }
+            ]
+          },
+          "signature": "__TAMPERED_SIGNATURE__"
+        }
+      }
+    ],
+    "now": 1711900500,
+    "issuer_manifests": [
+      {
+        "version": "aitp/0.3",
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "identity_hint": {
+          "type": "pinned_key",
+          "subject": "kat-keypair-002",
+          "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+        },
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "accepted_trust_anchors": [],
+        "accepted_identity_types": [
+          "pinned_key"
+        ],
+        "offered_capabilities": [
+          "read_data",
+          "write_data"
+        ],
+        "proof_of_possession": {
+          "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+          "signature": "__VALID_POP_SIG__"
+        },
+        "published_at": 1711900000,
+        "expires_at": 1711986400,
+        "signature": "__VALID_MANIFEST_SIG__"
+      }
+    ],
+    "operation": "verify_delegation_token"
+  },
+  "expected": {
+    "outcome": "failure",
+    "error_code": "REVOCATION_SNAPSHOT_SIGNATURE_INVALID",
+    "rationale": "Every signature and claims check on the token passes, as in del-002. The step 7 lookup reads A's own deny list, and the signed snapshot that carries it does not verify under A's key. A's own list is local state, so revocation_policy.mode does not apply and the snapshot is not treated as absent (RFC-AITP-0006 §4 step 7): the delegation is rejected with the snapshot's own code. DELEGATION_SOURCE_TCT_REVOKED would mean the snapshot was treated as absent under fail_closed; success would mean it was ignored."
+  }
+}
