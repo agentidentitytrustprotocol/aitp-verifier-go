@@ -1,0 +1,3917 @@
+{
+ "fixtures": [
+  {
+   "fixture": "del-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_delegation_token",
+     "outcome": "success",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjE3MTE5MDM2MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSJdLCJzdWIiOiJhaWQ6cHVia2V5OmRxRlpJRVNtNVBVUkpsdktjNllFMlFzRktkSGZZQ3ZqQ2htcEpYWmcwZlUiLCJ2ZXIiOiJhaXRwLzAuMyIsInZvdWNoZXIiOiJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SW1GcGRIQXRaM0poYm5RcmFuZDBJbjAuZXlKbGVIQWlPakUzTVRFNU1ETTJNREFzSW1keVlXNTBjeUk2V3lKeVpXRmtYMlJoZEdFaUxDSjNjbWwwWlY5a1lYUmhJbDBzSW1saGRDSTZNVGN4TVRrd01EQXdNQ3dpYVhOeklqb2lZV2xrT25CMVltdGxlVHBQTW05dWRrMDJNbkJETVdsdk5tcFJTMjA0VG1NeVZYbEdXR05rTkd0UGJVOXpRa2x2V1hSYU1tbHJJaXdpYzNKalgycDBhU0k2SWpVMU1HVTROREF3TFdVeU9XSXROREZrTkMxaE56RTJMVFEwTmpZMU5UUTBNREV3TVNJc0luTjFZaUk2SW1GcFpEcHdkV0pyWlhrNlFUWkZTSFpmVUU5RlREUmtZMDR3V1RVd2RrRnRWMlpyTVdwRFluQlJNV1pJWkhsSFdrSktWazFpWnlJc0luWmxjaUk2SW1GcGRIQXZNQzR6SW4wLm5pVV95alJCbm5uWlNUVVFGSHBvZWFGam8zMXJtZ2p0M0lZemJFd2dDbko3bE1manhPWC1zV0FLc3R6aGg5bDV5NFhuNGxzZjJzeEZxcnpLdXVSMURRIn0.whRhHek8JdtrFiEXwG-C9cn6T0luy_eeGO00emaRDZ4kVvpCVJw-YKyQJru4qbF2W-raQ1KhP_VFI9pV9zLzAg",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_SOURCE_TCT_REVOKED",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjE3MTE5MDM2MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSJdLCJzdWIiOiJhaWQ6cHVia2V5OmRxRlpJRVNtNVBVUkpsdktjNllFMlFzRktkSGZZQ3ZqQ2htcEpYWmcwZlUiLCJ2ZXIiOiJhaXRwLzAuMyIsInZvdWNoZXIiOiJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SW1GcGRIQXRaM0poYm5RcmFuZDBJbjAuZXlKbGVIQWlPakUzTVRFNU1ETTJNREFzSW1keVlXNTBjeUk2V3lKeVpXRmtYMlJoZEdFaUxDSjNjbWwwWlY5a1lYUmhJbDBzSW1saGRDSTZNVGN4TVRrd01EQXdNQ3dpYVhOeklqb2lZV2xrT25CMVltdGxlVHBQTW05dWRrMDJNbkJETVdsdk5tcFJTMjA0VG1NeVZYbEdXR05rTkd0UGJVOXpRa2x2V1hSYU1tbHJJaXdpYzNKalgycDBhU0k2SWpVMU1HVTROREF3TFdVeU9XSXROREZrTkMxaE56RTJMVFEwTmpZMU5UUTBNREV3TVNJc0luTjFZaUk2SW1GcFpEcHdkV0pyWlhrNlFUWkZTSFpmVUU5RlREUmtZMDR3V1RVd2RrRnRWMlpyTVdwRFluQlJNV1pJWkhsSFdrSktWazFpWnlJc0luWmxjaUk2SW1GcGRIQXZNQzR6SW4wLm5pVV95alJCbm5uWlNUVVFGSHBvZWFGam8zMXJtZ2p0M0lZemJFd2dDbko3bE1manhPWC1zV0FLc3R6aGg5bDV5NFhuNGxzZjJzeEZxcnpLdXVSMURRIn0.whRhHek8JdtrFiEXwG-C9cn6T0luy_eeGO00emaRDZ4kVvpCVJw-YKyQJru4qbF2W-raQ1KhP_VFI9pV9zLzAg",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "now": 1711900500,
+      "revocation_snapshots": [
+       {
+        "issuer_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "snapshot": {
+         "revocation_list": {
+          "entries": [
+           {
+            "jti": "550e8400-e29b-41d4-a716-446655440101",
+            "revoked_at": 1711900100
+           }
+          ],
+          "expires_at": 1711904200,
+          "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "published_at": 1711900200,
+          "version": "aitp/0.3"
+         },
+         "signature": "qtCcaHssZ7MWt2ync_zmu4_0CU0IOyfI7_A6IWNDGKbKzzM6R8GIXTyHySR3y2umKcOxEVcP2alb2I6tVLEIDQ"
+        }
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_SCOPE_EXCEEDED",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjk5OTk5OTk5OTksImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSIsIndyaXRlX2RhdGEiXSwic3ViIjoiYWlkOnB1YmtleTpkcUZaSUVTbTVQVVJKbHZLYzZZRTJRc0ZLZEhmWUN2akNobXBKWFpnMGZVIiwidmVyIjoiYWl0cC8wLjMiLCJ2b3VjaGVyIjoiZXlKaGJHY2lPaUpGWkVSVFFTSXNJblI1Y0NJNkltRnBkSEF0WjNKaGJuUXJhbmQwSW4wLmV5SmxlSEFpT2prNU9UazVPVGs1T1Rrc0ltZHlZVzUwY3lJNld5SnlaV0ZrWDJSaGRHRWlYU3dpYVdGMElqb3hOekV4T1RBd01EQXdMQ0pwYzNNaU9pSmhhV1E2Y0hWaWEyVjVPazh5YjI1MlRUWXljRU14YVc4MmFsRkxiVGhPWXpKVmVVWllZMlEwYTA5dFQzTkNTVzlaZEZveWFXc2lMQ0p6Y21OZmFuUnBJam9pTlRVd1pUZzBNREF0WlRJNVlpMDBNV1EwTFdFM01UWXRORFEyTmpVMU5EUXdNRGs1SWl3aWMzVmlJam9pWVdsa09uQjFZbXRsZVRwQk5rVklkbDlRVDBWTU5HUmpUakJaTlRCMlFXMVhabXN4YWtOaWNGRXhaa2hrZVVkYVFrcFdUV0puSWl3aWRtVnlJam9pWVdsMGNDOHdMak1pZlEuVnpRZ0s4eWtJSUgyUXlhbFpLbEtVb0pkclNMOWtrNGZlVTJZbEN1TlNQSGZKSG5RNXYxMkFrZnA0LUhuQlRaUjR3WXZuM0ltWmFFVUJ6X21BQWhhQlEifQ.1Z-ZN70RoLdyGq6n171JWKE_kXG1q-YAw4BrUrVMBGteq4ugiut4Q1aJmD9VdO9suJqPm6QmZQCDknQ8UatwBw",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_MULTIHOP_NOT_SUPPORTED",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation": {
+       "audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "chain": [
+        {
+         "capabilities": [
+          "read_data"
+         ],
+         "expires_at": 9999999999,
+         "issued_at": 1711900000,
+         "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "signature": "9_sIjahOu2cdcoSJubaZjC_yBXE2i1USJWwx9FTt8nubL00mNdEE3G3aE1HT-dBh8Hac8VV9vdrpSNDHTsfOAQ",
+         "source_tct_jti": "550e8400-e29b-41d4-a716-446655440098",
+         "subject": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+        }
+       ],
+       "chain_hash": "T1PNoYwrqgwDVLtfmj7L5e0Sq02OEbqHPC8RFhICuUU",
+       "cnf": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+       "delegatee": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+       "delegator": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "expires_at": 9999999999,
+       "grant_proof": {
+        "capabilities": [
+         "read_data"
+        ],
+        "expires_at": 9999999999,
+        "issued_at": 1711900000,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "signature": "roiPFGKTBstm_zA6TPIp8DfV3-Y1vCCUoP7AkkCq_qcvGEnq_beKEBgqcdysetiHWSOJzxzB2qCyv879vJxGAQ",
+        "source_tct_jti": "550e8400-e29b-41d4-a716-446655440099",
+        "subject": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "issued_by": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "scope": [
+        "read_data"
+       ],
+       "signature": "vkFGEqBpdyQe8YQVOV2YkxcrPxjm5rRbP9eG5RjL4dGIAb5sJgFe88aqno7-LkXo4J5w3x8ya4khCNrl8oHzCQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_INVALID_VOUCHER",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjE3MTE5MDM2MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSJdLCJzdWIiOiJhaWQ6cHVia2V5OmRxRlpJRVNtNVBVUkpsdktjNllFMlFzRktkSGZZQ3ZqQ2htcEpYWmcwZlUiLCJ2ZXIiOiJhaXRwLzAuMyIsInZvdWNoZXIiOiJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SW1GcGRIQXRaM0poYm5RcmFuZDBJbjAuZXlKbGVIQWlPakUzTVRFNU1ETTJNREFzSW1keVlXNTBjeUk2V3lKeVpXRmtYMlJoZEdFaUxDSjNjbWwwWlY5a1lYUmhJbDBzSW1saGRDSTZNVGN4TVRrd01EQXdNQ3dpYVhOeklqb2lZV2xrT25CMVltdGxlVHBrY1VaYVNVVlRiVFZRVlZKS2JIWkxZelpaUlRKUmMwWkxaRWhtV1VOMmFrTm9iWEJLV0Zwbk1HWlZJaXdpYzNKalgycDBhU0k2SWpVMU1HVTROREF3TFdVeU9XSXROREZrTkMxaE56RTJMVFEwTmpZMU5UUTBNREV3TlNJc0luTjFZaUk2SW1GcFpEcHdkV0pyWlhrNlFUWkZTSFpmVUU5RlREUmtZMDR3V1RVd2RrRnRWMlpyTVdwRFluQlJNV1pJWkhsSFdrSktWazFpWnlJc0luWmxjaUk2SW1GcGRIQXZNQzR6SW4wLjBtampIaV9iNlVwekxleDNkZVdvMDR5dm5zU3hWcWpSUktTSmRia21yZ25Eb0hoN1BCNGJNcmNCbi1sUUlJNjR5T2hrbXVWZ0pieUcyY0tqaUdLaURBIn0.RlJvRqtUqoQkDT2x_fkM1hnI8_1o3vWu6pRuMVNs_XOQeYAfnuxcwHn_MY9i_umkcIZ-7ap5oobZIuaLn29gBA",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_INVALID_VOUCHER",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjE3MTE5MDM2MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSJdLCJzdWIiOiJhaWQ6cHVia2V5OmRxRlpJRVNtNVBVUkpsdktjNllFMlFzRktkSGZZQ3ZqQ2htcEpYWmcwZlUiLCJ2ZXIiOiJhaXRwLzAuMyIsInZvdWNoZXIiOiJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SW1GcGRIQXRaM0poYm5RcmFuZDBJbjAuZXlKbGVIQWlPakUzTVRFNU1ETTJNREFzSW1keVlXNTBjeUk2V3lKeVpXRmtYMlJoZEdFaUxDSjNjbWwwWlY5a1lYUmhJbDBzSW1saGRDSTZNVGN4TVRrd01EQXdNQ3dpYVhOeklqb2lZV2xrT25CMVltdGxlVHBQTW05dWRrMDJNbkJETVdsdk5tcFJTMjA0VG1NeVZYbEdXR05rTkd0UGJVOXpRa2x2V1hSYU1tbHJJaXdpYzNKalgycDBhU0k2SWpVMU1HVTROREF3TFdVeU9XSXROREZrTkMxaE56RTJMVFEwTmpZMU5UUTBNREV3TmlJc0luTjFZaUk2SW1GcFpEcHdkV0pyWlhrNlpIRkdXa2xGVTIwMVVGVlNTbXgyUzJNMldVVXlVWE5HUzJSSVpsbERkbXBEYUcxd1NsaGFaekJtVlNJc0luWmxjaUk2SW1GcGRIQXZNQzR6SW4wLlRVb3ZoczNHSWZUQ0tRU3cyQmJxXzc3Z2hPRF9CQ0U3MkItNEstYnJ1dUFtdm40N1JQWE9MTFltZXo1OFZOdGMwcThPNVlrcjBEeDhIQkVQMzhuRUJnIn0.kg6GVb1_rQMy3cuY995_K9mGerk3gmTsjBqzSUE882_3TFjN31ZpYin5OZUQS8pgL2X3dOf5od7YSKlICFL-Dg",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_MULTIHOP_NOT_SUPPORTED",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjaGFpbiI6WyJfX0FOWV9KV1NfXyJdLCJjaGFpbl9oYXNoIjoiczV6TG43N3dRNTVueEdSQkJVbWYtOXR5Si0zc3VRUVV3eUV5QXFVWFNGbyIsImNuZiI6eyJqa3QiOiJMbHNta1htSEp1WFdrUlpMdl9GS2xfbXByZklWNWFZVm5YcUNnc2Vic2RVIn0sImV4cCI6OTk5OTk5OTk5OSwiaXNzIjoiYWlkOnB1YmtleTpBNkVIdl9QT0VMNGRjTjBZNTB2QW1XZmsxakNicFExZkhkeUdaQkpWTWJnIiwianRpIjoiNTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQwMTA3Iiwic2NvcGUiOlsicmVhZF9kYXRhIl0sInN1YiI6ImFpZDpwdWJrZXk6ZHFGWklFU201UFVSSmx2S2M2WUUyUXNGS2RIZllDdmpDaG1wSlhaZzBmVSIsInZlciI6ImFpdHAvMC4zIn0.swPaCzpu-RyOcDt0s7tXlRjUUIMp452px5SBuQs9-v-njD4lNsiO8JuAe-RB8gtzKwHPbnqxe6SQZ7IIsygKAA",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "del-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "REVOCATION_SNAPSHOT_SIGNATURE_INVALID",
+     "op": "verify_delegation_token",
+     "outcome": "failure",
+     "params": {
+      "delegation_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZGVsZWdhdGlvbitqd3QifQ.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiTGxzbWtYbUhKdVhXa1JaTHZfRktsX21wcmZJVjVhWVZuWHFDZ3NlYnNkVSJ9LCJleHAiOjE3MTE5MDM2MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNjb3BlIjpbInJlYWRfZGF0YSJdLCJzdWIiOiJhaWQ6cHVia2V5OmRxRlpJRVNtNVBVUkpsdktjNllFMlFzRktkSGZZQ3ZqQ2htcEpYWmcwZlUiLCJ2ZXIiOiJhaXRwLzAuMyIsInZvdWNoZXIiOiJleUpoYkdjaU9pSkZaRVJUUVNJc0luUjVjQ0k2SW1GcGRIQXRaM0poYm5RcmFuZDBJbjAuZXlKbGVIQWlPakUzTVRFNU1ETTJNREFzSW1keVlXNTBjeUk2V3lKeVpXRmtYMlJoZEdFaUxDSjNjbWwwWlY5a1lYUmhJbDBzSW1saGRDSTZNVGN4TVRrd01EQXdNQ3dpYVhOeklqb2lZV2xrT25CMVltdGxlVHBQTW05dWRrMDJNbkJETVdsdk5tcFJTMjA0VG1NeVZYbEdXR05rTkd0UGJVOXpRa2x2V1hSYU1tbHJJaXdpYzNKalgycDBhU0k2SWpVMU1HVTROREF3TFdVeU9XSXROREZrTkMxaE56RTJMVFEwTmpZMU5UUTBNREV3TVNJc0luTjFZaUk2SW1GcFpEcHdkV0pyWlhrNlFUWkZTSFpmVUU5RlREUmtZMDR3V1RVd2RrRnRWMlpyTVdwRFluQlJNV1pJWkhsSFdrSktWazFpWnlJc0luWmxjaUk2SW1GcGRIQXZNQzR6SW4wLm5pVV95alJCbm5uWlNUVVFGSHBvZWFGam8zMXJtZ2p0M0lZemJFd2dDbko3bE1manhPWC1zV0FLc3R6aGg5bDV5NFhuNGxzZjJzeEZxcnpLdXVSMURRIn0.whRhHek8JdtrFiEXwG-C9cn6T0luy_eeGO00emaRDZ4kVvpCVJw-YKyQJru4qbF2W-raQ1KhP_VFI9pV9zLzAg",
+      "issuer_manifests": [
+       {
+        "accepted_identity_types": [
+         "pinned_key"
+        ],
+        "accepted_trust_anchors": [],
+        "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "display_name": "kat-keypair-002",
+        "expires_at": 1711986400,
+        "handshake_endpoint": "https://example.com/aitp/handshake",
+        "identity_hint": {
+         "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "subject": "kat-keypair-002",
+         "type": "pinned_key"
+        },
+        "offered_capabilities": [
+         "read_data",
+         "write_data"
+        ],
+        "proof_of_possession": {
+         "challenge": "jsbiSyN23W3ZQQO9rU59nA",
+         "signature": "gxM4rVW44vynhl2RhDUihhK9JQqcIT77-ddIhYJAD4H56NGK9WpWUKyQqV2DgGZTr7HbJdKg9jpaw7Fp6Ef8BA"
+        },
+        "published_at": 1711900000,
+        "signature": "aLXhTMHkMOPcRd3eXCUSBNlj9fBAmCNrfNuvn461zg86qiKkNwzlZ8ryZFNa5GLn3tE8ZHXprBY1H7GggzkwBQ",
+        "version": "aitp/0.3"
+       }
+      ],
+      "now": 1711900500,
+      "revocation_snapshots": [
+       {
+        "issuer_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "snapshot": {
+         "revocation_list": {
+          "entries": [
+           {
+            "jti": "550e8400-e29b-41d4-a716-446655440199",
+            "revoked_at": 1711900100
+           }
+          ],
+          "expires_at": 1711904200,
+          "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "published_at": 1711900200,
+          "version": "aitp/0.3"
+         },
+         "signature": "vxCcDineHCv8frF5UH0AtfrQZjCiR8NYJJG9CKX_JZbH5gs_G42D4e4ufuNQ5g-SKlHjXpRiCnSvAbPJOCTyCg"
+        }
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TIMESTAMP_EXPIRED",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655441001",
+       "message_type": "mutual_hello",
+       "payload": {
+        "stale": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "HvMl3QbacUPAhf5Urn8EUadS9GZ2sEhKfbeAPU2Mey3vC8hzrceeuRFHB2qukXfjQJDXcPaS773O8vVAxwqtBw",
+       "timestamp": 1711896400,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "POLICY_VIOLATION",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "active_tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjk5OTk5OTYzOTksImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MjAwMiIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.dNJjgfCby0dJ7HIYXLINGLviJkpsst9Ow_DeI2A_OuOKDSfiwSReUYg6s-TRZBv6uYoNTxGVLW6ISFoh-MJnCA",
+      "requested_capability": "macp.mode.admin.v1",
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "KEY_RESOLUTION_FAILED",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "manifest_fetch": {
+       "status": "network_error"
+      },
+      "needed_key_for": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "oidc_discovery": {
+       "status": "offline"
+      },
+      "pinned_keys": [],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "well_known_keys": []
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_envelope",
+     "outcome": "success",
+     "params": {
+      "message_id": "550e8400-e29b-41d4-a716-446655440499"
+     }
+    },
+    {
+     "error_code": "REPLAY_DETECTED",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "message_id": "550e8400-e29b-41d4-a716-446655440499"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_envelope",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655441005",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+       },
+       "signature": "p256.BytCJBGZPIVZAKoijm5pbVUortpHaAOYtBL8Lr0F2sMQwXYW-uBPJjCEIY0c8vJ1Lsk9DZGAS65OMP2ZhkOkew",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_FIELD",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655441006",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "jmiQGlRcB5b-fv6Z9vo_oANCUHvf9zpdLWlWx9YREmJ0F3eHM0OeiVBQ7hUhrJm1DZx-z6d5GV2bat73tEjsAw",
+       "timestamp": 1711900000,
+       "trace_id": "770e8400-e29b-41d4-a716-446655449999",
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_envelope",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "extensions": {
+        "com.example.debug_trace": {
+         "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+       },
+       "message_id": "770e8400-e29b-41d4-a716-446655441007",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INVALID_SIGNATURE",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "extensions": {
+        "com.example.audit_trace": {
+         "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+       },
+       "message_id": "770e8400-e29b-41d4-a716-446655441007",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-009",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INVALID_SIGNATURE",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "extensions": {
+        "com.example.debug_trace": {
+         "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+       },
+       "message_id": "770e8400-e29b-41d4-a716-446655441007",
+       "message_type": "mutual_hello_ack",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-010",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_VERSION",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "extensions": {
+        "com.example.debug_trace": {
+         "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+       },
+       "message_id": "770e8400-e29b-41d4-a716-446655441007",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "mW2htyofIn3wJhfxaIRespw-WQpV6KYRtGiOJBJyWu_Dzj1ThhY7xFTKQiJJu3_nToWu11UviiXHRhehaswTAw",
+       "timestamp": 1711900000,
+       "version": "aitp/9.9"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "env-011",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_VERSION",
+     "op": "verify_envelope",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "extensions": {
+        "com.example.debug_trace": {
+         "request_id": "770e8400-e29b-41d4-a716-446655449998"
+        }
+       },
+       "message_id": "770e8400-e29b-41d4-a716-446655441011",
+       "message_type": "mutual_hello",
+       "payload": {
+        "hello": true
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "qXNURAet0h9miBTCFOBSjsj01ptplj_702PekH0hTCLRMmGziQvW-7jLMsTfP4ZyF5--0FNgJKMJ-RmFo3aOBg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.2"
+      },
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tolerance_seconds": 300
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440201",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJETGRpT3lwQ0xhRWszTzEtRThhNVRBIn0.xpc1LymMJb8klWdB3JLcCutV4E6NVueBC2COfqDn3kPBYDpL3HUvboDylXtQj9Sxb4etMAYfd4X6ZCULHVxxCw",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "DLdiOypCLaEk3O1-E8a5TA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "JuE0kirRLR4En2cl27Ys2mU61ejHUzjdZq1LYIvMbbFtyIVQIKMacUNTbUa6MBIdBKq7LcPtyVccAKAhdhHvDA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440202",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5OmlvamozWFFKOFpYOVV0c3RQTHBkY3NwbkNiOGRsQkliODNTSUFiUVBiMXciLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJGUTJFY0dRNmFOc09UV1FVOER2Mm9RIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.ocx-WwWTbkuAL8g35yWT1GozF4rcW5R6-7rQtbmf8lYpQ7-yOobRKdE46cavh49dyFpeFDPsaAMtzgfRH4-fBA",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "FQ2EcGQ6aNsOTWQU8Dv2oQ",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "0NdY6GZzyZbLNfKFsLBJMuG1kAg6E_Iq669-xKo4U7NaLBFLgfPh5-ezgDmPA3E5fSBXkUtKHUnbSrQpss8oDw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "jwt_aud_claim": "aid:pubkey:JIrL26-eBQGW3nBL6i1odw5RkVDRA7WH2uLZytU92TA",
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440203",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJaQ2d5MGROSmZscm5JQm0wcmtFNzhnIn0.PlNab2YTaNf61P2wE3yT4jLAU1WSN-tgWsVRV7cYT67TJNfZixKI41X6gBdFO__OW8rGVk-TO2WlfhRnowboCg",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "ZCgy0dNJflrnIBm0rkE78g",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "MtH11NSMGdcO52Pg6C00T6Ja003BIQ7NDcPc9E2TXyXUeuEzJNozSN46ADye9A8tcJi4LkCN61GwQCy3FRA5Cw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "captured_proof_context": {
+       "_comment": "These are the field values that were signed when the original (valid) proof was produced, in a handshake to a DIFFERENT receiver (not self_aid).",
+       "original_message_id": "770e8400-e29b-41d4-a716-446655440401",
+       "original_pop_nonce": "xwCb5ctck4W8hev_1sxkEw",
+       "original_receiver_aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+       "original_sender_aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+       "original_timestamp": 1711899900
+      },
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440402",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "qyrCRC_tbgofkgBRewQsIPd66UAAjf3j96LR2vbsXeEXhiJvCH0tcwTZJqGxXAHGUt4nv0o9oxkjDel4cJ4xAg",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "LNtWImvn46zLkTzatiNxCD7S_5D3pyzPqF1AqieEBoDb1wHf6HS_x8oJ9caAgIAnA_UCkiltzrt5xasEEBAGAA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AxwAx0m1v63X7ZsDG-3Npg",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "yGxEwP1UFidcF63e6TW87yQSyUqMOKZPNliXdS-ru-R-vnftqdeX-WXzMD652QiaX1aA09RFXTcR3xRGpxR_DQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440501",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "p7guuIPukdV4afhJJBBpwHpR-1uCjQnk90SzG2Mo2QAaArgULXhpygVwSJ2_GgOKveFgmQ4ue3NcehSWMbAsBg",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "3ydlfpYG8e255xtz59UxzscwTEROfnDzB2ZpeFzAfO3b-RklXLUVgsoDcvGmzviScEoyoKGjg2pqB85jH3xvCA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440601",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "2WJLf2fX1e74HWrFUcseuu6LWi_dhT5OSsS4lZxuC7IDbgUu06hxCSmCoUqoxzvRBu5YWnWmJrBLGI_f_N9yCg",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "ZHx8_sGL2Ts3bqqeO_69xVjNtYZHKfv4IfemeKuT1S4aaGnegP9lpRdIKMeelvOmrhGgorrGZGKuyvldsPVACA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "LkTS9S1zrIHtk3GYSFKTVcJCvuTcDwDNMa1JP7PuOh0lTIonr_tIQtoTKsBGpzRpyVK0sHCMZqPBKXiWh7PMCw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440801",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJETGRpT3lwQ0xhRWszTzEtRThhNVRBIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.4YzF3SgqI3CJcO2RlVsn58dLlxV2-GFK9hLLGCbakT2Uztwr1LLMDgbfuXSg6-VvgJu0OlVy1oT7oJsDsE-NCg",
+         "public_key": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "DLdiOypCLaEk3O1-E8a5TA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "FhhUcn8cPMGyp7MfwyBdHpwnrdObmogJqkA671WCL54KxBnWM0FdQEFiuuZzRai7WB4yQ7nH5xEr9ZZN_kETBA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-009",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440901",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "extensions": {
+          "vendor.example/attestation_tier": "gold"
+         },
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJETGRpT3lwQ0xhRWszTzEtRThhNVRBIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.4YzF3SgqI3CJcO2RlVsn58dLlxV2-GFK9hLLGCbakT2Uztwr1LLMDgbfuXSg6-VvgJu0OlVy1oT7oJsDsE-NCg",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "DLdiOypCLaEk3O1-E8a5TA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "vI7VqR3Cfvkr-FFMIhsluvERbbNdcVWuttxjhp68nd9CqdvDkfud0HKWsq6EMHWRBL55Oz_qtwmDviZ5YtaOCg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-010",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440702",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "p256.X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q",
+         "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "subject": "internal-worker-p256",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "subject": "internal-worker-p256",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "p256.j4svvlHZ5Sd3eo_LSB7-IlPf6BHFEacb6IforciZmL0JwABUsKBZwbdDRONd_sGVD2Vkq7RPZiEkDZrYbERMSA"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "p256.Pn-puZ0mrWRFIDn1nH4unJLAdZBYYWdTd-pNzuViQKA10OZzwLISwNlYkedM4rxfVhr6pgSGMvwQbQMPDW4fFQ",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+       },
+       "signature": "p256.f-kJnmEth-DWY91Et3SZ0afxp9vh3sx-KC1RgyGvtppKOXw3Y4G98lON-mnbbzoEcCY2iTCyJzsLyQxQPJVu2Q",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-011",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440702",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q",
+         "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "subject": "internal-worker-p256",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "subject": "internal-worker-p256",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "p256.j4svvlHZ5Sd3eo_LSB7-IlPf6BHFEacb6IforciZmL0JwABUsKBZwbdDRONd_sGVD2Vkq7RPZiEkDZrYbERMSA"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "p256.Pn-puZ0mrWRFIDn1nH4unJLAdZBYYWdTd-pNzuViQKA10OZzwLISwNlYkedM4rxfVhr6pgSGMvwQbQMPDW4fFQ",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+       },
+       "signature": "p256.XNyXR9QJEdMRu7F5xXpdC3Xdr9eEFVaxKm0jSZ8yxMkTB8dki6iptQmehsdJ-yroDJc0JROA2KJ4U2B4cFQWgQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-011b",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.example.com",
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "oidc"
+         ],
+         "accepted_trust_anchors": [
+          "https://auth.example.com"
+         ],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.example.com",
+          "subject": "internal-worker-a",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "OTpnObMFcMqBqYrDWF8K82fkyEN2UD4Gw_Lbo-i3Nuj0pKE_nhw4AK1jiJbo2ods-mkia9BVlGF3-ztsq41GDg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "1JgLLLL4_Hynm3N042bYxwYnKKyu6z4GYm6NdqMBYOyqxDAVqbtIXw4jzakKmyR4DsVa89gsw5xU3nL21AhfAw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-012",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440702",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "p256.X9FVRk-1kawJ_rKSXlW3ySlC2A0WfSCArxzswSPWtSRQol3VSaNYx9u-Q3kdL0SKbd51HSYlJZ_IzjU0E-wr1Q",
+         "public_key": "BAeBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMRY35HpPmUZKD9zkSojsfXA6kYPB0GVS2eLWt2BpSBxXc",
+         "subject": "internal-worker-p256",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-p256.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+          "subject": "internal-worker-p256",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "p256.j4svvlHZ5Sd3eo_LSB7-IlPf6BHFEacb6IforciZmL0JwABUsKBZwbdDRONd_sGVD2Vkq7RPZiEkDZrYbERMSA"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "p256.Pn-puZ0mrWRFIDn1nH4unJLAdZBYYWdTd-pNzuViQKA10OZzwLISwNlYkedM4rxfVhr6pgSGMvwQbQMPDW4fFQ",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+       },
+       "signature": "p256.KJojsNq_7TmmvfFH-GZy8Tr49Gzkg6z3pkG5kag3AQ4y0461EioDHRdFwP0N1L1u6IR8TqNVmW8N0bAR4t_3xA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-017",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "LkTS9S1zrIHtk3GYSFKTVcJCvuTcDwDNMa1JP7PuOh0lTIonr_tIQtoTKsBGpzRpyVK0sHCMZqPBKXiWh7PMCw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-018",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.example.com",
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "Z1dHAlFaMKFq0JE2nSjU3RyJDuJmxNQBGabtqZwzcF3WRcHnPR9I7I2UFsuRSxmF6jqipBXwEgKsZzuj1hXGBg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "id-023",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655442301",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LXAyNTYiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJJeU1qSXlNakl5TWpJeU1qSXlNakl3IiwiY25mIjp7ImprdCI6IjZ1dUVhWF84N3VNaDRWS0V0U0RrRU5nakMwZzdFdnQ2dmxpU25EN1hTREUifX0.HNZvgzIeSLk8fLYelqFvVGb2cyBGytrsLug7aj0XVoUAcpdGm6aBCQqxp1INU2QvxmbA2ydkZy6sBpTh_9dUDQ",
+         "subject": "agent-p256",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://p256.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-p256",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "p256.j4svvlHZ5Sd3eo_LSB7-IlPf6BHFEacb6IforciZmL0JwABUsKBZwbdDRONd_sGVD2Vkq7RPZiEkDZrYbERMSA"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "p256.hWwigM7bKLtmbnQIBxYja0lXJtaQ0pz6nzMpkme0YlcUuo-xGM-6QS9GpR_U4HxdTgMI5u7_sFXa16vVtcGvJw",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "IyMjIyMjIyMjIyMjIyMjIw",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR"
+       },
+       "signature": "p256.SmEgIBpw_WvBtQAYBTpPUuExxm2lefYAI6AX-3k7WZRB79VGCgYzPCWKX2HcPn8aR3JHnebPkZAzf3OxIIvrcw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_EXPIRED",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711899000,
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711800000,
+       "required_peer_capabilities": [],
+       "signature": "Z8Ur1VWw5k0VFvJht2seSxbm2XdlxCH3RRfdO_HAHT_AsUx39S2aCC6IXkArAvXKFDUZr7_1WLIPxOUZCLcpAg",
+       "version": "aitp/0.3"
+      },
+      "now": 1711990000,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_VERSION_UNKNOWN",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711985400,
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711899000,
+       "required_peer_capabilities": [],
+       "signature": "62wpSI2qz07f1QeATyYQ2E-T4wLKua4eav-N72cWv-NnolewBkM_Df9obU5cU6OpDlgs7i_Y47MDn32rDs2wBA",
+       "version": "aitp/9.9"
+      },
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "supported_versions": [
+       "aitp/0.3"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_EXPIRED",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711899000,
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711800000,
+       "required_peer_capabilities": [],
+       "signature": "Z8Ur1VWw5k0VFvJht2seSxbm2XdlxCH3RRfdO_HAHT_AsUx39S2aCC6IXkArAvXKFDUZr7_1WLIPxOUZCLcpAg",
+       "version": "aitp/0.3"
+      },
+      "now": 1711990000,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_FIELD",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "deployment_region": "us-east-1",
+       "expires_at": 1711986400,
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711900000,
+       "required_peer_capabilities": [],
+       "signature": "wS3-X3kf-oUkU3QoWO9AadA3zxfPrNrAYysauhGDqpw1dd2R51W7UbrhmaSszYn0FUUYiOYSDTuk6GGlTti4Cw",
+       "version": "aitp/0.3"
+      },
+      "now": 1711900100,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_manifest",
+     "outcome": "success",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711986400,
+       "extensions": {
+        "com.example.debug_trace": {
+         "build_id": "worker-7-2024.03.31"
+        }
+       },
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711900000,
+       "required_peer_capabilities": [],
+       "signature": "N2Qx3-x0YDKJC2ieuHoMybApY_Nx0iRnNs3J_z7XXcqYdq7oOwTgYcc_31-QQARcqcDRqkUJOZuXYZkETeEXAA",
+       "version": "aitp/0.3"
+      },
+      "now": 1711900100,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_INVALID",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711986400,
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711900000,
+       "required_peer_capabilities": [],
+       "signature": "guhxkkMN-EsKSlF3VLXvEOq6UHN56DPYcUv7lEIowXysEUdLYM1uruOEwcwP1SvLD90mKzireEAFVvCxjiLdDA",
+       "version": "aitp/0.3"
+      },
+      "now": 1711900100,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "man-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_INVALID",
+     "op": "verify_manifest",
+     "outcome": "failure",
+     "params": {
+      "manifest": {
+       "accepted_trust_anchors": [
+        "https://auth.example.com"
+       ],
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711986400,
+       "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+       "identity_hint": {
+        "issuer": "https://auth.example.com",
+        "public_key": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+        "subject": "agent-B",
+        "type": "oidc"
+       },
+       "offered_capabilities": [
+        "macp.mode.task.v1"
+       ],
+       "proof_of_possession": {
+        "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+        "signature": "iRvRkazoFQa8szJnYV9ievfFYia6fCA2Jaa7J7mruq3qWLUUwW89X5xjSVMdRizyd51Zf29cstiYuOCaDANYDw"
+       },
+       "published_at": 1711900000,
+       "required_peer_capabilities": [],
+       "signature": "vt9lHO2jim9WtsueOfzmDtdzYXkRnV2M3rSAtlqsk9FeEhZi8e2KHqsfiDmRlveJJSm6xunyjbH6Dt0pu7diAA",
+       "version": "aitp/0.3"
+      },
+      "now": 1711900100,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "process_handshake_message",
+     "outcome": "success",
+     "params": {
+      "message_id": "550e8400-e29b-41d4-a716-446655440099"
+     }
+    },
+    {
+     "error_code": "REPLAY_DETECTED",
+     "op": "process_handshake_message",
+     "outcome": "failure",
+     "params": {
+      "message_id": "550e8400-e29b-41d4-a716-446655440099"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_SIGNATURE_INVALID",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440101",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LWF0dGFja2VyIiwiYXVkIjoiYWlkOnB1YmtleTpPMm9udk02MnBDMWlvNmpRS204TmMyVXlGWGNkNGtPbU9zQklvWXRaMmlrIiwiaWF0IjoxNzExOTAwMDAwLCJleHAiOjE3MTE5MDM2MDAsIm5vbmNlIjoiYlE4OGtpQ2hyeVRLZHVza0xYU0NOZyIsImNuZiI6eyJqa3QiOiJleTdMX1l5Wmk5azNsX2llOXlCYVcxaHVkWTZqcmprNHA3dkl6VmE0VkJVIn19.UszuRnW0_UvgRUL_dd9KC5fA1z-wimmWOZQD5qMd5QBHi2B_7G3UgJAFpvFSqteq8Js4-G7M8zbsFgaI_BcBBw",
+         "subject": "agent-attacker",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:5zTqbCtiV95yNV5HKqBaTEh-a0Y8Ap7TBt8vAbVja1g",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://attacker.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-attacker",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "kRQWvJDo2lalpVM-8UTxHw",
+          "signature": "22aFMrxSWABlGy8JWeehWL1be4OV0YXBUepxbjfMNg-hFySm75-AxLbKjf0a816E2vY8yjtTPHQT9axX819KBA"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "ack9YWiEpHlP42vVYCIVNB0P9aDZ0TqSH5HKexKr89D2xVEcsC1yyVTDY8MK_vWFzqz7Su3vKV48R6dcGqCLAA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "bQ88kiChryTKduskLXSCNg",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:5zTqbCtiV95yNV5HKqBaTEh-a0Y8Ap7TBt8vAbVja1g"
+       },
+       "signature": "wFq07SplYKVQSBYVYFzjD0rCnQoQtUZo5SNk148Lv0w80kraOUimlRdREUb-7WaBzS0IxgKKowacUxm0Qsw8DA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "MANIFEST_POP_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440102",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiI3N295eTRrVVJkWWtwOFprbVdqQWhRIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.UPuFqzE0mvNbCGLqcgaUJfQCwSf3yTITQD0_edS8pGZMJCJ5UGx9IOfQrNy_biORCA6bMGpjqmE4g4FfdGgyBA",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "sGvVduswyy32uRN38kRdw64z198LFPcT0R_RjMKbqvg8n0T84I8aGzS1F16RguZRyTNKaZ45VI2LnFFz0EG9Ag"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "Ow3i2rDDU-uM2UWJV9RzE00L-fgnBnK4g99OwY2f8L4yTkqoGL-KdiVnNl8bHWB5JE9T0MwFXxF_ZT36tTYlCg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "77oyy4kURdYkp8ZkmWjAhQ",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "uAn-xuOj88LUucJFMiABvQcRhuUrmBTe702EIIWKwLV1YFmdXtGLynxA7_IJxQLQ5ibRlB-2RYCw07REIcmACA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INCOMPATIBLE_TRUST_ANCHORS",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440103",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.unknown-vendor.example",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgudW5rbm93bi12ZW5kb3IuZXhhbXBsZSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJjWS1GaEFhUzRjejVQWk1pRUlHa2pnIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.kwK3awYoShyomYGjwv0lmqsj0zu7uDBN3dJ56hh1f7uIHAUmws0y8R5cOQnDwcUAtxpwEvxvhXhdBU7_XCGfDQ",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.unknown-vendor.example"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.unknown-vendor.example",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "FxohOxHrtGrLz5Gu3G0vZHZigVrVI_rTEURGH4Na4WTlorvHLxvq7CnLv8mqzjHC8y7R4iuG0o39iP0fx4PtAw",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "cY-FhAaS4cz5PZMiEIGkjg",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "jKcYUWuGGlfZig-9VhiRwm_be9lVWZE5oJj3ODdOTHvfI2qkyZRuAmWyH43_CZbfJW57q_xOAV6qhwsPMY0BCg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "self_trust_anchors": [
+       "https://auth.anthropic.com"
+      ],
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "NONCE_MISMATCH",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440104",
+       "message_type": "mutual_hello_ack",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUIiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJWbDRZSHRsNk9RY09kUWlTbGthSGhnIiwiY25mIjp7ImprdCI6IjFJRzJ0TUg3SjJ3Ykpabk9mOExKelFpdEtmN0xNdm9BRWxzdURNVk01NFkifX0.X3suEas5O4WhtEuPR2PFxa2VV6KBpYE6Qx2eKTrfKAhAv4Gfkq_1NKDtY3q5kx6XrjKRzV5d9Q6cfzySc0x-AQ",
+         "subject": "agent-B",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com",
+          "https://auth.anthropic.com"
+         ],
+         "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "expires_at": 1711986400,
+         "handshake_endpoint": "https://b.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-B",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "u08dThsYE5R_BiD1ekXggA",
+          "signature": "k37vdvTxLF9l1kzt3rFv4jqmC4H368V5kJDee5Qq-arMHmJV9k9jpoKQdKvDw5qq59dZpZT6jkRLiOQqMfj0Aw"
+         },
+         "published_at": 1711900000,
+         "required_peer_capabilities": [],
+         "signature": "uIXKu1MqRfCamEETeLH-POoEGVRLI9vosUoBa4IF4MgP2Bj8zNs4YYNg40czG8Dge0ngaV4zv9TO6kzkMXgmAQ",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "Vl4YHtl6OQcOdQiSlkaHhg",
+        "pop_nonce_echo": "xatQKgEJw3UX1Wu0PkqHOA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "PXsuyqpjDhsARpDHonYRQfQswProxTtvKKojbYqR7Qvm-i5xtjYdOnraZHPZmN6EomwvbNdyztKK2rpWrK_LBA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sent_pop_nonce": "fRVe56NIsF6e0msvD0ORaQ",
+      "step": "initiator received MUTUAL_HELLO_ACK"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "AUDIENCE_MISMATCH",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440105",
+       "message_type": "mutual_commit_ack",
+       "payload": {
+        "pop_nonce_echo": "BpXqahnKymUSJhsuv8NC_Q",
+        "pop_signature": "cI49wVRg_P9WWzUqgNEUYOKhnxkAO6sK2PyBAUgU8-E6tiXNejj7OkiS9AZqFF8uWa3xBBicDuWsWEc4v-gEAg",
+        "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkpJckwyNi1lQlFHVzNuQkw2aTFvZHc1UmtWRFJBN1dIMnVMWnl0VTkyVEEiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM4NTAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAyNTAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjY2MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDEwNiIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.FLAh7mhl9O3cIIP0lv1Lc-gA8AC9nTCacshGxQ9-dTto5eQc3p-lU8lfbIEiIjw0nHssiZqHchdPwddJonQjBA"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "wuENpv8N5SDGTpBPfvo2nUVwTzdRtj9jGlbgXkQGwNI8wGNYyMRWT850oXf2tBm5wdMZGsshjbfj0UuuIxpyDQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "initiator received MUTUAL_COMMIT_ACK"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "GRANT_OVERFLOW",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440107",
+       "message_type": "mutual_commit_ack",
+       "payload": {
+        "pop_nonce_echo": "VGlawa8CMmkQw7blLzdJeQ",
+        "pop_signature": "zRHO-sG3nsXm3M-9oW5sE9OdDdEVaCe6VEqRAa8X9blTJaWMV8IHLHdoGhqY0DeGLF4djR3HVYbMM6uhMTt_Cw",
+        "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM4NTAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSIsIm1hY3Auc2Vzc2lvbi5zdGFydCIsImFkbWluLnByaXZpbGVnZWQiXSwiaWF0IjoxNzExOTAwMjUwLCJpc3MiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJqdGkiOiI2NjBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAxMDgiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.oQi2Jux9_eef0Apo4GbvrNAEVJGLEofJnNKucdk3PRDexVVW7JSM9LkpjDL10dy8bLqOHbfbdj6Hd6VGK6_PDg"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "hGIav2puh3DIGkW5j0d8-nIf2bdUrMG9dSIGK0PYBMKbH2TGbnemDNAkVBC-ys2cAPEIh85-5WL1UC2svNR5DQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_offered_capabilities": [
+       "macp.mode.task.v1"
+      ],
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "initiator received MUTUAL_COMMIT_ACK"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "POP_VERIFICATION_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440109",
+       "message_type": "mutual_commit",
+       "payload": {
+        "pop_nonce_echo": "awVp2Fly6Is8p899W-ALmw",
+        "pop_signature": "edawWB3Jo87V6_0OcPHPKNqbKVpMLviJ430hl4u0SWDEd5RLBBF7AdMzS0KdD1oVPwk7gCbSHokq5gHII7TuDA",
+        "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM4MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAyMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjY2MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDExMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.bXXeKyACeJP2Ehtrv03dbU45e1d3zHQNDJYb1Us3tib4Bp65y2YP8w5MBAyLIhZpZXFojC6w7ebC-21Y4HaiCA"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "UfdJMQZJ8GmAn9ZN4fhf_iLIyBFYXJCpIKz13sF9BmYbGy0bcF_aRlluFdYdTKajbCz2gMGimWcIowYAteQnCA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "self_pop_nonce_sent_in_hello_ack": "awVp2Fly6Is8p899W-ALmw",
+      "step": "target received MUTUAL_COMMIT"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-009",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440901",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "OTmcGn4c_ZTBTkj4sWdrtTOmqMyOFed3coXLoyWjaQRTDtjPF0vci6khgAaMCArtXKV_CBtv08pByrI3_u7MDg",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "oidc"
+         ],
+         "accepted_trust_anchors": [
+          "https://auth.example.com"
+         ],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.example.com",
+          "subject": "internal-worker-a",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "OTpnObMFcMqBqYrDWF8K82fkyEN2UD4Gw_Lbo-i3Nuj0pKE_nhw4AK1jiJbo2ods-mkia9BVlGF3-ztsq41GDg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "mOUVal6sJRpN7b0myMlnfiRBEteqFfQo8f2ZpY5g5kZMwK0hA9uAq7sl3UX6m37xq5DE_mUyCosyj3VQWQrMAg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-010",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INCOMPATIBLE_IDENTITY_TYPE",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "LkTS9S1zrIHtk3GYSFKTVcJCvuTcDwDNMa1JP7PuOh0lTIonr_tIQtoTKsBGpzRpyVK0sHCMZqPBKXiWh7PMCw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-011",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INCOMPATIBLE_IDENTITY_TYPE",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "LkTS9S1zrIHtk3GYSFKTVcJCvuTcDwDNMa1JP7PuOh0lTIonr_tIQtoTKsBGpzRpyVK0sHCMZqPBKXiWh7PMCw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-012",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "INCOMPATIBLE_IDENTITY_TYPE",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440112",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUEiLCJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJiV2d0TURFeUxXOXBaR010Y0dsdU1RIiwiY25mIjp7ImprdCI6IjlaUDAzTnU4R3JYUEFVa2JLTnhIT0tCenhQWDgzU1NoZ0ZrUk5LLWYybHcifX0.BtdQNMAFXdXUvdPOjwz_3YBz6N1u9Sv--0tNr5G0eKrpRGGJZeXvZBs1XOqqDOmxmK6VUlu0CvAb-S66TWa3DQ",
+         "subject": "agent-A",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com"
+         ],
+         "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-A",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "16c6t4Yt9Yx6mdn9ppXlcdeaJQK6Mgv06f9o1lrzDD8HTVlNZvPCZl0co_TI6oZTYc7uBYC80yboelhJLKRECw"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "1keB7nAx2SgG9dPgUWHZH5uhXiBg0ue-EVLabWjkV-GUtGRhwqRvhtwqUtMpQBSapXmPb94gaXMXKCTF23C_Bg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "bWgtMDEyLW9pZGMtcGluMQ",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "WU4LDkS5SzOIgYUH03dIp5rW0PN644bCsrX-TF1BMtAoo0Mcge7kVZoyyJtYrlhOBTQBdbs3hPngOt5VL1vGDA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "pinned_key"
+      ],
+      "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "self_trust_anchors": [
+       "https://auth.openai.com"
+      ],
+      "step": "received MUTUAL_HELLO from peer"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-013",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440701",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "vdLCEPGuUvVryXxnPdo_ZNYqaZmGuByZ5kRMU0ikKeVbn3SUjj2DD7y8e5pNBtp7jSHZ-Z0wzNdOl0NS1mSpCQ",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "LkTS9S1zrIHtk3GYSFKTVcJCvuTcDwDNMa1JP7PuOh0lTIonr_tIQtoTKsBGpzRpyVK0sHCMZqPBKXiWh7PMCw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc",
+       "pinned_key"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-014",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "IDENTITY_FAILED",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "770e8400-e29b-41d4-a716-446655440601",
+       "message_type": "mutual_hello",
+       "payload": {
+        "identity": {
+         "proof": "2WJLf2fX1e74HWrFUcseuu6LWi_dhT5OSsS4lZxuC7IDbgUu06hxCSmCoUqoxzvRBu5YWnWmJrBLGI_f_N9yCg",
+         "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "subject": "internal-worker-a",
+         "type": "pinned_key"
+        },
+        "manifest": {
+         "accepted_identity_types": [
+          "pinned_key"
+         ],
+         "accepted_trust_anchors": [],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711985400,
+         "handshake_endpoint": "https://worker-a.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "public_key": "dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+          "subject": "internal-worker-a",
+          "type": "pinned_key"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "E1P1xitRfiKsGDoeyKCI0w",
+          "signature": "UAFEY4GuGKLxue2W7_lN2gAxf_z0MRsCqP5UteMojDUqpnwLrQRzI_Z-GpldwWN9ST9Aw3JEvZwv0VoiVEknCg"
+         },
+         "published_at": 1711899000,
+         "required_peer_capabilities": [],
+         "signature": "sxHDYm-COGZ-qtUR4S5z2ix5aF5GzRo_buIvmFqG1YDbmKwSeVcenW6eUAbTU2Em0BnHdpehtN_dWPeaagVlBA",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "AAAAAAAAAAAAAAAAAAAAAA",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "ZHx8_sGL2Ts3bqqeO_69xVjNtYZHKfv4IfemeKuT1S4aaGnegP9lpRdIKMeelvOmrhGgorrGZGKuyvldsPVACA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "step": "received MUTUAL_HELLO from peer",
+      "trust_store": [
+       "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "mh-success-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_handshake_payload",
+     "outcome": "success",
+     "params": {
+      "peer_a": {
+       "received_envelope_message_type": "mutual_commit_ack",
+       "received_payload": {
+        "grant_voucher": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJleHAiOjE3MTE5MDI2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTkwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNyY19qdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDUwMDEiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.jiDhBJ-k41s_Z_3AfJanTnr9-2Gj_hFdZ8aVE0VNoiH1FmNEN6H__pbymeUqRZFkLVDZF6HmytARVN2orng_CA",
+        "pop_nonce_echo": "HXikAJO7qb0kOxZSdw3H8g",
+        "pop_signature": "vKA5bqMbpbWWn6KQEnYXGkqNtlJY9XlDenHBWFEp_wlwRRALb650i9g2Hw27S1QP6BYd07tul6OBAjciJkKsDw",
+        "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDI2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTkwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0NTAwMSIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.2smO3Qe3Lheu3sYHSFjnxA6UPlFcX4F_BJZMbY-Y5Nado3lRUxEqwmaYj53Edb93PyFHhXvKmIPkuV2FkRfCAA"
+       },
+       "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "self_pop_nonce_sent_in_hello": "HXikAJO7qb0kOxZSdw3H8g"
+      },
+      "peer_b": {
+       "received_envelope_message_type": "mutual_commit",
+       "received_payload": {
+        "grant_voucher": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJleHAiOjE3MTE5MDI2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTkwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInNyY19qdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDUwMDIiLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9.3Fkm_zTRpoKlaSogAjGcZu97ugwBB51jbivRqP0zRMHAMreHsYYA9HuusEzDnXK0OEjIZ-J6RruHsXHTf9E6Dg",
+        "pop_nonce_echo": "lM2aeb_yLxUfq3xcFGFs4w",
+        "pop_signature": "k88NZD0gK0FhMwqEosT13U5vRuAioMd8zxUDAhpcc49Q-cRl10nFZmDpNgv9aLGl5rsZNC7BchX-1sCbzb-mCw",
+        "tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDI2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTkwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0NTAwMiIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.Nvj69ac1e8wNckmQMxYmoXlBiGewrkPksN55JRza1PcEoAnwDXnQi3e9sdWOXP_2ZN5CSftPkixYrES-kMtMCg"
+       },
+       "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "self_pop_nonce_sent_in_hello_ack": "lM2aeb_yLxUfq3xcFGFs4w"
+      },
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "step": "commit payloads received by both peers (A received MUTUAL_COMMIT_ACK; B received MUTUAL_COMMIT)"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_REVOKED",
+     "op": "verify_revocation_snapshot",
+     "outcome": "failure",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711990000,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "snapshot": {
+       "revocation_list": {
+        "entries": [],
+        "expires_at": 1712076400,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711800000,
+        "version": "aitp/0.3"
+       },
+       "signature": "fspRY7ujlmTAaztdXXrrnvNWT9xPhY9PmLhcsxHXt7gTp54qR8ZGdW34TaV4SyexvewNhLzTHQsgCTIxbM62BQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_revocation_snapshot",
+     "outcome": "success",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711990000,
+      "policy": {
+       "fail_mode": "soft_fail",
+       "max_staleness_secs": 3600
+      },
+      "snapshot": {
+       "revocation_list": {
+        "entries": [],
+        "expires_at": 1712076400,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711800000,
+        "version": "aitp/0.3"
+       },
+       "signature": "fspRY7ujlmTAaztdXXrrnvNWT9xPhY9PmLhcsxHXt7gTp54qR8ZGdW34TaV4SyexvewNhLzTHQsgCTIxbM62BQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_revocation_snapshot",
+     "outcome": "success",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "revoked_at": 1711899900
+         }
+        ],
+        "expires_at": 1711903600,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "version": "aitp/0.3"
+       },
+       "signature": "eNcT8in14X-QDVZaW69YVXEfoV6GHZyZwXiUWlI2lQjq5F86J4fK7t_I2U6PathVMOlX494CFMmhjxrVqkSGDQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "revocation_instrumented": true,
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0NDAwNCIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.maRehzgA3i8f0jvUf1KuE51LwCY6FmUi2KHaJbvNrlVpenkoM2bUbsIGGluQlXcTJ0VVoY-hIAnFw1MQsVsLBw"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_FIELD",
+     "op": "verify_revocation_snapshot",
+     "outcome": "failure",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "revoked_at": 1711899900
+         }
+        ],
+        "expires_at": 1711903600,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "list_owner": "team-trust",
+        "published_at": 1711900000,
+        "version": "aitp/0.3"
+       },
+       "signature": "f2A6CWhJKiktpP-Vm5zINaEcoMtlRizYNY18sN2FEUEHjFswO5UZd-IrTNBZDhK6rFPB33NiwGjLGHpkNa51Bg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_revocation_snapshot",
+     "outcome": "success",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "revoked_at": 1711899900
+         }
+        ],
+        "expires_at": 1711903600,
+        "extensions": {
+         "com.example.debug_trace": {
+          "generator": "revocation-svc-3"
+         }
+        },
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "version": "aitp/0.3"
+       },
+       "signature": "9AMOE1htf6zznMKgy2tK01V9wNnUrahBJO4658jNJbJoSa41FT2qPLJQ1_sGdgvUfA9eR9dFktetle1Rp_KJBg"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "REVOCATION_SNAPSHOT_INVALID",
+     "op": "verify_revocation_snapshot",
+     "outcome": "failure",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "revoked_at": 1711899900
+         }
+        ],
+        "expires_at": 1711903600,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "version": "aitp/0.3"
+       },
+       "signature": "YvfiLH0K5XrN_0YkJQg35NBJOJgGerbW8bdo1M3jZBYpjg9s866_b3oxg9XQ9grbs4Nsaf9NhzsCwilyFW2PCQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "REVOCATION_SNAPSHOT_SIGNATURE_INVALID",
+     "op": "verify_revocation_snapshot",
+     "outcome": "failure",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "revoked_at": 1711899900
+         }
+        ],
+        "expires_at": 1711903600,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "version": "aitp/0.3"
+       },
+       "signature": "eNcT8in14X-QDVZaW69YVXEfoV6GHZyZwXiUWlI2lQjq5F86J4fK7t_I2U6PathVMOlX494CFMmhjxrVqkSGDA"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-009",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_revocation_snapshot",
+     "outcome": "success",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711990000,
+      "policy": {
+       "fail_mode": "fail_open",
+       "max_staleness_secs": 3600
+      },
+      "snapshot": {
+       "revocation_list": {
+        "entries": [],
+        "expires_at": 1712076400,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711800000,
+        "version": "aitp/0.3"
+       },
+       "signature": "fspRY7ujlmTAaztdXXrrnvNWT9xPhY9PmLhcsxHXt7gTp54qR8ZGdW34TaV4SyexvewNhLzTHQsgCTIxbM62BQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-010",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "REVOCATION_SNAPSHOT_INVALID",
+     "op": "verify_revocation_snapshot",
+     "outcome": "failure",
+     "params": {
+      "expected_issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "now": 1711900100,
+      "policy": {
+       "fail_mode": "fail_closed",
+       "max_staleness_secs": 3600
+      },
+      "queried_jti": "550e8400-e29b-41d4-a716-446655440111",
+      "snapshot": {
+       "revocation_list": {
+        "entries": [
+         {
+          "jti": "550e8400-e29b-41d4-a716-446655440099",
+          "reason": "key_compromised",
+          "revoked_at": 1711900060
+         }
+        ],
+        "expires_at": 1711903600,
+        "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+        "published_at": 1711900000,
+        "version": "aitp/9.9"
+       },
+       "signature": "wWcNpzrG_gT0B21GXeMFXDq9nU4dvGPXmUsoVE1Z7W7ttcaQ0nOf5WDbQWAeGx6FM_sZ0J1wlHoIXtHUR9IACQ"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "rev-011",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_REVOKED",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "issuer_revocation_list": {
+       "fail_mode": "fail_closed",
+       "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "snapshot": {
+        "revocation_list": {
+         "entries": [
+          {
+           "jti": "550e8400-e29b-41d4-a716-446655440099",
+           "reason": "key_compromised",
+           "revoked_at": 1711900060
+          }
+         ],
+         "expires_at": 1711903600,
+         "issuer": "aid:pubkey:p256:AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+         "published_at": 1711900000,
+         "version": "aitp/0.3"
+        },
+        "signature": "p256.G6F0v2yvar_yXBxjqbjH77tHufVG_yNxKT2A3e7HETpKDTm2eOXbCc2p65juU0YYpP4eRImlg6UPCcQey6cNeg"
+       }
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_EXPIRED",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE4MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDA5OSIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.UYJ-vPkrVp_3strc4H1voF40r40P9DmvAuZXH_ZBYa4x-KbWQfiNxb67iOpNjf91nfwT2HoZVAv-YBQ2V9w5DQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-003",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MzAwMyIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.gjKFk6fvBqJTJwgssZmSPfCvXxlnT9IWl8UhrGq3tNJynxnhK9Z94bJd3r04YJin5SXdTt0pWA-VeCdEcXVPCw"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-004",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_REVOKED",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "issuer_revocation_list": {
+       "fail_mode": "fail_closed",
+       "issuer": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "snapshot": {
+        "revocation_list": {
+         "entries": [
+          {
+           "jti": "550e8400-e29b-41d4-a716-446655444004",
+           "revoked_at": 1711899900
+          }
+         ],
+         "expires_at": 1711903600,
+         "issuer": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+         "published_at": 1711900000,
+         "version": "aitp/0.3"
+        },
+        "signature": "ttHeFV8ZPisyH8WCqqf9mpmFimIT_lpg57V5pa7BLAKOOW96OgLLTIXf-dGX1mei2IYzDO2FaYbpc6cL6d9gDQ"
+       }
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0NDAwNCIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.maRehzgA3i8f0jvUf1KuE51LwCY6FmUi2KHaJbvNrlVpenkoM2bUbsIGGluQlXcTJ0VVoY-hIAnFw1MQsVsLBg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-005",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_EXPIRES_AFTER_MANIFEST",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_manifest": {
+       "aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+       "expires_at": 1711903600
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDcyMDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTY0MDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDEwMSIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.Y-PS5CsVm4o7ZhKbG0AUYy4zVqoksVWO3yi2xXSqxwcwedUv8_gfGTkf2k2szozTwEhAtTpjcJpwZBHEhclpDA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-006",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "issue_pop_challenge",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "11111111-1111-4111-8111-111111111111",
+       "message_type": "pop_challenge",
+       "payload": {
+        "nonce": "HXikAJO7qb0kOxZSdw3H8g",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440106"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+       },
+       "signature": "OZeN36TNy8AdPJnLczGGbFs5hbZPxuBNl63TcB6sJe79sQ56M5LG5m8l_2yHUtILGVTtzGo2Mx2aMjQc54A5Dg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTY0MDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDEwNiIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.XQayDSmNw6UmCcxo5drPeNcaXvSVC_WAx3PYp2Lv_WkHQCPpvKc5sG6AcWzjtNkaqZXNvCQwwHRUTamVoa-OCw"
+     }
+    },
+    {
+     "error_code": null,
+     "op": "produce_pop_response",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "22222222-2222-4222-8222-222222222222",
+       "message_type": "pop_response",
+       "payload": {
+        "nonce_echo": "HXikAJO7qb0kOxZSdw3H8g",
+        "pop_signature": "vKA5bqMbpbWWn6KQEnYXGkqNtlJY9XlDenHBWFEp_wlwRRALb650i9g2Hw27S1QP6BYd07tul6OBAjciJkKsDw",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440106"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "UeD-xkSIZyIZSbr-DzlaZZkM3t4vWhNRPbiv7rAlP3T015S6trKeJkvtGv4NHid6ovpQ6tS6WN7RgXvRLgJqAA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTY0MDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDEwNiIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.XQayDSmNw6UmCcxo5drPeNcaXvSVC_WAx3PYp2Lv_WkHQCPpvKc5sG6AcWzjtNkaqZXNvCQwwHRUTamVoa-OCw"
+     }
+    },
+    {
+     "error_code": null,
+     "op": "verify_pop_response",
+     "outcome": "success",
+     "params": {
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4OTY0MDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDEwNiIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.XQayDSmNw6UmCcxo5drPeNcaXvSVC_WAx3PYp2Lv_WkHQCPpvKc5sG6AcWzjtNkaqZXNvCQwwHRUTamVoa-OCw"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-007",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "authorize_capability_invocation",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "33333333-3333-4333-8333-333333333333",
+       "message_type": "capability_invocation",
+       "payload": {
+        "capability": "macp.mode.task.v1#pop_required",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440107"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "G2CI5EvGMhQj6thgo-cKwWrPkKQdBsomRK4GuQ49cWeEk46fvWCdiOKdD1bna8ahQWOVPMiK7HU1fmFwpi-lDw",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_policy": {
+       "pop_required_grants": [
+        "macp.mode.task.v1#pop_required"
+       ]
+      },
+      "pop_instrumented": true,
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSNwb3BfcmVxdWlyZWQiXSwiaWF0IjoxNzExODk2NDAwLCJpc3MiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJqdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAxMDciLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9.adMjaomX6RNih0Ipeh1QE--rRW64ez8tPuUT98o8NZqcOCV1NmZjEBMPla6t6jKuFCY6YPgX9VClPJBGnOpPDA"
+     }
+    },
+    {
+     "error_code": null,
+     "op": "expect_pop_challenge_issued",
+     "outcome": "success",
+     "params": {
+      "issuer_policy": {
+       "pop_required_grants": [
+        "macp.mode.task.v1#pop_required"
+       ]
+      },
+      "pop_instrumented": true,
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSNwb3BfcmVxdWlyZWQiXSwiaWF0IjoxNzExODk2NDAwLCJpc3MiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJqdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAxMDciLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9.adMjaomX6RNih0Ipeh1QE--rRW64ez8tPuUT98o8NZqcOCV1NmZjEBMPla6t6jKuFCY6YPgX9VClPJBGnOpPDA"
+     }
+    },
+    {
+     "error_code": "POP_RESPONSE_INVALID",
+     "op": "withhold_pop_response",
+     "outcome": "failure",
+     "params": {
+      "issuer_policy": {
+       "pop_required_grants": [
+        "macp.mode.task.v1#pop_required"
+       ]
+      },
+      "pop_instrumented": true,
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSNwb3BfcmVxdWlyZWQiXSwiaWF0IjoxNzExODk2NDAwLCJpc3MiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJqdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAxMDciLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9.adMjaomX6RNih0Ipeh1QE--rRW64ez8tPuUT98o8NZqcOCV1NmZjEBMPla6t6jKuFCY6YPgX9VClPJBGnOpPDA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-008",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TOKEN_ALG_MISMATCH",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJub25lIiwidHlwIjoiYWl0cC10Y3Qrand0In0.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0ODAwOCIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-009",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TOKEN_ALG_MISMATCH",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0OTAwOSIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.d5A1b_Ulo4dkzhxQ84Bt7abnNnVFxFRtEsBctPqMpIV-zDDHlRJuk8v5ygm46fdGl1NMuD5m69QN_JLpI7obAQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-010",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TOKEN_TYP_MISMATCH",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInNyY19qdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMTAiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.jTZkDsICNmaz2gv2G8LltNN_7HYJz4zVlRZu7-mWEsChTp3Ihr2DaeNZTzw55CXQ1XYEjukLhaLXoZTqWFu2Cg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-011",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "UNKNOWN_FIELD",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJkZXZpY2VfaWQiOiJwaG9uZS03NyIsImV4cCI6OTk5OTk5OTk5OSwiZ3JhbnRzIjpbIm1hY3AubW9kZS50YXNrLnYxIl0sImlhdCI6MTcxMTgwMDAwMCwiaXNzIjoiYWlkOnB1YmtleTpBNkVIdl9QT0VMNGRjTjBZNTB2QW1XZmsxakNicFExZkhkeUdaQkpWTWJnIiwianRpIjoiNTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQzMDExIiwic3ViIjoiYWlkOnB1YmtleTpPMm9udk02MnBDMWlvNmpRS204TmMyVXlGWGNkNGtPbU9zQklvWXRaMmlrIiwidmVyIjoiYWl0cC8wLjMifQ.P7K5dc03nucNSVhS6ZjizGH3dG5Iow9qhDbznz_ebWSHV20A0VLvaIqcHmc2R5tY0k1NV-Qsh6VETFkLOxgmBA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-012",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_tct",
+     "outcome": "success",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImV4dCI6eyJjb20uZXhhbXBsZS5kZWJ1Z190cmFjZSI6eyJzZXNzaW9uIjoiZGlhZy00NDcxIn19LCJncmFudHMiOlsibWFjcC5tb2RlLnRhc2sudjEiXSwiaWF0IjoxNzExODAwMDAwLCJpc3MiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJqdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDMwMTIiLCJzdWIiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJ2ZXIiOiJhaXRwLzAuMyJ9.MhFNTKCPqiadB4PTVjYCZ_TXc_VyyrDblzERnQQtfFXaxTNEtxs_9FSwF27J68k36X3wnc5W1E_U2DPN49UyCQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-013",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjAxOTI4ZjNlLThjMDAtN2E1Yi05YzNkLTRlNWY2MDcxMzAxMyIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.lHdxWMlPvgUSH7vRCl6q9AlNXgRB8W0SSYKy6hO79YhNAwitKQNW-NyLRyvQ-MR6YS8ihCuJ1iChLn634KpzBQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-014",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1jNzE2LTQ0NjY1NTQ0MzAxNCIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.4NNwmLIN8JpW3KPTnEE6G96tv7DgF-WpS3DK-JEfLjZ8wYELiKpMc7nwk3Hbetc6iqYLJqyJ5mmsdmuZ7YprBg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-015",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDExNSIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.wUrc1GfyaBH9qZDx7z7_308Yxg4cmxqODhauXK_4Hxj9hEc9vwtzHJQQDgX_J8IoyI6M-1zrtFt9Doo1pVBbAA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-016",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJhaXRwLmF0dGVzdGF0aW9uIl0sImlhdCI6MTcxMTgwMDAwMCwiaXNzIjoiYWlkOnB1YmtleTpBNkVIdl9QT0VMNGRjTjBZNTB2QW1XZmsxakNicFExZkhkeUdaQkpWTWJnIiwianRpIjoiNTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQwMTE2Iiwic3ViIjoiYWlkOnB1YmtleTpPMm9udk02MnBDMWlvNmpRS204TmMyVXlGWGNkNGtPbU9zQklvWXRaMmlrIiwidmVyIjoiYWl0cC8wLjMifQ.Mj8iJ-7MuflO9EJlUhy4PkmTZejMqWB5Npq_INcXVkeR3FIeGF1s_EOj0OOppxNczY14Up-62rHS2Nz4MCmoBA"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-017",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "AweBDql0zqV3PmO4l_N-O-mgnnpf6blxpE0QZawqOpMR",
+      "tct_token": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6cDI1NjpBd2VCRHFsMHpxVjNQbU80bF9OLU8tbWdubnBmNmJseHBFMFFaYXdxT3BNUiIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MzAxNyIsInN1YiI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInZlciI6ImFpdHAvMC4zIn0.IEn-V6rYE6NP3KXKb_t7xTfMwGSRd6OylXdHHGoYU-GxK_RNlgRfVoZcTcdVEyQB4OEdej8auqvMuV9EuYEY7w"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-018",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_SIGNATURE_INVALID",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "issuer_pubkey": "A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJjbmYiOnsiamt0IjoiOVpQMDNOdThHclhQQVVrYktOeEhPS0J6eFBYODNTU2hnRmtSTkstZjJsdyJ9LCJleHAiOjk5OTk5OTk5OTksImdyYW50cyI6WyJyZWFkX2RhdGEiLCJhaXRwLmF0dGVzdGF0aW9uIl0sImlhdCI6MTcxMTgwMDAwMCwiaXNzIjoiYWlkOnB1YmtleTpBNkVIdl9QT0VMNGRjTjBZNTB2QW1XZmsxakNicFExZkhkeUdaQkpWTWJnIiwianRpIjoiNTUwZTg0MDAtZTI5Yi00MWQ0LWE3MTYtNDQ2NjU1NDQwMTE4Iiwic3ViIjoiYWlkOnB1YmtleTpPMm9udk02MnBDMWlvNmpRS204TmMyVXlGWGNkNGtPbU9zQklvWXRaMmlrIiwidmVyIjoiYWl0cC8wLjMifQ.Nzx7EW2InbBFwY-uzaCovCSFuwAJlUFiXBG0GCv5Zsl0xC6CDl2btOdEY97BKwlmGwbF0dNjRqLoCzxPwA0MDQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-022",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_REVOKED",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "issuer_revocation_list": {
+       "fail_mode": "fail_closed",
+       "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "snapshot": {
+        "revocation_list": {
+         "entries": [
+          {
+           "jti": "550e8400-e29b-41d4-a716-446655440099",
+           "reason": "key_compromised",
+           "revoked_at": 1711900060
+          }
+         ],
+         "expires_at": 1711903600,
+         "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "published_at": 1711900000,
+         "version": "aitp/0.3"
+        },
+        "signature": "wWcNpzrG_gT0B21GXeMFXDq9nU4dvGPXmUsoVE1Z7W7ttcaQ0nOf5WDbQWAeGx6FM_sZ0J1wlHoIXtHUR9IACA"
+       }
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-023",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_tct",
+     "outcome": "success",
+     "params": {
+      "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "issuer_revocation_list": {
+       "fail_mode": "fail_open",
+       "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+       "snapshot": {
+        "revocation_list": {
+         "entries": [
+          {
+           "jti": "550e8400-e29b-41d4-a716-446655440099",
+           "reason": "key_compromised",
+           "revoked_at": 1711900060
+          }
+         ],
+         "expires_at": 1711903600,
+         "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+         "published_at": 1711900000,
+         "version": "aitp/0.3"
+        },
+        "signature": "wWcNpzrG_gT0B21GXeMFXDq9nU4dvGPXmUsoVE1Z7W7ttcaQ0nOf5WDbQWAeGx6FM_sZ0J1wlHoIXtHUR9IACA"
+       }
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-024",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "TCT_REVOKED",
+     "op": "verify_tct",
+     "outcome": "failure",
+     "params": {
+      "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "issuer_revocation_list": {
+       "available": false,
+       "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-025",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_tct",
+     "outcome": "success",
+     "params": {
+      "expected_audience": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "issuer_revocation_list": {
+       "available": false,
+       "fail_mode": "fail_open",
+       "issuer": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-026",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "authorize_capability_invocation",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "33333333-3333-4333-8333-333333330026",
+       "message_type": "capability_invocation",
+       "payload": {
+        "capability": "macp.mode.task.v1",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "2trkYEYjPlURn3jkRvBxdN5-3fWtE5nFcbXnrzpijiiZiYzLfR8mUE4fkD6qBu4Creu-XihZtGeKHWWwFGSHBQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "pop_instrumented": true,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    },
+    {
+     "error_code": null,
+     "op": "expect_pop_challenge_issued",
+     "outcome": "success",
+     "params": {
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "pop_instrumented": true,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    },
+    {
+     "error_code": "POP_RESPONSE_INVALID",
+     "op": "withhold_pop_response",
+     "outcome": "failure",
+     "params": {
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "pop_instrumented": true,
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-027",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "POP_CHALLENGE_INVALID",
+     "op": "verify_tct_as_issuer",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "22222222-2222-4222-8222-222222220027",
+       "message_type": "pop_response",
+       "payload": {
+        "nonce_echo": "ISIjJCUmJygpKissLS4vMA",
+        "pop_signature": "IpxlqOg14Le0aA5yoMh8Iibwcb87i3Tvie1356mFeau1-3TOA2JJDbBlkdvKy91CCOOyVxEkuVeXl5AjOWZLDw",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "8o_z80_KF7sV1pyL_tYtLyqloTLxZHBvp4tI9W_RR9Bk-q0C7MCijPgsaSjZqZrrYAQtuut0HsUVYZzckmHqDQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "outstanding_pop_challenges": [
+       {
+        "expires_at": 1711899950,
+        "nonce": "ISIjJCUmJygpKissLS4vMA",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-028",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "POP_RESPONSE_INVALID",
+     "op": "verify_tct_as_issuer",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "22222222-2222-4222-8222-222222220028",
+       "message_type": "pop_response",
+       "payload": {
+        "nonce_echo": "ISIjJCUmJygpKissLS4vMA",
+        "pop_signature": "w14TEA3EqWouHVxYyenIa2tARRAJ1vTfFm2soA7jU6HDPHB4LyVUaZR-lVU4Jy031VonJRfFBh4ZTpYcs9nsDA",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "app47EM0a4Y7TUF1FwZjYRO-NT5-RDGCdurMpBVzT61zgfh1UZxUOxxc1PZGubwQnOvJhua19CE7V_eyRH96Dg",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "outstanding_pop_challenges": [
+       {
+        "expires_at": 1711900250,
+        "nonce": "ISIjJCUmJygpKissLS4vMA",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "tct-029",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_tct_as_issuer",
+     "outcome": "success",
+     "params": {
+      "envelope": {
+       "message_id": "22222222-2222-4222-8222-222222220029",
+       "message_type": "pop_response",
+       "payload": {
+        "nonce_echo": "ISIjJCUmJygpKissLS4vMA",
+        "pop_signature": "IpxlqOg14Le0aA5yoMh8Iibwcb87i3Tvie1356mFeau1-3TOA2JJDbBlkdvKy91CCOOyVxEkuVeXl5AjOWZLDw",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg"
+       },
+       "signature": "g3ESy12pumVq4LuYKBRIy2Jn-jS8tK0GzNtZHgN1UVkoQd0kNcYP-lRRqY5Sc2Gvwy_0h32crI2hBANt2d3TCQ",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "issuer_policy": {
+       "pop_posture": "enforce-for-all",
+       "pop_required_grants": [
+        "macp.mode.task.v1"
+       ]
+      },
+      "outstanding_pop_challenges": [
+       {
+        "expires_at": 1711900250,
+        "nonce": "ISIjJCUmJygpKissLS4vMA",
+        "tct_jti": "550e8400-e29b-41d4-a716-446655440000"
+       }
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "tct_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "vch-001",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": null,
+     "op": "verify_grant_voucher",
+     "outcome": "success",
+     "params": {
+      "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "voucher_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSIsInJlYWRfZGF0YSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInNyY19qdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDUwMDEiLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9.-9mMpy35r0auGZrIc_J2ekiGiRr0tVSReTUZKelX7VsgdqwJBH6vHTUJYRjR8Ea7KlZfVOXZCLkdQIE9AxeXBQ"
+     }
+    }
+   ]
+  },
+  {
+   "fixture": "vch-002",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "DELEGATION_EXPIRED",
+     "op": "verify_grant_voucher",
+     "outcome": "failure",
+     "params": {
+      "verifier_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "voucher_token": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtZ3JhbnQrand0In0.eyJleHAiOjE3MTE4MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSIsInJlYWRfZGF0YSJdLCJpYXQiOjE3MTE4MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsInNyY19qdGkiOiI1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDUwMDIiLCJzdWIiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJ2ZXIiOiJhaXRwLzAuMyJ9._WSMiUNSVgycWlrxio_D4nlnhKy8GaLzrX9NwKKymm7DRjm0mIo2ONFYwiqel-BxXVYZ0_iTYMEVsOCoATl8Dg"
+     }
+    }
+   ]
+  }
+ ],
+ "spec_commit": "dbe63bf6364d54af9fc993987834f75e7f6f6df6"
+}
