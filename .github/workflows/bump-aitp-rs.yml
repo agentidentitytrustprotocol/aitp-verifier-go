@@ -1,0 +1,28 @@
+name: bump-aitp-rs
+# Move AITP_RS_COMMIT, the aitp-rs commit whose conformance runner and
+# minter ci.yml builds, to aitp-rs main. Runs daily, on aitp-rs's
+# `aitp-released` dispatch, and by hand. The pin is a plain SHA file, so
+# the PR comes from the same reusable bump-spec-ref (file mode) the spec
+# pin uses, pointed at aitp-rs. Like a spec bump it is HELD for review: a
+# new runner can change which fixtures pass.
+on:
+  repository_dispatch:
+    types: [aitp-released]
+  schedule:
+    - cron: "37 7 * * *"
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'aitp-rs SHA (blank = aitp-rs main HEAD)'
+        required: false
+        default: ''
+jobs:
+  bump:
+    uses: agentidentitytrustprotocol/aitp-ci/.github/workflows/bump-spec-ref.yml@8d2c1aea7c97ddc14ad0e8e2e30457228838572e # v1
+    with:
+      mode: file
+      file: AITP_RS_COMMIT
+      spec-repo: agentidentitytrustprotocol/aitp-rs
+      sha: ${{ github.event.inputs.sha }}
+      label: aitp-rs
+    secrets: inherit

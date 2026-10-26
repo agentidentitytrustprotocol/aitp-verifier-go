@@ -20,6 +20,20 @@ To come: `cmd/aitp-verifier-adapter`, driven by `aitp-conformance`.
 
 `.github/workflows/ci.yml` runs on every push and pull request: the spec pin and generated-file check, `gofmt`, `go vet`, staticcheck, govulncheck, tests on Go 1.26 and 1.27 with a coverage gate of 85% on `internal/`, and 60-second fuzz runs of the JSON parser and JCS.
 
+It also builds aitp-rs's `aitp-conformance` runner and `xcheck-mint` minter from the commit in `AITP_RS_COMMIT`, and then runs two cross-implementation jobs:
+
+- `conformance (aitp-conformance)` runs the adapter against the pinned spec fixtures with `--profile core`. It fails on any failed gate or any failed or skipped core fixture, then validates the report against the spec's schema and report checker. The report is uploaded as the `conformance-report` artifact (`conformance.json`).
+- `mint (aitp-rs) -> verify` pipes freshly minted aitp-rs artifacts into `cmd/xcheck-verify`. That command verifies the positives and rejects the one-change negatives (high-S twins, stripped algorithm tags, withheld keys) without re-signing anything.
+
+Main's branch protection requires six checks: `spec pin + generated files`, `tests (go 1.26)`, `tests (go 1.27)`, `build aitp-rs tools`, `conformance (aitp-conformance)` and `mint (aitp-rs) -> verify`.
+
+Other workflows:
+
+- `bump-spec.yml` takes the spec repo's `spec-released` dispatch, or a manual run, and opens a held PR that moves `SPEC_VERSION` and regenerates `testdata/spec` and `errors.go`.
+- `bump-aitp-rs.yml` runs daily, on dispatch or by hand, and opens a held PR that moves `AITP_RS_COMMIT` to aitp-rs main.
+- `spec-canary.yml` runs conformance daily against spec main and keeps one tracking issue open while it fails.
+- `auto-merge.yml` arms auto-merge for Dependabot patch and minor bumps.
+
 ## Primitives
 
 All under `internal/`, written on the standard library alone:

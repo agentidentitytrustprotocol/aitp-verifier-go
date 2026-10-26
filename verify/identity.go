@@ -259,3 +259,55 @@ func pinnedProofInput(sender, receiver, messageID string, timestamp int64, nonce
 	b = append(b, 0)
 	return append(b, nonce...)
 }
+
+// BoundMessage is the handshake message an identity descriptor's proof is
+// bound to (RFC-AITP-0002 §2.3, §3.1): its sender, message_id, timestamp
+// and payload pop_nonce. An OIDC proof reads only Sender and PopNonce.
+type BoundMessage struct {
+	Sender    string
+	MessageID string
+	Timestamp int64
+	PopNonce  string
+}
+
+// VerifyIdentity runs the RFC-AITP-0004 §5.1 step 6 identity checks on a
+// standalone descriptor: shape, the Manifest identity_hint (skipped when
+// hint is nil), trust anchors, then the RFC-AITP-0002 proof bound to m.
+// [VerifyHello] runs the same checks on a descriptor inside a hello.
+func VerifyIdentity(descriptor []byte, hint *IdentityHint, m BoundMessage, opts IdentityOptions) (*Identity, error) {
+	v, err := strictjson.Parse(descriptor)
+	if err != nil {
+		return nil, fail(aitpverifier.CodeIdentityFailed, "identity descriptor is not strict JSON: %v", err)
+	}
+	sender, err := aid.Parse(m.Sender)
+	if err != nil {
+		return nil, fail(aitpverifier.CodeIdentityFailed, "sender %q is not a valid AID: %v", m.Sender, err)
+	}
+	id, err := parseIdentity(v)
+	if err != nil {
+		return nil, err
+	}
+	if hint != nil {
+		if err := id.checkHint(*hint, sender); err != nil {
+			return nil, err
+		}
+	}
+	if err := id.checkTrust(opts); err != nil {
+		return nil, err
+	}
+	bound := boundMessage{sender: sender, senderStr: m.Sender, messageID: m.MessageID, timestamp: m.Timestamp, popNonce: m.PopNonce}
+	if err := id.verifyProof(bound, opts); err != nil {
+		return nil, err
+	}
+	return id, nil
+}
+
+// PinnedKeyProofInput returns the RFC-AITP-0002 §3.1 pinned-key proof
+// input for m received by receiver. popNonce must decode to 16 bytes.
+func PinnedKeyProofInput(m BoundMessage, receiver string) ([]byte, error) {
+	nonce, err := b64.DecodeLen(m.PopNonce, 16)
+	if err != nil {
+		return nil, fail(aitpverifier.CodeIdentityFailed, "pop_nonce: %v", err)
+	}
+	return pinnedProofInput(m.Sender, receiver, m.MessageID, m.Timestamp, nonce), nil
+}
