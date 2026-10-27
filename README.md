@@ -1,6 +1,6 @@
 # aitp-verifier-go
 
-A Go verifier for the [Agent Identity & Trust Protocol (AITP)](https://github.com/agentidentitytrustprotocol/agentidentitytrustprotocol), written from the RFCs alone. It depends on nothing outside the Go standard library and checks itself against the spec's known-answer vectors and conformance fixtures.
+A Go verifier for the [Agent Identity & Trust Protocol (AITP)](https://github.com/agentidentitytrustprotocol/agentidentitytrustprotocol), written from the spec: the RFCs, JSON Schemas, conformance fixtures and the adapter contract. It depends on nothing outside the Go standard library and checks itself against the spec's known-answer vectors and conformance fixtures.
 
 > **Status: v0.1.0.** It passes every core conformance fixture, and verifies aitp-rs-minted artifacts in CI. See [CHANGELOG.md](CHANGELOG.md).
 
@@ -40,7 +40,7 @@ Main's branch protection requires six checks: `spec pin + generated files`, `tes
 Other workflows:
 
 - `bump-spec.yml` takes the spec repo's `spec-released` dispatch, or a manual run, and opens a held PR that moves `SPEC_VERSION` and regenerates `testdata/spec`, `errors.go` and the adapter test transcript (`scripts/post-spec-bump.sh`).
-- `bump-aitp-rs.yml` runs daily, on dispatch or by hand, and opens a held PR that moves `AITP_RS_COMMIT` to aitp-rs main.
+- `bump-aitp-rs.yml` runs daily, on aitp-rs's `aitp-released` dispatch, or by hand, and opens a held PR that moves `AITP_RS_COMMIT` to aitp-rs main.
 - `spec-canary.yml` runs conformance daily against spec main and keeps one tracking issue open while it fails.
 - `auto-merge.yml` arms auto-merge for Dependabot patch and minor bumps.
 - `release.yml` runs on a `v*` tag. It checks that the tag equals `version.go`, runs the full CI, and waits for proxy.golang.org and sum.golang.org to serve the version. It then runs the core gate against the adapter that `go install …@<tag>` builds from an empty module cache, and publishes a GitHub release with that `conformance.json` attached. Proxy versions are immutable, so a bad release is fixed forward with a new tag and a `retract` directive.
@@ -71,6 +71,11 @@ All under `internal/`, written on the standard library alone:
 ## Independence
 
 Written from the RFCs, schemas and conformance expectations only. Shares no code with aitp-rs, aitp-verifier-py or aitp-verifier-ts and meets them only at the known-answer vectors. **Same author** as the other implementations: independent in code, not in authorship. It does not satisfy the v1.0 different-authorship criterion.
+
+What that covers, precisely:
+
+- **The verifier code** (the `verify` package, `internal/` and `cmd/aitp-verifier-adapter`) was written from the RFCs, the JSON Schemas, the conformance fixtures and known-answer vectors, and the spec's `schemas/conformance/ADAPTER.md` only.
+- **The CI cross-check tooling** was not. `cmd/xcheck-verify` and the layout of the cross-implementation CI jobs were modelled after reading aitp-verifier-ts's CI workflow files and its `xcheck-verify.mjs`. That tooling feeds aitp-rs-minted artifacts to this verifier; it is not part of the verification logic.
 
 ## Development
 
