@@ -153,6 +153,10 @@ An `mh-*` fixture that receives a MUTUAL_HELLO runs RFC-AITP-0004 §5.1 through 
 - The sender's Manifest may carry its own `accepted_identity_types`. That is the sender's policy for its peers, and step 8 does not read it.
 - `mh-010` to `mh-014` use these keys. The earlier `mh-*` fixtures that reach step 8 present `oidc`, which the default accepts, and `mh-009` presents `pinned_key` but fails at step 6. So the default changes none of their outcomes.
 
+### Initiator's intended peer (`peer_aid`)
+
+An `mh-*` fixture whose `step` is `initiator received MUTUAL_HELLO_ACK` runs RFC-AITP-0004 §5.2 as the initiator, whose own AID is `input.self_aid`. `input.peer_aid` is the AID the initiator addressed in MUTUAL_HELLO, the intended peer of RFC-AITP-0004 §2. When it is present, the verifier MUST compare the ACK's `envelope.sender.agent_id` against it (§5.2 step 3), and a different sender fails with `PEER_MISMATCH` (`mh-015`). When it is absent, as in `mh-005`, the fixture does not test that step: the runner treats the ACK sender as the intended peer and MUST NOT fail the fixture for it.
+
 An `id-*` fixture with `verify_handshake_payload` checks the identity binding, which is §5.1 step 6, and does not run step 8 (PLACEHOLDERS.md, "Operation key"). The pinned-key successes `id-010` and `id-017` and the `spiffe` successes state no receiver types for that reason. A runner whose implementation always runs step 8 configures the receiver to accept the fixture's identity type for an `id-*` fixture, as the `spiffe` rule already says.
 
 ### Revocation inputs (`issuer_revocation_list`, `revocation_snapshots`)
@@ -484,6 +488,7 @@ Counts are sourced from the `status` / `required_for_v0_N` / `feature` metadata 
 | `mh-012` | Receiver accepts `["pinned_key"]`; valid `oidc` identity from an issuer in its trust anchors | failure: INCOMPATIBLE_IDENTITY_TYPE |
 | `mh-013` | Receiver accepts `["oidc", "pinned_key"]`; same valid `pinned_key` identity: the positive control for `mh-010` and `mh-011` | success |
 | `mh-014` | Receiver accepts `["oidc"]`; `pinned_key` proof over the wrong `pop_nonce` (id-006's envelope). Step 6 runs before step 8 | failure: IDENTITY_FAILED |
+| `mh-015` | Initiator addressed agentB (`peer_aid`); an otherwise valid MUTUAL_HELLO_ACK arrives from agentC (RFC-AITP-0004 §5.2 step 3) | failure: PEER_MISMATCH |
 
 ### Identity Binding (RFC-AITP-0002)
 

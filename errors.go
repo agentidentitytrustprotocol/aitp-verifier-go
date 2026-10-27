@@ -43,6 +43,7 @@ const (
 	CodeManifestSignatureInvalid           ErrorCode = "MANIFEST_SIGNATURE_INVALID"
 	CodeManifestVersionUnknown             ErrorCode = "MANIFEST_VERSION_UNKNOWN"
 	CodeNonceMismatch                      ErrorCode = "NONCE_MISMATCH"
+	CodePeerMismatch                       ErrorCode = "PEER_MISMATCH"
 	CodePolicyViolation                    ErrorCode = "POLICY_VIOLATION"
 	CodePopChallengeInvalid                ErrorCode = "POP_CHALLENGE_INVALID"
 	CodePopResponseInvalid                 ErrorCode = "POP_RESPONSE_INVALID"
@@ -109,6 +110,7 @@ var codeInfo = map[ErrorCode]CodeInfo{
 	CodeManifestSignatureInvalid:           {Draft: false, Retryable: false, RetryableStated: true},
 	CodeManifestVersionUnknown:             {Draft: false, Retryable: false, RetryableStated: true},
 	CodeNonceMismatch:                      {Draft: false, Retryable: false, RetryableStated: false},
+	CodePeerMismatch:                       {Draft: false, Retryable: false, RetryableStated: false},
 	CodePolicyViolation:                    {Draft: false, Retryable: false, RetryableStated: true},
 	CodePopChallengeInvalid:                {Draft: false, Retryable: false, RetryableStated: true},
 	CodePopResponseInvalid:                 {Draft: false, Retryable: false, RetryableStated: true},
