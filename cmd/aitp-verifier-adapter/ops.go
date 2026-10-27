@@ -214,6 +214,9 @@ func (a *adapter) opVerifyHandshakePayload(p params) (map[string]any, error) {
 	env := p.raw("envelope")
 	var head struct {
 		MessageType string `json:"message_type"`
+		Sender      struct {
+			AgentID string `json:"agent_id"`
+		} `json:"sender"`
 	}
 	_ = json.Unmarshal(env, &head)
 	switch head.MessageType {
@@ -229,6 +232,12 @@ func (a *adapter) opVerifyHandshakePayload(p params) (map[string]any, error) {
 		}
 		return map[string]any{"grants": c.TCT.Grants, "tct_jti": c.TCT.JTI}, nil
 	default:
+		// peer_aid is the AID the initiator addressed (mh-015). A fixture
+		// without it does not test §5.2 step 3, so the sender stands in.
+		peer := p.str("peer_aid")
+		if peer == "" {
+			peer = head.Sender.AgentID
+		}
 		h, err := verify.VerifyHello(env, verify.HelloOptions{
 			Envelope: a.envelopeOptions(p),
 			Identity: verify.IdentityOptions{
@@ -238,6 +247,7 @@ func (a *adapter) opVerifyHandshakePayload(p params) (map[string]any, error) {
 				PinnedKeys:   p.strings("trust_store"),
 			},
 			SentPopNonce:          p.str("sent_pop_nonce"),
+			PeerAID:               peer,
 			AcceptedIdentityTypes: p.strings("self_accepted_identity_types"),
 			// Receiver policy (step 8) runs when the fixture states the
 			// receiver's accepted types; identity-only fixtures stop at 7.

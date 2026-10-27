@@ -2,13 +2,13 @@
 
 A Go verifier for the [Agent Identity & Trust Protocol (AITP)](https://github.com/agentidentitytrustprotocol/agentidentitytrustprotocol), written from the spec: the RFCs, JSON Schemas, conformance fixtures and the adapter contract. It depends on nothing outside the Go standard library and checks itself against the spec's known-answer vectors and conformance fixtures.
 
-> **Status: v0.1.0.** It passes every core conformance fixture, and verifies aitp-rs-minted artifacts in CI. See [CHANGELOG.md](CHANGELOG.md).
+> **Status: v0.1.1.** It passes every core conformance fixture, and verifies aitp-rs-minted artifacts in CI. See [CHANGELOG.md](CHANGELOG.md).
 
 ## Install
 
 ```sh
-go get github.com/agentidentitytrustprotocol/aitp-verifier-go@v0.1.0
-go install github.com/agentidentitytrustprotocol/aitp-verifier-go/cmd/aitp-verifier-adapter@v0.1.0
+go get github.com/agentidentitytrustprotocol/aitp-verifier-go@v0.1.1
+go install github.com/agentidentitytrustprotocol/aitp-verifier-go/cmd/aitp-verifier-adapter@v0.1.1
 ```
 
 ## Verifiers

@@ -27,6 +27,12 @@ type HelloOptions struct {
 	// SentPopNonce, for a mutual_hello_ack, is the pop_nonce the receiver
 	// sent in its mutual_hello. When set, pop_nonce_echo must equal it.
 	SentPopNonce string
+	// PeerAID, for a mutual_hello_ack, is the AID the receiver addressed in
+	// its mutual_hello: the intended peer (RFC-AITP-0004 §2), taken from
+	// the Manifest it fetched, never from the ack. It is required for an
+	// ack, and a different envelope sender fails with PEER_MISMATCH
+	// (§5.2 step 3).
+	PeerAID string
 	// AcceptedIdentityTypes is the receiver's own accepted_identity_types;
 	// nil means DefaultAcceptedIdentityTypes (RFC-AITP-0003 §3.2).
 	AcceptedIdentityTypes []string
@@ -70,7 +76,16 @@ func VerifyHello(data []byte, opts HelloOptions) (*Hello, error) {
 		return nil, err
 	}
 	h.Envelope = e
-	// Step 3.
+	// §5.2 step 3: an ack must come from the peer the receiver addressed.
+	if ack {
+		if opts.PeerAID == "" {
+			return nil, errors.New("verify: HelloOptions.PeerAID is required for a mutual_hello_ack")
+		}
+		if e.Sender != opts.PeerAID {
+			return nil, fail(aitpverifier.CodePeerMismatch, "mutual_hello_ack sender is not the peer addressed in mutual_hello")
+		}
+	}
+	// Step 3 (§5.2 step 4).
 	mf, _ := asObject(manifestV)
 	if maid, _ := mf.str("aid"); maid != e.Sender {
 		return nil, fail(aitpverifier.CodeInvalidEnvelope, "manifest.aid is not envelope.sender.agent_id")
@@ -102,11 +117,11 @@ func VerifyHello(data []byte, opts HelloOptions) (*Hello, error) {
 	if err := e.VerifySignature(); err != nil {
 		return nil, err
 	}
-	// §5.2 step 8.
+	// §5.2 step 9.
 	if ack && opts.SentPopNonce != "" && h.PopNonceEcho != opts.SentPopNonce {
 		return nil, fail(aitpverifier.CodeNonceMismatch, "pop_nonce_echo is not the pop_nonce sent in mutual_hello")
 	}
-	// Step 8 (§5.2 step 9).
+	// Step 8 (§5.2 step 10).
 	if !opts.SkipPolicy {
 		accepted := opts.AcceptedIdentityTypes
 		if accepted == nil {
