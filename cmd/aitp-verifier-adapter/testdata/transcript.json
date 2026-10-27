@@ -2808,6 +2808,74 @@
    ]
   },
   {
+   "fixture": "mh-015",
+   "now": 1711900000,
+   "steps": [
+    {
+     "error_code": "PEER_MISMATCH",
+     "op": "verify_handshake_payload",
+     "outcome": "failure",
+     "params": {
+      "envelope": {
+       "message_id": "660e8400-e29b-41d4-a716-446655440115",
+       "message_type": "mutual_hello_ack",
+       "payload": {
+        "identity": {
+         "issuer": "https://auth.openai.com",
+         "proof": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2F1dGgub3BlbmFpLmNvbSIsInN1YiI6ImFnZW50LUMiLCJhdWQiOiJhaWQ6cHVia2V5Ok8yb252TTYycEMxaW82alFLbThOYzJVeUZYY2Q0a09tT3NCSW9ZdFoyaWsiLCJpYXQiOjE3MTE5MDAwMDAsImV4cCI6MTcxMTkwMzYwMCwibm9uY2UiOiJDVVBPN0otR3l4b21Ib0dqRVN4SHFRIiwiY25mIjp7ImprdCI6Ikxsc21rWG1ISnVYV2tSWkx2X0ZLbF9tcHJmSVY1YVlWblhxQ2dzZWJzZFUifX0.s-C4J0n4aAvujn80u6rwzAtgNzuXevE-yM2HHnI9CNyA56HwjtpHGCM-a5YJWE6wYG9lokOWar5T5HsMiOuLAA",
+         "subject": "agent-C",
+         "type": "oidc"
+        },
+        "manifest": {
+         "accepted_trust_anchors": [
+          "https://auth.openai.com",
+          "https://auth.anthropic.com"
+         ],
+         "aid": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU",
+         "expires_at": 1711986400,
+         "handshake_endpoint": "https://c.agents.example.com/aitp/handshake",
+         "identity_hint": {
+          "issuer": "https://auth.openai.com",
+          "subject": "agent-C",
+          "type": "oidc"
+         },
+         "offered_capabilities": [
+          "macp.mode.task.v1"
+         ],
+         "proof_of_possession": {
+          "challenge": "ceMpxU_8X22Z6PTHNevw3A",
+          "signature": "KgidqR0K04N-cnrdF21qRy6p1UvdPP32mnhknzPwqf_o5bQ5clJunpPuRqirsipaUStHIFEJfcIQJ2An9AzNBQ"
+         },
+         "published_at": 1711900000,
+         "required_peer_capabilities": [],
+         "signature": "94LARC5DoVuRrX6Teutm5GnsdPLg53gGcel0PBu_9RN2KCiL4g7UUegk8ezMTjPaiRLmvCH51bhEKZlWe3cBCg",
+         "version": "aitp/0.3"
+        },
+        "pop_nonce": "CUPO7J-GyxomHoGjESxHqQ",
+        "pop_nonce_echo": "fRVe56NIsF6e0msvD0ORaQ",
+        "requested_grants": [
+         "macp.mode.task.v1"
+        ]
+       },
+       "sender": {
+        "agent_id": "aid:pubkey:dqFZIESm5PURJlvKc6YE2QsFKdHfYCvjChmpJXZg0fU"
+       },
+       "signature": "dgPHbs-l7hW3fp9efs09cgV-1lJP6Ijqjs54zc7Y_RJxajLsIEN8DDxo5-BgPFwhUaqYm6hfwIAvUiRh88ZuCA",
+       "timestamp": 1711900000,
+       "version": "aitp/0.3"
+      },
+      "peer_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "self_accepted_identity_types": [
+       "oidc"
+      ],
+      "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sent_pop_nonce": "fRVe56NIsF6e0msvD0ORaQ",
+      "step": "initiator received MUTUAL_HELLO_ACK"
+     }
+    }
+   ]
+  },
+  {
    "fixture": "mh-success-001",
    "now": 1711900000,
    "steps": [
@@ -3913,5 +3981,5 @@
    ]
   }
  ],
- "spec_commit": "9d212a562e4646f44fda10187817d5bd36a5c7df"
+ "spec_commit": "af9c409f93777624db1626667f0d26f7630bb880"
 }
