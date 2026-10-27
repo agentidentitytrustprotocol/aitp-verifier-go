@@ -15,6 +15,7 @@ same way if fixtures are added or renamed:
 ```
 conformance/
 ├── README.md
+├── ADAPTER.md      Runner-to-adapter NDJSON protocol (informative)
 ├── env-*.json      Envelope-level checks (RFC-AITP-0001, RFC-AITP-0007)
 ├── man-*.json      Manifest verification (RFC-AITP-0003)
 ├── mh-*.json       Mutual Handshake scenarios (RFC-AITP-0004; includes mh-success-*)
@@ -406,7 +407,10 @@ Implementations MUST provide a conformance runner that:
    evaluated.
 
 The runner interface (how it is invoked, its flags, its human-readable
-output) is implementation-defined. The report format is not. The fields, the
+output) is implementation-defined. The report format is not.
+[`ADAPTER.md`](ADAPTER.md) (informative, `adapter-protocol: 1`) describes
+the NDJSON protocol between a runner and an implementation's adapter: the
+messages, the operation names, SKIP semantics and report gating. The fields, the
 fixture digest and the per-claim badge rules are in
 [`docs/conformance-badge.md`](../../docs/conformance-badge.md); sample reports,
 valid and invalid, are in [`reports/`](reports/).
