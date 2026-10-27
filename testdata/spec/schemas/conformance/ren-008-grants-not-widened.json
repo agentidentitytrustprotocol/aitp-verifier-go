@@ -1,0 +1,77 @@
+{
+  "id": "ren-008",
+  "rfc": "RFC-AITP-0013",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-renewal",
+  "$comment": "Static fixture. `renewal_request.current_tct` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json (`iss` = kat-keypair-001, `sub` = `aud` = kat-keypair-002, `jti` 550e8400-e29b-41d4-a716-446655440000, `exp` 1711903600), and `current_tct_claims` is its `decoded_claims`. A runner MUST NOT re-mint it. `self_aid` is the token's `iss`: the runner acts as the issuer receiving the renewal request (RFC-AITP-0013 §4). `pop_nonce` is the base64url form of the 16 ASCII bytes `aitp-renewal-NNN`. `pop_signature` is a real Ed25519 signature, committed here; scripts/verify-known-answer.mjs and scripts/recompute-known-answer-independent.py both rebuild its RFC-AITP-0013 §3.1 input and check it. `issuer_manifest` is the issuer's current Manifest as the runner configures it (`aid`, `expires_at`, `offered_capabilities`); `issuer_policy.renewal_ttl_secs` is the lifetime the issuer would grant before the Manifest cap. Nothing in this fixture is a placeholder.",
+  "description": "The issuer's current Manifest now offers `macp.mode.review.v1` as well as the current TCT's grant. The issuer MUST renew with the current grants only: renewal never widens grants (RFC-AITP-0013 §4 step 6). A renewed TCT that carries `macp.mode.review.v1` fails this fixture.",
+  "tags": [
+    "success",
+    "renewal",
+    "grants",
+    "issuer-side",
+    "known-answer"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "now": 1711900000,
+    "issuer_manifest": {
+      "aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "expires_at": 1711990000,
+      "offered_capabilities": [
+        "macp.mode.task.v1",
+        "macp.mode.review.v1"
+      ]
+    },
+    "issuer_policy": {
+      "renewal_ttl_secs": 3600,
+      "mint_grant_voucher": false
+    },
+    "renewal_request": {
+      "current_tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+      "pop_nonce": "YWl0cC1yZW5ld2FsLTAwOA",
+      "pop_signature": "gL5yggfbAaoS8O8z46KM7Ktc5k27ejxKVgQ-vTi84Lo9LvGOYbIQnUwk3S78pPVHLbFyb9WSV7HoT8rIg7B2Aw"
+    },
+    "current_tct_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "operation": "renew_tct"
+  },
+  "expected": {
+    "outcome": "success",
+    "renewed_tct_claims": {
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "renewed_jti_differs": true,
+    "response": {
+      "message_type": "tct",
+      "sender": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "pop_nonce_echo": "YWl0cC1yZW5ld2FsLTAwOA"
+    },
+    "rationale": "The renewed grants are the current grants intersected with `offered_capabilities`: exactly [\"macp.mode.task.v1\"] (RFC-AITP-0013 §4 step 6)."
+  }
+}

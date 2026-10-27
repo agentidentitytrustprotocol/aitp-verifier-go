@@ -219,6 +219,8 @@ precondition that fails SKIPs the fixture. No fixture in this directory uses
 | `verify_attestation` | `tct-019`, `tct-020`, `tct-021` | no, `aitp-self-attestation` |
 | `verify_session_bundle` | `bundle-*` | no, `experimental-session-bundle` |
 | `verify_a2a_agent_card_binding` | `a2a-*` | no, `aitp-a2a-agent-card` |
+| `renew_tct` | `ren-001` to `ren-009`, `ren-012` | no, `experimental-renewal` |
+| `verify_renewal_response` | `ren-010`, `ren-011` | no, `experimental-renewal` |
 
 The "Fixtures" column is a guide. The fixture's own `input.operation` is the
 authority.
