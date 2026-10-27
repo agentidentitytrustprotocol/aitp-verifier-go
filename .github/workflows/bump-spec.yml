@@ -2,8 +2,9 @@ name: bump-spec
 # Adopt a new AITP spec revision. Dispatched by the spec repo
 # (`spec-released`) on a conformance-relevant push; also runnable by hand.
 # The spec SHA lives in SPEC_VERSION, so bump-spec-ref runs in file mode,
-# and its post-bump step regenerates testdata/spec and errors.go from the
-# new pin so the PR is complete. The PR is HELD, never auto-merged:
+# and its post-bump step (scripts/post-spec-bump.sh) regenerates
+# testdata/spec, errors.go and the adapter test transcript from the new pin
+# so the PR is complete. The PR is HELD, never auto-merged:
 # adopting a spec is a reviewed change, and the PR's CI re-runs
 # conformance against the new fixtures.
 on:
@@ -22,7 +23,8 @@ jobs:
       mode: file
       file: SPEC_VERSION
       sha: ${{ github.event.inputs.sha }}
-      # Runs at the repo root after SPEC_VERSION is rewritten. go.mod's
-      # `go 1.26` line fetches a new enough toolchain if the runner's is older.
-      post-bump: scripts/sync-spec.sh && go generate ./...
+      # Runs at the repo root after SPEC_VERSION is rewritten, with the
+      # runner's preinstalled go, cargo and python3. go.mod's `go 1.26` line
+      # fetches a new enough Go toolchain if the runner's is older.
+      post-bump: scripts/post-spec-bump.sh
     secrets: inherit

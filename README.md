@@ -39,7 +39,7 @@ Main's branch protection requires six checks: `spec pin + generated files`, `tes
 
 Other workflows:
 
-- `bump-spec.yml` takes the spec repo's `spec-released` dispatch, or a manual run, and opens a held PR that moves `SPEC_VERSION` and regenerates `testdata/spec` and `errors.go`.
+- `bump-spec.yml` takes the spec repo's `spec-released` dispatch, or a manual run, and opens a held PR that moves `SPEC_VERSION` and regenerates `testdata/spec`, `errors.go` and the adapter test transcript (`scripts/post-spec-bump.sh`).
 - `bump-aitp-rs.yml` runs daily, on dispatch or by hand, and opens a held PR that moves `AITP_RS_COMMIT` to aitp-rs main.
 - `spec-canary.yml` runs conformance daily against spec main and keeps one tracking issue open while it fails.
 - `auto-merge.yml` arms auto-merge for Dependabot patch and minor bumps.
