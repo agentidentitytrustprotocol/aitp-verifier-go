@@ -27,6 +27,7 @@ conformance/
 ├── del-mh-*.json   Multi-hop delegation, opt-in (RFC-AITP-0011)
 ├── bundle-*.json   Session Trust Bundle, opt-in (RFC-AITP-0010)
 ├── a2a-*.json      A2A Agent Card binding, opt-in (RFC-AITP-0014)
+├── ren-*.json      TCT renewal, opt-in (RFC-AITP-0013)
 ├── known-answer/   Pinned canonical bytes, keys and signatures (not fixtures)
 └── reports/        Sample conformance reports (not fixtures; docs/conformance-badge.md)
 ```
@@ -116,7 +117,7 @@ Verifier state persists only across the steps of one fixture's `sequence`. The r
 
 Sequence fixtures MAY also carry sibling fields inside `input` that provide context shared across all steps. For example, `tct-006-pop-challenge-response.json` carries `input.tct_token` alongside `input.sequence` because every step in the sequence operates against the same TCT (the consuming peer issues a challenge for it; the holder produces a response with the subject key bound via `cnf.jkt`; the verifier checks both). Sibling context fields are part of the fixture input and the runner MUST make them available to every step.
 
-`mh-001` (replay detection) and `tct-006` (downstream PoP) are the fixtures using this form.
+`mh-001` (replay detection), `tct-006` (downstream PoP) and `ren-004` (renewal nonce replay) are among the fixtures using this form.
 
 ### Side-effect assertions
 
@@ -433,7 +434,8 @@ valid and invalid, are in [`reports/`](reports/).
 | `draft` — multi-hop delegation (RFC-AITP-0011, `feature: experimental-multihop-delegation`) | 6 | ❌ No |
 | `draft` — A2A Agent Card binding (RFC-AITP-0014, `feature: aitp-a2a-agent-card`) | 6 | ❌ No |
 | `draft` — `spiffe` identity type (RFC-AITP-0002 §6, `feature: experimental-spiffe-identity`) | 7 | ❌ No |
-| **Total** | **133** | |
+| `draft` — TCT renewal (RFC-AITP-0013, `feature: experimental-renewal`) | 12 | ❌ No |
+| **Total** | **145** | |
 
 Counts are sourced from the `status` / `required_for_v0_N` / `feature` metadata block on each fixture file. A conformance runner for the current revision, `aitp/0.3`, MUST execute every `required_for_core` core fixture (the key keeps its v0.2 name so existing runners keep working; for `aitp/0.3` it marks the core tier); `draft` and `extension` fixtures MUST be SKIPped unless the runner has been explicitly opted into the named `feature` (see the enforcement rules above).
 
@@ -637,6 +639,25 @@ These fixtures run the client-side binding of an A2A Agent Card to the agent's M
 | `a2a-004` | Card signature stipulated valid, Manifest unreachable; a Card signature does not replace the Manifest (§4.4) | failure: MANIFEST_NOT_FOUND |
 | `a2a-005` | Card shadowing: the selected interface URL is not in the Manifest's `rfc-aitp-0014.a2a_interfaces` (§4.2 step 5) | failure: IDENTITY_FAILED |
 | `a2a-006` | Card names the `ed25519:`-tagged form of the Manifest's legacy AID; the forms are equal (RFC-AITP-0001 §5.3) | success |
+
+### TCT renewal (RFC-AITP-0013, opt-in)
+
+These fixtures run TCT renewal from the issuer's side (`renew_tct`, RFC-AITP-0013 §4) and the holder's side (`verify_renewal_response`, §6.1) ([`PLACEHOLDERS.md`](PLACEHOLDERS.md#operation-key)). The issuer-side fixtures renew the committed TCT `signed-examples/tct/kat-keypair-001-issues-002.json`, with real renewal PoP signatures. Core implementations are not required to support renewal.
+
+| ID | Description | Outcome |
+|---|---|---|
+| `ren-001` | Valid renewal; the renewed TCT keeps `iss`, `sub`, `aud`, `cnf` and `grants` and has a new `jti` | success |
+| `ren-002` | The current TCT's `jti` is in the issuer's deny list (§4 step 4) | failure: TCT_REVOKED |
+| `ren-003` | The issuer's Manifest expires first; the renewed `exp` is capped at Manifest `expires_at` (§4 step 7) | success |
+| `ren-004` | The same request twice (§4 step 5) | step 2 failure: REPLAY_DETECTED |
+| `ren-005` | Valid PoP by a key other than the `sub` key (§4 step 3) | failure: POP_RESPONSE_INVALID |
+| `ren-006` | PoP over the §3.1 input with another `jti` (§4 step 3) | failure: POP_RESPONSE_INVALID |
+| `ren-007` | PoP over the §3.1 input with another issuer AID (§4 step 3) | failure: POP_RESPONSE_INVALID |
+| `ren-008` | The Manifest offers more than the current grants; the renewed grants stay the current ones (§4 step 6) | success |
+| `ren-009` | The Manifest no longer offers the current grant (§4 step 6) | failure: POLICY_VIOLATION |
+| `ren-010` | Holder accepts a valid renewal response (§6.1) | success |
+| `ren-011` | Renewed TCT carries a grant the current TCT does not (§6.1 step 6) | failure: GRANT_OVERFLOW |
+| `ren-012` | The current TCT has expired (§4 step 2) | failure: TCT_EXPIRED |
 
 Additions and edge-case fixtures (replay during MUTUAL_COMMIT, identity-issuer key rotation, partial chain verification, etc.) are welcome via PR.
 

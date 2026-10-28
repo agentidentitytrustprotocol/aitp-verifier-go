@@ -1,0 +1,71 @@
+{
+  "id": "ren-010",
+  "rfc": "RFC-AITP-0013",
+  "status": "draft",
+  "required_for_v0_1": false,
+  "required_for_core": false,
+  "feature": "experimental-renewal",
+  "$comment": "Placeholder fixture. `current_tct` is the committed signed example known-answer/signed-examples/tct/kat-keypair-001-issues-002.json, and `current_tct_claims` is its `decoded_claims`; a runner MUST NOT re-mint it. `self_aid` is the token's `sub`: the runner acts as the holder that sent a renewal request with `sent_pop_nonce` and receives `envelope` in reply (RFC-AITP-0013 §6.1). The payload `tct` is a __JWS_TCT__ placeholder with a `tct_claims` sibling (minting input; stripped by the minter), signed by its `iss` key, kat-keypair-001. The envelope signature is __VALID_ENVELOPE_SIG__, minted with the sender key, kat-keypair-001. The reference clock is `now`.",
+  "description": "The holder verifies a valid renewal response (RFC-AITP-0013 §6.1): a `tct` envelope from the current TCT's issuer that echoes the holder's nonce and carries a renewed TCT with the same `iss`, `sub`, `aud`, `cnf` and `grants` and a new `jti`. The holder MUST accept it.",
+  "tags": [
+    "success",
+    "renewal",
+    "tct",
+    "holder-side"
+  ],
+  "input": {
+    "self_aid": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+    "now": 1711900000,
+    "current_tct": "eyJhbGciOiJFZERTQSIsInR5cCI6ImFpdHAtdGN0K2p3dCJ9.eyJhdWQiOiJhaWQ6cHVia2V5OkE2RUh2X1BPRUw0ZGNOMFk1MHZBbVdmazFqQ2JwUTFmSGR5R1pCSlZNYmciLCJjbmYiOnsiamt0IjoiMUlHMnRNSDdKMndiSlpuT2Y4TEp6UWl0S2Y3TE12b0FFbHN1RE1WTTU0WSJ9LCJleHAiOjE3MTE5MDM2MDAsImdyYW50cyI6WyJtYWNwLm1vZGUudGFzay52MSJdLCJpYXQiOjE3MTE5MDAwMDAsImlzcyI6ImFpZDpwdWJrZXk6TzJvbnZNNjJwQzFpbzZqUUttOE5jMlV5RlhjZDRrT21Pc0JJb1l0WjJpayIsImp0aSI6IjU1MGU4NDAwLWUyOWItNDFkNC1hNzE2LTQ0NjY1NTQ0MDAwMCIsInN1YiI6ImFpZDpwdWJrZXk6QTZFSHZfUE9FTDRkY04wWTUwdkFtV2ZrMWpDYnBRMWZIZHlHWkJKVk1iZyIsInZlciI6ImFpdHAvMC4zIn0.MA6HEWmgaHoDtSr6QBZww15p9ZI-v1tUZ7_-boxN_5tHbArt3stiGvbxSzgOOrCM2MLvifypmKqBXxp3QQaLAg",
+    "current_tct_claims": {
+      "ver": "aitp/0.3",
+      "jti": "550e8400-e29b-41d4-a716-446655440000",
+      "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+      "iat": 1711900000,
+      "exp": 1711903600,
+      "grants": [
+        "macp.mode.task.v1"
+      ],
+      "cnf": {
+        "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+      }
+    },
+    "sent_pop_nonce": "YWl0cC1yZW5ld2FsLTAxMA",
+    "envelope": {
+      "version": "aitp/0.3",
+      "message_type": "tct",
+      "message_id": "44444444-4444-4444-8444-444444440010",
+      "timestamp": 1711900000,
+      "sender": {
+        "agent_id": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik"
+      },
+      "payload": {
+        "tct": "__JWS_TCT__",
+        "tct_claims": {
+          "ver": "aitp/0.3",
+          "jti": "550e8400-e29b-41d4-a716-446655440010",
+          "iss": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+          "sub": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "aud": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
+          "iat": 1711900000,
+          "exp": 1711903600,
+          "grants": [
+            "macp.mode.task.v1"
+          ],
+          "cnf": {
+            "jkt": "1IG2tMH7J2wbJZnOf8LJzQitKf7LMvoAElsuDMVM54Y"
+          }
+        },
+        "pop_nonce_echo": "YWl0cC1yZW5ld2FsLTAxMA"
+      },
+      "signature": "__VALID_ENVELOPE_SIG__"
+    },
+    "operation": "verify_renewal_response"
+  },
+  "expected": {
+    "outcome": "success",
+    "rationale": "Every step of RFC-AITP-0013 §6.1 passes."
+  }
+}
