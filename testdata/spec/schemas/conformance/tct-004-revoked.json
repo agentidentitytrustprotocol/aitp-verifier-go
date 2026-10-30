@@ -48,6 +48,7 @@
         "signature": "__VALID_B_SIG__"
       }
     },
+    "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
     "operation": "verify_tct"
   },
   "expected": {
