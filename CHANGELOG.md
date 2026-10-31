@@ -2,6 +2,12 @@
 
 All notable changes to this module. Versions follow [Semantic Versioning](https://semver.org/). Released versions are immutable on the Go module proxy, so a bad release is fixed with a new version and a `retract` directive, never by moving a tag.
 
+## [Unreleased]
+
+### Changed
+
+- CI builds the conformance runner and minter from aitp-rs v0.24.0 (tag `aitp-v0.24.0`, commit `29cb348`). The adapter and `cmd/xcheck-verify` needed no changes: core conformance is 96 passed, 0 failed, 0 skipped, and the mint-and-verify check passes.
+
 ## [0.1.1] - 2026-10-27
 
 Tested against spec `v0.3.4-draft`.
