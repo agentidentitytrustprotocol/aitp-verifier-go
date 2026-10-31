@@ -48,6 +48,7 @@ const (
 	CodePopChallengeInvalid                ErrorCode = "POP_CHALLENGE_INVALID"
 	CodePopResponseInvalid                 ErrorCode = "POP_RESPONSE_INVALID"
 	CodePopVerificationFailed              ErrorCode = "POP_VERIFICATION_FAILED"
+	CodeRenewalUnavailable                 ErrorCode = "RENEWAL_UNAVAILABLE"
 	CodeReplayDetected                     ErrorCode = "REPLAY_DETECTED"
 	CodeRevocationSnapshotInvalid          ErrorCode = "REVOCATION_SNAPSHOT_INVALID"
 	CodeRevocationSnapshotSignatureInvalid ErrorCode = "REVOCATION_SNAPSHOT_SIGNATURE_INVALID"
@@ -115,6 +116,7 @@ var codeInfo = map[ErrorCode]CodeInfo{
 	CodePopChallengeInvalid:                {Draft: false, Retryable: false, RetryableStated: true},
 	CodePopResponseInvalid:                 {Draft: false, Retryable: false, RetryableStated: true},
 	CodePopVerificationFailed:              {Draft: false, Retryable: false, RetryableStated: false},
+	CodeRenewalUnavailable:                 {Draft: true, Retryable: true, RetryableStated: true},
 	CodeReplayDetected:                     {Draft: false, Retryable: false, RetryableStated: true},
 	CodeRevocationSnapshotInvalid:          {Draft: false, Retryable: false, RetryableStated: true},
 	CodeRevocationSnapshotSignatureInvalid: {Draft: false, Retryable: false, RetryableStated: true},

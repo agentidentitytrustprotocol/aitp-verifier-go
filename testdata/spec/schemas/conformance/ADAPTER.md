@@ -79,6 +79,13 @@ No `*_claims` minting companion ever reaches the adapter: the runner strips
 them at every depth (see
 [PLACEHOLDERS.md](PLACEHOLDERS.md#compact-jws-token-placeholders-portable-trust-artifacts)).
 
+The runner adds one input. For an `mh-*` fixture whose operation is
+`verify_handshake_payload`, it sets `self_accepted_identity_types` to
+`["oidc"]` when the fixture does not state it, so the adapter always receives
+the receiver's accepted types for that family and runs RFC-AITP-0004 §5.1
+step 8 with them. An `id-*` fixture gets no such default
+([README.md, "Receiver policy inputs"](README.md#receiver-policy-inputs-self_accepted_identity_types-self_trust_anchors)).
+
 **aitp-rs:** ids are `req-1`, `req-2`, ... numbered over the whole run,
 `init` included.
 
@@ -92,6 +99,24 @@ them at every depth (see
 A fixture whose `expected.outcome` is `success` passes on this response
 unless it also asserts values in `result` (for example `presenter_aid` and
 `grants` for `verify_tct_as_issuer`).
+
+### Side effects
+
+A step whose `expected` block carries `side_effects`
+([README.md, "Side-effect assertions"](README.md#side-effect-assertions)) is
+checked against the `side_effects` member of the success response's `result`.
+It is an object whose keys are the README's side-effect keys and whose values
+are booleans:
+
+```json
+{"id": "req-12", "ok": true, "result": {"side_effects": {"pop_challenge_issued": true}}}
+```
+
+The adapter reports the keys it instruments. A key it leaves out is
+un-instrumented, and the README's rule for an un-instrumented assertion
+applies. A failure response has no `result`, so under `adapter-protocol: 1` it
+carries no side effects: the assertions on a failure step (`tct-007` and
+`tct-026` step 3, `rev-004`) are un-instrumented through this protocol.
 
 ### Response: failure
 
@@ -219,6 +244,8 @@ precondition that fails SKIPs the fixture. No fixture in this directory uses
 | `verify_attestation` | `tct-019`, `tct-020`, `tct-021` | no, `aitp-self-attestation` |
 | `verify_session_bundle` | `bundle-*` | no, `experimental-session-bundle` |
 | `verify_a2a_agent_card_binding` | `a2a-*` | no, `aitp-a2a-agent-card` |
+| `renew_tct` | `ren-001` to `ren-009`, `ren-012` | no, `experimental-renewal` |
+| `verify_renewal_response` | `ren-010`, `ren-011` | no, `experimental-renewal` |
 
 The "Fixtures" column is a guide. The fixture's own `input.operation` is the
 authority.
