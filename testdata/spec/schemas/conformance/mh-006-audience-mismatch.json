@@ -16,6 +16,7 @@
   "input": {
     "step": "initiator received MUTUAL_COMMIT_ACK",
     "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+    "self_pop_nonce_sent_in_hello": "BpXqahnKymUSJhsuv8NC_Q",
     "envelope": {
       "version": "aitp/0.3",
       "message_type": "mutual_commit_ack",

@@ -2323,6 +2323,7 @@
        "oidc"
       ],
       "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "self_pop_nonce_sent_in_hello": "BpXqahnKymUSJhsuv8NC_Q",
       "step": "initiator received MUTUAL_COMMIT_ACK"
      }
     }
@@ -2359,6 +2360,7 @@
        "oidc"
       ],
       "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
+      "self_pop_nonce_sent_in_hello": "VGlawa8CMmkQw7blLzdJeQ",
       "step": "initiator received MUTUAL_COMMIT_ACK"
      }
     }
@@ -3309,6 +3311,7 @@
      "op": "verify_tct",
      "outcome": "failure",
      "params": {
+      "expected_audience": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
       "issuer_revocation_list": {
        "fail_mode": "fail_closed",
        "issuer": "aid:pubkey:A6EHv_POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg",
@@ -3981,5 +3984,5 @@
    ]
   }
  ],
- "spec_commit": "af9c409f93777624db1626667f0d26f7630bb880"
+ "spec_commit": "73dd6ebe9f1965decae90a400fad8048d5e8a6e3"
 }

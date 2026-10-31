@@ -16,6 +16,7 @@
   "input": {
     "self_aid": "aid:pubkey:O2onvM62pC1io6jQKm8Nc2UyFXcd4kOmOsBIoYtZ2ik",
     "step": "initiator received MUTUAL_COMMIT_ACK",
+    "self_pop_nonce_sent_in_hello": "VGlawa8CMmkQw7blLzdJeQ",
     "issuer_offered_capabilities": [
       "macp.mode.task.v1"
     ],
