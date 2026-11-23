@@ -18,7 +18,7 @@ on:
         default: ''
 jobs:
   bump:
-    uses: agentidentitytrustprotocol/aitp-ci/.github/workflows/bump-spec-ref.yml@3500d868e4a234491c56600c206541ca5b639322 # v1
+    uses: agentidentitytrustprotocol/aitp-ci/.github/workflows/bump-spec-ref.yml@09e475c2379af208c9bb521ef825a5cf358aa3de # v1
     with:
       mode: file
       file: AITP_RS_COMMIT
